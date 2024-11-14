@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "944619674586",
+    "project_id": "gestionabsenceenseignant",
+    "storage_bucket": "gestionabsenceenseignant.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:944619674586:android:dc493c6ff9799780d83ee3",
+        "android_client_info": {
+          "package_name": "com.example.gestionabscenceenseignants"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCnI97zRDjBbPFa0jHn4I1NWh8QAQJaq8o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
