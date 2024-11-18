@@ -1,5 +1,6 @@
 plugins {
-    alias(libs.plugins.android.application)
+    alias(libs.plugins.android.application)  // Plugin Android
+    id("com.google.gms.google-services")  // Plugin Google Services pour Firebase
 }
 
 android {
@@ -8,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.gestionabscenceenseignants"
-        minSdk = 34
+        minSdk = 21  // Version minimale de l'API
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -25,6 +26,7 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -32,12 +34,18 @@ android {
 }
 
 dependencies {
+    // Firebase Dependencies
+    implementation("com.google.firebase:firebase-auth:21.2.0")  // Authentification Firebase
+    implementation("com.google.firebase:firebase-firestore:24.8.1")  // Firestore Firebase
 
-    implementation(libs.appcompat)
-    implementation(libs.material)
-    implementation(libs.activity)
-    implementation(libs.constraintlayout)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.ext.junit)
-    androidTestImplementation(libs.espresso.core)
+    // Android Dependencies
+    implementation(libs.appcompat)  // AppCompat pour les composants Android de base
+    implementation(libs.material)  // Material Design
+    implementation(libs.activity)  // Composant Activity
+    implementation(libs.constraintlayout)  // Layout avec ConstraintLayout
+
+    // Tests
+    testImplementation(libs.junit)  // Tests unitaires
+    androidTestImplementation(libs.ext.junit)  // Tests d'interface utilisateur avec JUnit
+    androidTestImplementation(libs.espresso.core)  // Tests d'interface utilisateur avec Espresso
 }
