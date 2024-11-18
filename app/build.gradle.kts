@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.gestionabscenceenseignants"
-        minSdk = 21  // Version minimale de l'API
+        minSdk = 26  // Version minimale de l'API
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
