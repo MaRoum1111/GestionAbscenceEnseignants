@@ -1,0 +1,60 @@
+<!-- res/layout/item_absence.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp"
+    android:background="?android:attr/selectableItemBackground"
+    android:elevation="2dp">
+
+    <TextView
+        android:id="@+id/profName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nom du professeur"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Date"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/startTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Heure de début"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/endTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Heure de fin"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/reason"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Raison"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Statut"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/subjectName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Matière"
+        android:textSize="14sp" />
+
+</LinearLayout>

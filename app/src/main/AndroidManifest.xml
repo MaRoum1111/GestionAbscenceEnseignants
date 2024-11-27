@@ -10,16 +10,15 @@
         android:theme="@style/Theme.GestionAbscenceEnseignants">
 
         <activity
-            android:name=".view.LoginActivity"
+            android:name=".view.AdminActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <!-- Autres activités -->
-        <activity android:name=".view.AdminActivity" />
+        <activity android:name=".view.LoginActivity" />
         <activity android:name=".view.AgentActivity" />
         <activity android:name=".view.TeacherActivity" />
 

@@ -1,15 +1,14 @@
-package com.example.gestionabscenceenseignants.controller;
+package com.example.gestionabscenceenseignants.Repository;
 
+import com.example.gestionabscenceenseignants.model.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.example.gestionabscenceenseignants.model.User;
 
-public class AuthController {
-
+public class LoginRepository {
     private final FirebaseAuth auth;
     private final FirebaseFirestore db;
 
-    public AuthController() {
+    public LoginRepository() {
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
     }

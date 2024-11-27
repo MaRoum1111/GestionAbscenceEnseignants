@@ -1,0 +1,129 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@drawable/header"
+    tools:context=".view.AddAbsenceFragment">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="30dp"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="10dp"
+        android:background="@drawable/edit_text_background">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="514dp"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <TextView
+                android:id="@+id/loginText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="13dp"
+                android:text="L'ajout d'une absence"
+                android:textAlignment="center"
+                android:textColor="@color/blue"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/editTextProfName"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/edit_text_background"
+                android:drawablePadding="8dp"
+                android:hint="Nom du professeur"
+                android:inputType="text"
+                android:padding="8dp"
+                android:textColor="#333333" />
+
+            <EditText
+                android:id="@+id/editTextDate"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/edit_text_background"
+                android:drawablePadding="8dp"
+                android:hint="Date (ex: 2024-11-27)"
+                android:inputType="date"
+                android:padding="8dp"
+                android:textColor="#333333" />
+
+            <EditText
+                android:id="@+id/editTextStartTime"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/edit_text_background"
+                android:drawablePadding="8dp"
+                android:hint="Heure de début (ex: 08:00)"
+                android:inputType="time"
+                android:padding="8dp"
+                android:textColor="#333333" />
+
+            <EditText
+                android:id="@+id/editTextEndTime"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/edit_text_background"
+                android:drawablePadding="8dp"
+                android:hint="Heure de fin (ex: 10:00)"
+                android:inputType="time"
+                android:padding="8dp"
+                android:textColor="#333333" />
+
+            <EditText
+                android:id="@+id/editTextReason"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/edit_text_background"
+                android:drawablePadding="8dp"
+                android:hint="Raison de l'absence"
+                android:inputType="text"
+                android:padding="8dp"
+                android:textColor="#333333" />
+
+            <EditText
+                android:id="@+id/editTextSubjectName"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/edit_text_background"
+                android:drawablePadding="8dp"
+                android:hint="Nom de la matière"
+                android:inputType="text"
+                android:padding="8dp"
+                android:textColor="#333333" />
+
+            <Spinner
+                android:id="@+id/spinnerStatus"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/edit_text_background"
+                android:entries="@array/status_options"
+                android:padding="8dp" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <Button
+        android:id="@+id/btnAddAbsence"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="30dp"
+        android:backgroundTint="@color/blue"
+        android:text="Ajouter l'absence"
+        android:textSize="18sp"
+        app:cornerRadius="20dp"
+        android:layout_marginBottom="10dp"/>
+</LinearLayout>

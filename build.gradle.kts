@@ -11,7 +11,7 @@ buildscript {
     }
 
     dependencies {
-        classpath("com.android.tools.build:gradle:4.0.2")  // Plugin Gradle pour Android
-        classpath("com.google.gms:google-services:4.3.8")  // Plugin Google Services (nécessaire pour Firebase)
+        classpath(libs.gradle)  // Plugin Gradle pour Android
+        classpath(libs.google.services)  // Plugin Google Services (nécessaire pour Firebase)
     }
 }
