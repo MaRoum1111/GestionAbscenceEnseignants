@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="status_options">status_options</string-array>
+    <string-array name="statut_absence">
+        <item>Justifiée</item>
+        <item>Non justifiée</item>
+    </string-array>
 </resources>

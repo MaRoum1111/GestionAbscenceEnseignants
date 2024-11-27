@@ -1,29 +1,24 @@
 package com.example.gestionabscenceenseignants.view;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-
+import androidx.drawerlayout.widget.DrawerLayout;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.example.gestionabscenceenseignants.R;
 import com.google.android.material.bottomappbar.BottomAppBar;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 import androidx.appcompat.widget.Toolbar;
 
 public class AdminActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
+    private BottomNavigationView bottomNavigationView;
     private BottomAppBar bottomAppBar;
     private FloatingActionButton fab;
     private Toolbar toolbar;
@@ -36,40 +31,36 @@ public class AdminActivity extends AppCompatActivity {
         // Initialiser les vues
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
+        bottomNavigationView = findViewById(R.id.bottomNavigation);
         bottomAppBar = findViewById(R.id.bottomAppBar);
-        fab = findViewById(R.id.fab);
         toolbar = findViewById(R.id.toolbar);
 
         // Configuration de la toolbar
         setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true); // Afficher le bouton hamburger
-        }
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true); // Pour afficher le bouton hamburger
 
-        // Charger HomeFragment par défaut au démarrage de l'activité
-        loadFragment(new HomeFragment());
-
-        // Gestion des sélections dans le menu Drawer
+        // Ouverture/fermeture du menu Drawer
         navigationView.setNavigationItemSelectedListener(menuItem -> {
             int id = menuItem.getItemId();
             if (id == R.id.nav_home) {
+                // Ajouter ici l'action pour "Home"
                 loadFragment(new HomeFragment());
-            } else if (id == R.id.nav_absences) {
-                loadFragment(new AbsenceFragment());
-            } else if (id == R.id.nav_users) {
-                loadFragment(new UsersFragment());
-            } else if (id == R.id.nav_statistics) {
-                loadFragment(new ReportFragment());
+            } else if (id == R.id.nav_settings) {
+                // Ajouter ici l'action pour "Settings"
+            } else if (id == R.id.nav_share) {
+                // Ajouter ici l'action pour "Share"
+            } else if (id == R.id.nav_about) {
+                // Ajouter ici l'action pour "About Us"
+            } else if (id == R.id.nav_logout) {
+                // Ajouter l'action de déconnexion
             }
-            drawerLayout.closeDrawers(); // Fermer le Drawer après sélection
+            drawerLayout.closeDrawers(); // Fermer le Drawer après avoir sélectionné un item
             return true;
         });
 
-        // Configuration de BottomAppBar
-        bottomAppBar.setNavigationOnClickListener(view -> drawerLayout.openDrawer(navigationView));
-        bottomAppBar.replaceMenu(R.menu.bottom_nav_menu); // Ajouter le menu pour la BottomAppBar
-        bottomAppBar.setOnMenuItemClickListener(menuItem -> {
-            int id = menuItem.getItemId();
+        // Configuration de BottomNavigationView
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int id = item.getItemId();
             if (id == R.id.nav_home) {
                 loadFragment(new HomeFragment());
             } else if (id == R.id.nav_absences) {
@@ -79,47 +70,14 @@ public class AdminActivity extends AppCompatActivity {
             } else if (id == R.id.nav_statistics) {
                 loadFragment(new ReportFragment());
             }
-            return true;
-        });
-
-        // Configuration du FloatingActionButton
-        fab.setOnClickListener(view -> {
-            // Créer une instance de BottomSheetDialog
-            BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(AdminActivity.this);
-
-            // Charger le layout de la BottomSheet
-            View bottomSheetView = getLayoutInflater().inflate(R.layout.bottomsheetlayout, null);
-            bottomSheetDialog.setContentView(bottomSheetView);
-
-            // Initialiser les vues de la BottomSheet
-            ImageView cancelButton = bottomSheetView.findViewById(R.id.cancelButton);
-            LinearLayout layoutVideo = bottomSheetView.findViewById(R.id.layoutVideo);
-            LinearLayout layoutShorts = bottomSheetView.findViewById(R.id.layoutShorts);
-
-            // Action pour le bouton "Annuler"
-            cancelButton.setOnClickListener(v -> bottomSheetDialog.dismiss());
-
-            // Action pour "Ajouter un utilisateur"
-            layoutVideo.setOnClickListener(v -> {
-                bottomSheetDialog.dismiss();
-                // Action pour ajouter un utilisateur (exemple : afficher un nouveau fragment)
-            });
-
-            // Action pour "Ajouter une absence"
-            layoutShorts.setOnClickListener(v -> {
-                bottomSheetDialog.dismiss();
-                // Action pour ajouter une absence
-            });
-
-            // Afficher la BottomSheet
-            bottomSheetDialog.show();
+            return true; // Indique que l'item a été sélectionné et l'action a été effectuée
         });
     }
 
     // Fonction pour charger un fragment
     private void loadFragment(Fragment fragment) {
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.frame_layout, fragment)  // Remplacer le contenu dans le FrameLayout
+                .replace(R.id.frame_layout, fragment)
                 .commit();
     }
 
