@@ -199,5 +199,6 @@
             android:textSize="18sp"
             android:backgroundTint="@color/blue"
             android:padding="16dp"
-        android:minHeight="48dp" />
+            android:minHeight="48dp" />
+</LinearLayout>
 </LinearLayout>
