@@ -6,6 +6,7 @@
     android:padding="16dp"
     android:background="@drawable/edit_text_background"
     android:layout_margin="8dp">
+
     <!-- Titre du formulaire -->
     <TextView
         android:layout_width="wrap_content"
@@ -23,8 +24,9 @@
         android:text="Nom du professeur"
         android:textSize="16sp"
         android:layout_marginBottom="4dp"
-        android:textColor="@color/black"  />
+        android:textColor="@color/black" />
     <EditText
+        android:id="@+id/profName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Entrez le nom du professeur"
@@ -32,6 +34,7 @@
         android:background="@drawable/edit_text_background"
         android:padding="12dp"
         android:minHeight="48dp" />
+
     <!-- Champs pour la date et l'heure sur une ligne -->
     <LinearLayout
         android:layout_width="match_parent"
@@ -39,6 +42,7 @@
         android:orientation="horizontal"
         android:layout_marginTop="16dp"
         android:weightSum="2">
+
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -50,8 +54,9 @@
                 android:text="Date de l'absence"
                 android:textSize="16sp"
                 android:layout_marginBottom="4dp"
-                android:textColor="@color/black"  />
+                android:textColor="@color/black" />
             <EditText
+                android:id="@+id/date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="jj/mm/aaaa"
@@ -73,8 +78,9 @@
                 android:text="Heure de début"
                 android:textSize="16sp"
                 android:layout_marginBottom="4dp"
-                android:textColor="@color/black"  />
+                android:textColor="@color/black" />
             <EditText
+                android:id="@+id/startTime"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="hh:mm"
@@ -92,6 +98,7 @@
         android:orientation="horizontal"
         android:layout_marginTop="16dp"
         android:weightSum="2">
+
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -103,8 +110,9 @@
                 android:text="Heure de fin"
                 android:textSize="16sp"
                 android:layout_marginBottom="4dp"
-                android:textColor="@color/black"  />
+                android:textColor="@color/black" />
             <EditText
+                android:id="@+id/endTime"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="hh:mm"
@@ -126,8 +134,9 @@
                 android:text="Raison de l'absence"
                 android:textSize="16sp"
                 android:layout_marginBottom="4dp"
-                android:textColor="@color/black"  />
+                android:textColor="@color/black" />
             <EditText
+                android:id="@+id/reason"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Entrez la raison"
@@ -147,8 +156,9 @@
         android:textSize="16sp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="4dp"
-        android:textColor="@color/black"  />
+        android:textColor="@color/black" />
     <Spinner
+        android:id="@+id/status"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:entries="@array/statut_absence"
@@ -164,8 +174,9 @@
         android:textSize="16sp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="4dp"
-        android:textColor="@color/black"  />
+        android:textColor="@color/black" />
     <EditText
+        android:id="@+id/subjectName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Entrez la matière"
@@ -183,6 +194,7 @@
         android:gravity="center">
 
         <Button
+            android:id="@+id/addButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -192,6 +204,7 @@
             android:backgroundTint="@color/blue"
             android:minHeight="48dp" />
         <Button
+            android:id="@+id/cancelButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -200,5 +213,5 @@
             android:backgroundTint="@color/blue"
             android:padding="16dp"
             android:minHeight="48dp" />
-</LinearLayout>
+    </LinearLayout>
 </LinearLayout>

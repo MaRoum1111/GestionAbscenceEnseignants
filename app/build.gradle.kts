@@ -46,6 +46,8 @@ dependencies {
     implementation(libs.activity)  // Composant Activity
     implementation(libs.constraintlayout)  // Layout avec ConstraintLayout
     implementation(libs.recyclerview)
+    implementation (libs.material.v190)
+    implementation (libs.cardview)
 
 // Tests
     testImplementation(libs.junit)  // Tests unitaires

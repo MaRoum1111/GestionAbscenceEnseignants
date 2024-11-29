@@ -36,7 +36,7 @@
         android:layout_below="@id/imgDetails"
         android:layout_marginTop="8dp"
         android:elevation="4dp"
-        android:cardBackgroundColor="@android:color/white"
+        app:cardBackgroundColor="@android:color/white"
         android:radius="8dp">
 
         <LinearLayout
@@ -173,6 +173,7 @@
         android:layout_below="@id/cardViewDetails"
         android:layout_marginTop="-1dp"
         android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:contentDescription="back"
         android:padding="10dp"
         android:scaleType="centerInside"
         android:src="@drawable/icc_arrow_circle_left"

@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_margin="8dp"
     android:elevation="6dp"
-    android:cardBackgroundColor="@color/white"
+    app:cardBackgroundColor="@color/white"
     app:cardCornerRadius="18dp"
     app:cardElevation="15dp">
 
@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="16dp"
-        android:background="@color/white">
+        app:cardBackgroundColor="@color/white">
 
         <!-- Nom du professeur -->
         <TextView
