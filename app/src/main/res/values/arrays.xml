@@ -4,4 +4,8 @@
         <item>Justifiée</item>
         <item>Non justifiée</item>
     </string-array>
+    <string-array name="role_array">
+        <item>Agent</item>
+        <item>Enseignant</item>
+    </string-array>
 </resources>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
@@ -44,6 +45,7 @@
             android:orientation="vertical"
             android:padding="16dp">
 
+            <!-- Nom du professeur -->
             <TextView
                 android:id="@+id/txtName"
                 android:layout_width="wrap_content"
@@ -62,6 +64,7 @@
                 android:textColor="@android:color/darker_gray"
                 android:layout_marginBottom="16dp" />
 
+            <!-- Date de l'absence -->
             <TextView
                 android:id="@+id/txtDate"
                 android:layout_width="wrap_content"
@@ -70,7 +73,6 @@
                 android:textSize="16sp"
                 android:textColor="@android:color/black"
                 android:layout_marginBottom="8dp" />
-
             <TextView
                 android:id="@+id/txtDateValue"
                 android:layout_width="wrap_content"
@@ -79,7 +81,52 @@
                 android:textSize="16sp"
                 android:textColor="@android:color/darker_gray"
                 android:layout_marginBottom="16dp" />
+            <!-- Heure de début et Heure de fin sur la même ligne -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="16dp">
 
+                <TextView
+                    android:id="@+id/txtStartTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Heure de début :"
+                    android:textSize="16sp"
+                    android:textColor="@android:color/black"
+                    android:layout_marginEnd="8dp" />
+
+                <TextView
+                    android:id="@+id/txtStartTimeValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="08:00"
+                    android:textSize="16sp"
+                    android:textColor="@android:color/darker_gray"
+                    android:layout_marginEnd="16dp" />
+
+                <TextView
+                    android:id="@+id/txtEndTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Heure de fin :"
+                    android:textSize="16sp"
+                    android:textColor="@android:color/black"
+                    android:layout_marginEnd="8dp" />
+
+                <TextView
+                    android:id="@+id/txtEndTimeValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="10:00"
+                    android:textSize="16sp"
+                    android:textColor="@android:color/darker_gray" />
+            </LinearLayout>
+
+
+
+            <!-- Raison de l'absence -->
             <TextView
                 android:id="@+id/txtReason"
                 android:layout_width="wrap_content"
@@ -98,6 +145,7 @@
                 android:textColor="@android:color/darker_gray"
                 android:layout_marginBottom="16dp" />
 
+            <!-- Statut de l'absence -->
             <TextView
                 android:id="@+id/txtStatus"
                 android:layout_width="wrap_content"
@@ -118,18 +166,16 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-    <Button
+    <ImageButton
         android:id="@+id/btnBack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Retour"
-        android:textSize="16sp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_below="@id/cardViewDetails"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:backgroundTint="@color/blue"
-        android:textColor="@android:color/white"
+        android:layout_marginTop="-1dp"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
         android:padding="10dp"
-        android:shapeAppearanceOverlay="@style/ShapeAppearance.AppleButton" />
+        android:scaleType="centerInside"
+        android:src="@drawable/icc_arrow_circle_left"
+        app:tint="@color/blue" />
 
 </RelativeLayout>
