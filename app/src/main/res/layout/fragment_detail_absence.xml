@@ -1,182 +1,127 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="16dp"
-    android:background="@android:color/white">
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="8dp"
+    android:elevation="6dp"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="18dp"
+    app:cardElevation="15dp">
 
-    <TextView
-        android:id="@+id/txtDetailTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Détails de l'absence"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:textColor="@color/blue"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="16dp" />
-
-    <ImageView
-        android:id="@+id/imgDetails"
-        android:layout_width="348dp"
-        android:layout_height="177dp"
-        android:layout_below="@id/txtDetailTitle"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="16dp"
-        android:background="@android:color/darker_gray"
-        android:scaleType="centerCrop"
-        android:src="@drawable/absent" />
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardViewDetails"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/imgDetails"
-        android:layout_marginTop="8dp"
-        android:elevation="4dp"
-        app:cardBackgroundColor="@android:color/white"
-        android:radius="8dp">
+        android:orientation="vertical"
+        android:padding="16dp"
+        app:cardBackgroundColor="@color/white">
 
+        <!-- Nom de la matière et Date (en gras) -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
-
-            <!-- Nom du professeur -->
-            <TextView
-                android:id="@+id/txtName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Nom du professeur :"
-                android:textSize="16sp"
-                android:textColor="@android:color/black"
-                android:layout_marginBottom="8dp" />
+            android:orientation="horizontal"
+            android:weightSum="2">
 
             <TextView
-                android:id="@+id/txtNameValue"
-                android:layout_width="wrap_content"
+                android:id="@+id/subjectName"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="M. John Doe"
-                android:textSize="16sp"
-                android:textColor="@android:color/darker_gray"
-                android:layout_marginBottom="16dp" />
-
-            <!-- Date de l'absence -->
-            <TextView
-                android:id="@+id/txtDate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Date de l'absence :"
-                android:textSize="16sp"
-                android:textColor="@android:color/black"
-                android:layout_marginBottom="8dp" />
-            <TextView
-                android:id="@+id/txtDateValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="01/12/2024"
-                android:textSize="16sp"
-                android:textColor="@android:color/darker_gray"
-                android:layout_marginBottom="16dp" />
-            <!-- Heure de début et Heure de fin sur la même ligne -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="16dp">
-
-                <TextView
-                    android:id="@+id/txtStartTime"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Heure de début :"
-                    android:textSize="16sp"
-                    android:textColor="@android:color/black"
-                    android:layout_marginEnd="8dp" />
-
-                <TextView
-                    android:id="@+id/txtStartTimeValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="08:00"
-                    android:textSize="16sp"
-                    android:textColor="@android:color/darker_gray"
-                    android:layout_marginEnd="16dp" />
-
-                <TextView
-                    android:id="@+id/txtEndTime"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Heure de fin :"
-                    android:textSize="16sp"
-                    android:textColor="@android:color/black"
-                    android:layout_marginEnd="8dp" />
-
-                <TextView
-                    android:id="@+id/txtEndTimeValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="10:00"
-                    android:textSize="16sp"
-                    android:textColor="@android:color/darker_gray" />
-            </LinearLayout>
-
-
-
-            <!-- Raison de l'absence -->
-            <TextView
-                android:id="@+id/txtReason"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Raison de l'absence :"
-                android:textSize="16sp"
-                android:textColor="@android:color/black"
-                android:layout_marginBottom="8dp" />
+                android:text="Matière"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:layout_weight="1"
+                android:layout_marginEnd="8dp" />
 
             <TextView
-                android:id="@+id/txtReasonValue"
-                android:layout_width="wrap_content"
+                android:id="@+id/date"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Maladie"
-                android:textSize="16sp"
-                android:textColor="@android:color/darker_gray"
-                android:layout_marginBottom="16dp" />
+                android:text="Date"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/blue"
+                android:layout_weight="1" />
+        </LinearLayout>
 
-            <!-- Statut de l'absence -->
-            <TextView
-                android:id="@+id/txtStatus"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Statut :"
-                android:textSize="16sp"
-                android:textColor="@android:color/black"
-                android:layout_marginBottom="8dp" />
+        <!-- Heure de début et Heure de fin -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp">
 
             <TextView
-                android:id="@+id/txtStatusValue"
-                android:layout_width="wrap_content"
+                android:id="@+id/startTime"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Approuvé"
+                android:text="Heure de début"
                 android:textSize="16sp"
-                android:textColor="@android:color/holo_green_dark" />
+                android:textColor="@color/black"
+                android:layout_weight="1"
+                android:layout_marginEnd="8dp" />
+
+            <TextView
+                android:id="@+id/endTime"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Heure de fin"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+        <!-- Raison de l'absence -->
+        <TextView
+            android:id="@+id/reason"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Raison"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:layout_marginTop="8dp" />
+
+        <!-- Statut de l'absence -->
+        <TextView
+            android:id="@+id/status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Statut"
+            android:textSize="16sp"
+            android:textColor="@android:color/holo_green_dark"
+            android:layout_marginTop="4dp" />
+
+        <!-- Icônes de suppression et édition -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="8dp"
+            android:gravity="end">
+
+            <!-- Icone de suppression -->
+            <ImageView
+                android:id="@+id/deleteIcon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/icc_delete"
+                android:contentDescription="Supprimer"
+                android:layout_marginEnd="16dp"
+                android:clickable="true"
+                android:focusable="true" />
+
+            <!-- Icone d'édition -->
+            <ImageView
+                android:id="@+id/editIcon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/icc_edit"
+                android:contentDescription="Editer"
+                android:clickable="true"
+                android:focusable="true" />
 
         </LinearLayout>
-    </androidx.cardview.widget.CardView>
 
-    <ImageButton
-        android:id="@+id/btnBack"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_below="@id/cardViewDetails"
-        android:layout_marginTop="-1dp"
-        android:background="?android:attr/selectableItemBackgroundBorderless"
-        android:contentDescription="back"
-        android:padding="10dp"
-        android:scaleType="centerInside"
-        android:src="@drawable/icc_arrow_circle_left"
-        app:tint="@color/blue" />
-
-</RelativeLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

@@ -6,7 +6,6 @@
     android:padding="16dp"
     android:background="@drawable/edit_text_background"
     android:layout_margin="8dp">
-
     <!-- Titre du formulaire -->
     <TextView
         android:layout_width="wrap_content"

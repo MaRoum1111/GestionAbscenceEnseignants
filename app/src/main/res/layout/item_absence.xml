@@ -11,52 +11,48 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:padding="16dp"
         app:cardBackgroundColor="@color/white">
 
-        <!-- Nom du professeur -->
-        <TextView
-            android:id="@+id/profName"
-            android:layout_width="match_parent"
+        <!-- Image de l'enseignant -->
+        <ImageView
+            android:id="@+id/profImage"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/ic_teacher"
+            android:scaleType="centerCrop" />
+
+        <!-- Partie droite contenant les TextViews -->
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Nom du professeur"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            android:layout_marginBottom="8dp" />
+            android:orientation="vertical"
+            android:layout_weight="1">
 
-        <!-- Date de l'absence -->
-        <TextView
-            android:id="@+id/date"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Date"
-            android:textSize="16sp"
-            android:textColor="@color/black"
-            android:layout_marginBottom="4dp" />
+            <!-- Nom du professeur -->
+            <TextView
+                android:id="@+id/profName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Nom du professeur"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:layout_marginBottom="8dp" />
 
+            <!-- Nombre d'absences -->
+            <TextView
+                android:id="@+id/absenceCount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Nombre d'absences"
+                android:textSize="16sp"
+                android:textColor="@color/design_default_color_error"
+                android:layout_marginBottom="4dp" />
 
-        <!-- Raison de l'absence -->
-        <TextView
-            android:id="@+id/reason"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Raison"
-            android:textSize="16sp"
-            android:textColor="@color/black"
-            android:layout_marginBottom="4dp" />
-
-        <!-- Statut de l'absence -->
-        <TextView
-            android:id="@+id/status"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Statut"
-            android:textSize="16sp"
-            android:textColor="@android:color/holo_green_dark"
-            android:layout_marginBottom="4dp" />
-
+        </LinearLayout>
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>

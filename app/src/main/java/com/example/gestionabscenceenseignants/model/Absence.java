@@ -9,6 +9,10 @@ public class Absence {
     private String subjectName;   // Nom de la matière
 
 
+    // No-argument constructor
+    public Absence() {
+        // Firebase requires this constructor
+    }
     // Constructeur
     public Absence(String profName, String date, String startTime, String endTime, String reason, String status, String subjectName) {
         this.profName = profName;
