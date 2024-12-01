@@ -31,12 +31,7 @@ public class AbsenceAdapter extends RecyclerView.Adapter<AbsenceAdapter.AbsenceV
         // Récupère l'absence de la liste et l'affiche dans les vues
         Absence absence = absenceList.get(position);
         holder.profName.setText(absence.getProfName());
-        holder.date.setText(absence.getDate());
-        holder.startTime.setText(absence.getStartTime());
-        holder.endTime.setText(absence.getEndTime());
-        holder.reason.setText(absence.getReason());
-        holder.status.setText(absence.getStatus());
-        holder.subjectName.setText(absence.getSubjectName());
+        holder.absenceCount.setText(String.valueOf(absence.getAbsenceCount())); // Met à jour le nombre d'absences
     }
 
     @Override
@@ -46,18 +41,13 @@ public class AbsenceAdapter extends RecyclerView.Adapter<AbsenceAdapter.AbsenceV
 
     public static class AbsenceViewHolder extends RecyclerView.ViewHolder {
 
-        TextView profName, date, startTime, endTime, reason, status, subjectName;
+        TextView profName, absenceCount;
 
         public AbsenceViewHolder(View itemView) {
             super(itemView);
             // Liaison des TextViews de l'item (CardView)
             profName = itemView.findViewById(R.id.profName);
-            date = itemView.findViewById(R.id.date);
-            startTime = itemView.findViewById(R.id.startTime);
-            endTime = itemView.findViewById(R.id.endTime);
-            reason = itemView.findViewById(R.id.reason);
-            status = itemView.findViewById(R.id.status);
-            subjectName = itemView.findViewById(R.id.subjectName);
+            absenceCount = itemView.findViewById(R.id.absenceCount);
         }
     }
 }

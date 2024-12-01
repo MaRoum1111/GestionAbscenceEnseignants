@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.gestionabscenceenseignants">
 
     <!-- Permissions -->
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- Utilisation des permissions spécifiques pour accéder aux médias à partir d'Android 13 -->
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
+    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
 
     <application
         android:allowBackup="true"
@@ -13,6 +19,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GestionAbscenceEnseignants">
 
+        <!-- Activité principale -->
         <activity
             android:name=".view.AdminActivity"
             android:exported="true">
@@ -21,10 +28,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <!-- Autres activités -->
         <activity android:name=".view.LoginActivity" />
         <activity android:name=".view.AgentActivity" />
         <activity android:name=".view.TeacherActivity" />
 
+        <!-- Meta-donnée pour la version de Google Play Services -->
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
     </application>
+
 </manifest>

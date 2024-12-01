@@ -2,9 +2,12 @@
 agp = "8.6.0"
 cardview = "1.0.0"
 firebaseAuth = "23.1.0"
+firebaseAuthVersion = "21.2.0"
+firebaseCrashlyticsGradle = "3.0.2"
 firebaseFirestoreVersion = "24.8.1"
 googleMaterial = "1.9.0"
 googleServices = "4.4.2"
+googleServicesVersion = "4.3.15"
 gradle = "4.0.2"
 junit = "4.13.2"
 junitVersion = "1.2.1"
@@ -21,8 +24,12 @@ firebaseDatabase = "21.0.0"
 [libraries]
 cardview = { module = "androidx.cardview:cardview", version.ref = "cardview" }
 firebase-auth = { module = "com.google.firebase:firebase-auth", version.ref = "firebaseAuth" }
+firebase-auth-v2120 = { module = "com.google.firebase:firebase-auth", version.ref = "firebaseAuthVersion" }
+firebase-crashlytics-gradle = { module = "com.google.firebase:firebase-crashlytics-gradle", version.ref = "firebaseCrashlyticsGradle" }
 firebase-firestore-v2481 = { module = "com.google.firebase:firebase-firestore", version.ref = "firebaseFirestoreVersion" }
+firebase-storage = { module = "com.google.firebase:firebase-storage" }
 google-services = { module = "com.google.gms:google-services", version.ref = "googleServices" }
+google-services-v4315 = { module = "com.google.gms:google-services", version.ref = "googleServicesVersion" }
 gradle = { module = "com.android.tools.build:gradle", version.ref = "gradle" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }

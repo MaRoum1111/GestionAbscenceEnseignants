@@ -4,8 +4,6 @@ import android.util.Log;
 import com.example.gestionabscenceenseignants.model.User;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,11 +19,10 @@ public class UserRepository {
     // Méthode pour ajouter un utilisateur
     public void addUser(User user, UserCallback callback) {
         db.collection("users")
-                .document(user.getUid())  // Utilise l'UID de l'utilisateur comme identifiant
-                .set(user)
-                .addOnSuccessListener(aVoid -> {
+                .add(user)  // Ajoute l'utilisateur dans la collection "users"
+                .addOnSuccessListener(documentReference -> {
                     Log.d("UserRepository", "Utilisateur ajouté avec succès");
-                    callback.onSuccess("Utilisateur ajouté avec succès");
+                    callback.onSuccessMessage(null);  // Pas besoin de retour spécifique ici, on passe null
                 })
                 .addOnFailureListener(e -> {
                     Log.e("UserRepository", "Erreur lors de l'ajout de l'utilisateur : " + e.getMessage(), e);
@@ -36,34 +33,36 @@ public class UserRepository {
     // Méthode pour récupérer les utilisateurs
     public void getUsers(UserCallback callback) {
         db.collection("users")
-                .orderBy("name", Query.Direction.ASCENDING)  // Tri par nom, peut être modifié en fonction de la logique
+                .orderBy("name", Query.Direction.ASCENDING)  // Tri par nom (modifiable selon vos besoins)
                 .get()
                 .addOnCompleteListener(task -> {
-                    if (task.isSuccessful() && task.getResult() != null && !task.getResult().isEmpty()) {
+                    if (task.isSuccessful() && task.getResult() != null) {
                         List<User> users = new ArrayList<>();
                         for (com.google.firebase.firestore.QueryDocumentSnapshot document : task.getResult()) {
                             User user = document.toObject(User.class);
                             users.add(user);
                         }
-                        Log.d("UserRepository", "Récupération réussie, nombre d'utilisateurs : " + users.size());
-                        callback.onSuccess(users);
-                    } else {
-                        if (task.getException() != null) {
-                            FirebaseFirestoreException e = (FirebaseFirestoreException) task.getException();
-                            Log.e("UserRepository", "Erreur lors de la récupération des utilisateurs : " + e.getMessage(), e);
-                            callback.onFailure("Erreur lors de la récupération des utilisateurs : " + e.getMessage());
-                        } else {
-                            Log.e("UserRepository", "La requête est terminée, mais la réponse est vide.");
+
+                        if (users.isEmpty()) {
+                            Log.w("UserRepository", "Aucun utilisateur trouvé.");
                             callback.onFailure("Aucun utilisateur trouvé.");
+                        } else {
+                            Log.d("UserRepository", "Récupération réussie, nombre d'utilisateurs : " + users.size());
+                            callback.onSuccessUsers(users);
                         }
+                    } else {
+                        String errorMessage = (task.getException() != null)
+                                ? "Erreur lors de la récupération : " + task.getException().getMessage()
+                                : "Résultat vide ou null.";
+                        Log.e("UserRepository", errorMessage);
+                        callback.onFailure(errorMessage);
                     }
                 });
     }
-
-    // Interface pour les callbacks de récupération des utilisateurs
+    // Interface pour gérer les callbacks
     public interface UserCallback {
-        void onSuccess(String message);
-        void onSuccess(List<User> users);
-        void onFailure(String errorMessage);
+        void onSuccessMessage(String message);  // Pour les messages de succès
+        void onSuccessUsers(List<User> users);  // Pour les résultats sous forme de liste d'utilisateurs
+        void onFailure(String errorMessage);    // Pour gérer les erreurs
     }
 }

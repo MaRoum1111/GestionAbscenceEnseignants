@@ -10,11 +10,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
 import com.example.gestionabscenceenseignants.R;
 import com.example.gestionabscenceenseignants.model.Absence;
 import com.google.firebase.firestore.FirebaseFirestore;

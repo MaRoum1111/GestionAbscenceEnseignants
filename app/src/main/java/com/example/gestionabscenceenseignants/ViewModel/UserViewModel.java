@@ -10,31 +10,31 @@ import java.util.List;
 public class UserViewModel extends ViewModel {
     private final UserRepository repository; // Instance du UserRepository
     private final MutableLiveData<List<User>> users; // LiveData pour la liste des utilisateurs
-    private final MutableLiveData<String> errorMessage; // LiveData pour le message d'erreur
+    private final MutableLiveData<String> message; // LiveData pour les messages (succès ou erreurs)
 
     // Constructeur
     public UserViewModel() {
         repository = new UserRepository(); // Instanciation du UserRepository
         users = new MutableLiveData<>(); // LiveData pour les utilisateurs
-        errorMessage = new MutableLiveData<>(); // LiveData pour les erreurs
+        message = new MutableLiveData<>(); // LiveData pour les messages
     }
 
     // Méthode pour charger les utilisateurs
     public void loadUsers() {
         repository.getUsers(new UserRepository.UserCallback() {
             @Override
-            public void onSuccess(List<User> userList) {
-                users.setValue(userList); // Si la récupération réussit, mettre à jour la liste des utilisateurs dans LiveData
+            public void onSuccessMessage(String successMessage) {
+                // Cette méthode n'est pas utilisée ici
             }
 
             @Override
-            public void onSuccess(String message) {
-                // Cette méthode ne sera pas utilisée ici
+            public void onSuccessUsers(List<User> userList) {
+                users.setValue(userList); // Met à jour la liste des utilisateurs si récupération réussie
             }
 
             @Override
             public void onFailure(String error) {
-                errorMessage.setValue(error); // Si une erreur se produit, mettre à jour le message d'erreur
+                message.setValue(error); // Met à jour le message d'erreur si une erreur survient
             }
         });
     }
@@ -43,29 +43,29 @@ public class UserViewModel extends ViewModel {
     public void addUser(User user) {
         repository.addUser(user, new UserRepository.UserCallback() {
             @Override
-            public void onSuccess(List<User> usersList) {
-                // Cette méthode ne sera pas utilisée dans le cas de l'ajout d'un utilisateur
+            public void onSuccessMessage(String successMessage) {
+                message.setValue(successMessage); // Met à jour le message de succès si ajout réussi
             }
 
             @Override
-            public void onSuccess(String message) {
-                errorMessage.setValue(message); // Si l'ajout réussit, envoyer un message de succès
+            public void onSuccessUsers(List<User> usersList) {
+                // Cette méthode n'est pas utilisée ici
             }
 
             @Override
             public void onFailure(String error) {
-                errorMessage.setValue(error); // Si une erreur se produit, envoyer un message d'erreur
+                message.setValue(error); // Met à jour le message d'erreur si une erreur survient
             }
         });
     }
 
     // Getter pour LiveData des utilisateurs
     public LiveData<List<User>> getUsers() {
-        return users; // Retourne la liste des utilisateurs
+        return users; // Retourne la liste des utilisateurs sous forme de LiveData
     }
 
-    // Getter pour LiveData des messages d'erreur
-    public LiveData<String> getErrorMessage() {
-        return errorMessage; // Retourne le message d'erreur
+    // Getter pour LiveData des messages
+    public LiveData<String> getMessage() {
+        return message; // Retourne le message de succès ou d'erreur sous forme de LiveData
     }
 }

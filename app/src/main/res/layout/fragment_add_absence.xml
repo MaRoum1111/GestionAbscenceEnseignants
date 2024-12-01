@@ -184,7 +184,6 @@
         android:padding="12dp"
         android:minHeight="48dp" />
 
-    <!-- Boutons de soumission et d'annulation -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -194,22 +193,23 @@
 
         <Button
             android:id="@+id/addButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Ajouter"
+            android:layout_width="120dp"
+            android:layout_height="48dp"
+            android:text="Soumettre"
             android:textSize="18sp"
             android:padding="16dp"
             android:backgroundTint="@color/blue"
             android:minHeight="48dp" />
+
         <Button
             android:id="@+id/cancelButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_width="120dp"
+            android:layout_height="48dp"
             android:text="Annuler"
+            android:textColor="@color/blue"
             android:textSize="18sp"
-            android:backgroundTint="@color/blue"
+            android:elevation="10dp"
+            android:backgroundTint="@color/white"
             android:padding="16dp"
             android:minHeight="48dp" />
     </LinearLayout>

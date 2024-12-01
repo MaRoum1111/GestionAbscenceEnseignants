@@ -36,10 +36,12 @@ android {
     }
 }
 
-dependencies {
-    // Firebase Dependencies
-    implementation("com.google.firebase:firebase-auth:21.2.0")  // Authentification Firebase
-    implementation("com.google.firebase:firebase-firestore:24.8.1")  // Firestore Firebase
+    dependencies {
+        // Import the BoM for the Firebase platform
+        implementation(platform("com.google.firebase:firebase-bom:33.6.0"))
+        implementation(libs.firebase.storage)
+        implementation(libs.firebase.auth.v2120)  // Authentification Firebase
+        implementation(libs.firebase.firestore)  // Firestore Firebase
 // Android Dependencies
     implementation(libs.appcompat)  // AppCompat pour les composants Android de base
     implementation(libs.material)  // Material Design
@@ -48,7 +50,6 @@ dependencies {
     implementation(libs.recyclerview)
     implementation (libs.material.v190)
     implementation (libs.cardview)
-
 // Tests
     testImplementation(libs.junit)  // Tests unitaires
     androidTestImplementation(libs.ext.junit)  // Tests d'interface utilisateur avec JUnit

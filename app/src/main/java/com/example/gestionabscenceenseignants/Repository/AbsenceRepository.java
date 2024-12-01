@@ -3,8 +3,9 @@ package com.example.gestionabscenceenseignants.Repository;
 import android.util.Log;
 import com.example.gestionabscenceenseignants.model.Absence;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,6 +43,20 @@ public class AbsenceRepository {
                             callback.onFailure("Aucune donnée trouvée.");
                         }
                     }
+                });
+    }
+
+    // Méthode pour ajouter une absence
+    public void addAbsence(Absence absence, AuthCallback callback) {
+        db.collection("absences")
+                .add(absence)
+                .addOnSuccessListener(documentReference -> {
+                    Log.d("AbsenceRepository", "Absence ajoutée avec succès");
+                    callback.onSuccess(null); // On peut passer une valeur nulle, car on n'a pas de retour spécifique ici
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("AbsenceRepository", "Erreur lors de l'ajout de l'absence : " + e.getMessage(), e);
+                    callback.onFailure("Erreur lors de l'ajout de l'absence : " + e.getMessage());
                 });
     }
 

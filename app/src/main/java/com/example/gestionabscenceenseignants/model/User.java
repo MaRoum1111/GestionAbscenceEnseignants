@@ -10,6 +10,10 @@ public class User {
     private String role;
     private Uri photo; // Photo de profil
 
+    public User() {
+        // Ce constructeur est vide, mais il est nécessaire pour Firestore.
+    }
+
     // Constructeur
     public User(String uid, String name, String email, String password, String role, Uri photo) {
         this.uid = uid;

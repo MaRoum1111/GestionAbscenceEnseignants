@@ -1,4 +1,5 @@
 package com.example.gestionabscenceenseignants.model;
+
 public class Absence {
     private String profName;      // Nom du professeur
     private String date;          // Date de l'absence
@@ -7,13 +8,25 @@ public class Absence {
     private String reason;        // Raison de l'absence
     private String status;        // Statut de l'absence (justifiée/non justifiée)
     private String subjectName;   // Nom de la matière
-
+    private int absenceCount;     // Nombre d'absences
 
     // No-argument constructor
     public Absence() {
         // Firebase requires this constructor
     }
+
     // Constructeur
+    public Absence(String profName, String date, String startTime, String endTime, String reason, String status, String subjectName, int absenceCount) {
+        this.profName = profName;
+        this.date = date;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.reason = reason;
+        this.status = status;
+        this.subjectName = subjectName;
+        this.absenceCount = absenceCount;
+    }
+
     public Absence(String profName, String date, String startTime, String endTime, String reason, String status, String subjectName) {
         this.profName = profName;
         this.date = date;
@@ -79,5 +92,13 @@ public class Absence {
 
     public void setSubjectName(String subjectName) {
         this.subjectName = subjectName;
+    }
+
+    public int getAbsenceCount() {
+        return absenceCount;
+    }
+
+    public void setAbsenceCount(int absenceCount) {
+        this.absenceCount = absenceCount;
     }
 }
