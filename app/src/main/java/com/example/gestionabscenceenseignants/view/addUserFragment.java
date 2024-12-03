@@ -12,7 +12,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -29,7 +28,6 @@ public class addUserFragment extends Fragment {
     private Button btnSubmit, btnCancel;
     private Uri profilePhotoUri; // URI pour stocker l'image du profil
     private ImageView imageViewProfile; // ImageView pour afficher la photo du profil
-
     private UserViewModel userViewModel;
 
     // Déclaration du ActivityResultLauncher pour la sélection de photo
@@ -90,8 +88,11 @@ public class addUserFragment extends Fragment {
                 return;
             }
 
-            // Création d'un nouvel utilisateur avec UID = null (pas encore généré)
-            User newUser = new User(null, name, email, password, role, profilePhotoUri);
+            // Conversion de l'URI en chaîne de caractères
+            String photoUriString = profilePhotoUri != null ? profilePhotoUri.toString() : null;
+
+            // Création d'un nouvel utilisateur
+            User newUser = new User(null, name, email, password, role, photoUriString);
 
             // Ajout de l'utilisateur à la base de données via le ViewModel
             userViewModel.addUser(newUser);

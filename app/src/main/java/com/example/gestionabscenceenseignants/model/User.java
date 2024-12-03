@@ -8,14 +8,14 @@ public class User {
     private String email;
     private String password;
     private String role;
-    private Uri photo; // Photo de profil
+    private String photo; // Photo de profil
 
     public User() {
         // Ce constructeur est vide, mais il est nécessaire pour Firestore.
     }
 
     // Constructeur
-    public User(String uid, String name, String email, String password, String role, Uri photo) {
+    public User(String uid, String name, String email, String password, String role, String photo) {
         this.uid = uid;
         this.name = name;
         this.email = email;
@@ -71,11 +71,11 @@ public class User {
         this.role = role;
     }
 
-    public Uri getPhoto() {
+    public String getPhoto() {
         return photo;
     }
 
-    public void setPhoto(Uri photo) {
+    public void setPhoto(String photo) {
         this.photo = photo;
     }
 }

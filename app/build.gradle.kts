@@ -1,7 +1,6 @@
-
 plugins {
     alias(libs.plugins.android.application)  // Plugin Android
-    id("com.google.gms.google-services")  // Plugin Google Services pour Firebase
+    id("com.google.gms.google-services")    // Plugin Google Services pour Firebase
 }
 
 android {
@@ -31,27 +30,29 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+
     buildFeatures {
         viewBinding = true
     }
 }
 
-    dependencies {
-        // Import the BoM for the Firebase platform
-        implementation(platform("com.google.firebase:firebase-bom:33.6.0"))
-        implementation(libs.firebase.storage)
-        implementation(libs.firebase.auth.v2120)  // Authentification Firebase
-        implementation(libs.firebase.firestore)  // Firestore Firebase
-// Android Dependencies
-    implementation(libs.appcompat)  // AppCompat pour les composants Android de base
-    implementation(libs.material)  // Material Design
-    implementation(libs.activity)  // Composant Activity
-    implementation(libs.constraintlayout)  // Layout avec ConstraintLayout
-    implementation(libs.recyclerview)
-    implementation (libs.material.v190)
-    implementation (libs.cardview)
-// Tests
-    testImplementation(libs.junit)  // Tests unitaires
-    androidTestImplementation(libs.ext.junit)  // Tests d'interface utilisateur avec JUnit
-    androidTestImplementation(libs.espresso.core)  // Tests d'interface utilisateur avec Espresso
+dependencies {
+    // Import the BoM for the Firebase platform
+    implementation (platform("com.google.firebase:firebase-bom:33.6.0"))
+    implementation ("com.google.firebase:firebase-auth")       // Firebase Authentification
+    implementation ("com.google.firebase:firebase-firestore")    // Firebase Firestore
+    implementation ("com.google.firebase:firebase-storage")      // Firebase Storage
+
+    // Android Dependencies
+    implementation(libs.appcompat)          // Composants Android
+    implementation(libs.material)           // Material Design
+    implementation(libs.activity)           // Composant Activity
+    implementation(libs.constraintlayout)   // Layout avec ConstraintLayout
+    implementation(libs.recyclerview)       // RecyclerView
+    implementation(libs.cardview)           // CardView
+
+    // Tests
+    testImplementation(libs.junit)               // Tests unitaires
+    androidTestImplementation(libs.ext.junit)    // Tests d'interface utilisateur avec JUnit
+    androidTestImplementation(libs.espresso.core) // Tests d'interface utilisateur avec Espresso
 }

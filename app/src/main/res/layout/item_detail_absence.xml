@@ -117,6 +117,7 @@
                 android:contentDescription="Editer"
                 android:focusable="true"
                 android:src="@drawable/icc_edit"
+                android:visibility="visible"
                 app:tint="@color/yellow" />
 
         </LinearLayout>

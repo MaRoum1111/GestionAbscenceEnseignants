@@ -60,7 +60,7 @@ public class UserViewModel extends ViewModel {
     }
 
     // Getter pour LiveData des utilisateurs
-    public LiveData<List<User>> getUsers() {
+    public  LiveData<List<User>> getUsers() {
         return users; // Retourne la liste des utilisateurs sous forme de LiveData
     }
 
