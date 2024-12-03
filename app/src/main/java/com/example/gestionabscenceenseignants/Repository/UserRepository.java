@@ -2,18 +2,24 @@ package com.example.gestionabscenceenseignants.Repository;
 
 import android.util.Log;
 import com.example.gestionabscenceenseignants.model.User;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class UserRepository {
     private final FirebaseFirestore db;
+    private final FirebaseAuth auth;
 
     // Constructeur
     public UserRepository() {
+        auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         Log.d("Firestore", "Firestore instance initialized");
     }
@@ -45,26 +51,41 @@ public class UserRepository {
                 });
     }
 
-    // Méthode pour ajouter un utilisateur avec le CIN comme ID de document
-    public void addUser(User user, UserCallback callback) {
-        String cin = user.getCin(); // Assurez-vous que la classe User a un getter pour le champ CIN
+
+    public void addUser(User user, final UserCallback callback) {
+        String cin = user.getCin();
         if (cin == null || cin.isEmpty()) {
             callback.onFailure("Le CIN est requis pour ajouter un utilisateur.");
             return;
         }
 
-        db.collection("users")
-                .document(cin) // Utilise le CIN comme ID du document
-                .set(user) // Ajoute l'utilisateur à la collection "users"
-                .addOnSuccessListener(aVoid -> {
-                    Log.d("UserRepository", "Utilisateur ajouté avec succès avec CIN comme ID.");
-                    callback.onSuccessMessage("Utilisateur ajouté avec succès.");
-                })
-                .addOnFailureListener(e -> {
-                    Log.e("UserRepository", "Erreur lors de l'ajout de l'utilisateur : " + e.getMessage(), e);
-                    callback.onFailure("Erreur lors de l'ajout de l'utilisateur : " + e.getMessage());
+        // Créer l'utilisateur dans Firebase Authentication
+        auth.createUserWithEmailAndPassword(user.getEmail(), user.getPassword())
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        FirebaseUser firebaseUser = auth.getCurrentUser();
+                        if (firebaseUser != null) {
+                            String uid = firebaseUser.getUid(); // UID généré par Firebase Authentication
+                            DocumentReference userRef = db.collection("users").document(uid);
+                            user.setCin(cin);
+                            // Mettre à jour le document de l'utilisateur dans Firestore
+                            userRef.set(user, SetOptions.merge()) // Merge pour ne pas écraser les anciennes données
+                                    .addOnSuccessListener(aVoid -> {
+                                        Log.d("UserRepository", "Utilisateur ajouté avec succès dans Firestore");
+                                        callback.onSuccessMessage("Utilisateur ajouté avec succès.");
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        Log.e("UserRepository", "Erreur lors de l'ajout de l'utilisateur dans Firestore : " + e.getMessage());
+                                        callback.onFailure("Erreur lors de l'ajout de l'utilisateur dans Firestore.");
+                                    });
+                        }
+                    } else {
+                        Log.e("UserRepository", "Erreur lors de la création de l'utilisateur dans Authentication : " + task.getException());
+                        callback.onFailure("Erreur lors de la création de l'utilisateur dans Authentication.");
+                    }
                 });
     }
+
 
 
     // Interface pour gérer les callbacks

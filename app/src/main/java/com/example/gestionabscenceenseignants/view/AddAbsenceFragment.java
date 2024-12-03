@@ -2,6 +2,7 @@ package com.example.gestionabscenceenseignants.view;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -67,14 +68,18 @@ public class AddAbsenceFragment extends Fragment {
         String subjectName = editTextSubjectName.getText().toString().trim();
         String status = spinnerStatus.getSelectedItem().toString();
 
+        // Récupérer le CIN de l'utilisateur à partir des SharedPreferences
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("user_data", getContext().MODE_PRIVATE);
+        String CIN = sharedPreferences.getString("user_CIN", "");
+
         // Vérification des champs
         if (profName.isEmpty() || date.isEmpty() || startTime.isEmpty() || endTime.isEmpty() || reason.isEmpty() || subjectName.isEmpty()) {
             Toast.makeText(getActivity(), "Veuillez remplir tous les champs", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Création de l'objet Absence
-        Absence absence = new Absence(profName, date, startTime, endTime, reason, status, subjectName);
+        // Création de l'objet Absence avec le CIN
+        Absence absence = new Absence(profName, date, startTime, endTime, reason, status, subjectName,CIN);
 
         // Ajout dans Firestore
         db.collection("absences")
