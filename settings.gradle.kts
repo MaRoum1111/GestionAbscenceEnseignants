@@ -1,21 +1,22 @@
 pluginManagement {
     repositories {
-        google {
+        google {  // Limite le scope aux groupes spécifiques pour éviter des conflits
             content {
                 includeGroupByRegex("com\\.android.*")
                 includeGroupByRegex("com\\.google.*")
                 includeGroupByRegex("androidx.*")
             }
         }
-        mavenCentral()
-        gradlePluginPortal()
+        mavenCentral()  // Dépendances provenant de Maven Central
+        gradlePluginPortal()  // Dépôt pour les plugins Gradle
     }
 }
+
 dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)  // Interdit les repositories dans les projets individuels
     repositories {
-        google()
-        mavenCentral()
+        google()  // Nécessaire pour Firebase et les dépendances Android
+        mavenCentral()  // Maven Central pour les autres dépendances
     }
 }
 

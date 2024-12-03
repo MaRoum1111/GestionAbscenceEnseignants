@@ -1,3 +1,39 @@
 <resources>
     <string name="app_name">GestionAbscenceEnseignants</string>
+    <!-- Descriptions pour les icônes -->
+    <string name="logo_desc">Logo de l\'application</string>
+    <string name="menu_desc">Menu principal</string>
+    <string name="absences_desc">Icône pour gérer les absences</string>
+    <string name="reclamations_desc">Icône pour suivre les réclamations</string>
+    <string name="users_desc">Icône pour gérer les utilisateurs</string>
+    <string name="notifications_desc">Icône pour les notifications</string>
+
+    <!-- Titres et textes des cartes -->
+    <string name="absences_title">Absences</string>
+    <string name="absences_subtitle">Gérer les absences</string>
+    <string name="reclamations_title">Réclamations</string>
+    <string name="reclamations_subtitle">Suivre les réclamations</string>
+    <string name="users_title">Utilisateurs</string>
+    <string name="users_subtitle">Gérer les utilisateurs</string>
+
+    <!-- Notifications -->
+    <string name="notifications_text">Vous avez %1$d notifications</string>
+
+    <!-- Actions -->
+    <string name="view_details">Voir les détails</string>
+    <string name="logout">Déconnexion</string>
+
+    <!-- Messages génériques -->
+    <string name="loading">Chargement...</string>
+    <string name="error">Une erreur s\'est produite</string>
+    <string name="retry">Réessayer</string>
+
+    <!-- Menu Hamburger Options -->
+    <string name="profile">Profil</string>
+    <string name="settings">Paramètres</string>
+    <string name="logout_confirmation">Êtes-vous sûr de vouloir vous déconnecter ?</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="gestion_absences">Gestion des absences</string>
 </resources>
+

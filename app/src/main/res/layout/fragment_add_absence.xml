@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@drawable/edit_text_background"
+    android:layout_margin="8dp">
+    <!-- Titre du formulaire -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ajout d'absence"
+        android:textSize="24sp"
+        android:textColor="@color/black"
+        android:layout_gravity="center"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Champ pour le nom du professeur -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nom du professeur"
+        android:textSize="16sp"
+        android:layout_marginBottom="4dp"
+        android:textColor="@color/black" />
+    <EditText
+        android:id="@+id/profName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Entrez le nom du professeur"
+        android:inputType="textPersonName"
+        android:background="@drawable/edit_text_background"
+        android:padding="12dp"
+        android:minHeight="48dp" />
+
+    <!-- Champs pour la date et l'heure sur une ligne -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="16dp"
+        android:weightSum="2">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Date de l'absence"
+                android:textSize="16sp"
+                android:layout_marginBottom="4dp"
+                android:textColor="@color/black" />
+            <EditText
+                android:id="@+id/date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="jj/mm/aaaa"
+                android:inputType="date"
+                android:background="@drawable/edit_text_background"
+                android:padding="12dp"
+                android:minHeight="48dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_marginStart="8dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Heure de début"
+                android:textSize="16sp"
+                android:layout_marginBottom="4dp"
+                android:textColor="@color/black" />
+            <EditText
+                android:id="@+id/startTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="hh:mm"
+                android:inputType="time"
+                android:background="@drawable/edit_text_background"
+                android:padding="12dp"
+                android:minHeight="48dp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Champs pour l'heure de fin et la raison sur une ligne -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="16dp"
+        android:weightSum="2">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Heure de fin"
+                android:textSize="16sp"
+                android:layout_marginBottom="4dp"
+                android:textColor="@color/black" />
+            <EditText
+                android:id="@+id/endTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="hh:mm"
+                android:inputType="time"
+                android:background="@drawable/edit_text_background"
+                android:padding="12dp"
+                android:minHeight="48dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_marginStart="8dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Raison de l'absence"
+                android:textSize="16sp"
+                android:layout_marginBottom="4dp"
+                android:textColor="@color/black" />
+            <EditText
+                android:id="@+id/reason"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Entrez la raison"
+                android:inputType="textMultiLine"
+                android:background="@drawable/edit_text_background"
+                android:padding="12dp"
+                android:maxLines="3"
+                android:minHeight="48dp"
+                android:scrollbars="vertical" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Statut de l'absence"
+        android:textSize="16sp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="4dp"
+        android:textColor="@color/black" />
+    <Spinner
+        android:id="@+id/status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:entries="@array/statut_absence"
+        android:background="@drawable/edit_text_background"
+        android:padding="12dp"
+        android:minHeight="48dp" />
+
+    <!-- Champ pour le nom de la matière -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nom de la matière"
+        android:textSize="16sp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="4dp"
+        android:textColor="@color/black" />
+    <EditText
+        android:id="@+id/subjectName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Entrez la matière"
+        android:inputType="text"
+        android:background="@drawable/edit_text_background"
+        android:padding="12dp"
+        android:minHeight="48dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/addButton"
+            android:layout_width="120dp"
+            android:layout_height="48dp"
+            android:text="Soumettre"
+            android:textSize="18sp"
+            android:padding="16dp"
+            android:backgroundTint="@color/blue"
+            android:minHeight="48dp" />
+
+        <Button
+            android:id="@+id/cancelButton"
+            android:layout_width="120dp"
+            android:layout_height="48dp"
+            android:text="Annuler"
+            android:textColor="@color/blue"
+            android:textSize="18sp"
+            android:elevation="10dp"
+            android:backgroundTint="@color/white"
+            android:padding="16dp"
+            android:minHeight="48dp" />
+    </LinearLayout>
+</LinearLayout>
