@@ -14,7 +14,6 @@ public class Absence {
     public Absence() {
         // Firebase requires this constructor
     }
-
     // Constructeur
     public Absence(String profName, String date, String startTime, String endTime, String reason, String status, String subjectName, int absenceCount) {
         this.profName = profName;
