@@ -27,24 +27,20 @@
                 android:textColor="@color/black"
                 android:layout_gravity="center"
                 android:layout_marginBottom="16dp" />
-
             <!-- Champ pour le nom du professeur -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Nom du professeur"
                 android:textSize="16sp"
-                android:layout_marginBottom="4dp"
-                android:textColor="@color/black" />
-            <EditText
+                android:layout_marginBottom="4dp"/>
+            <AutoCompleteTextView
                 android:id="@+id/profName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Entrez le nom du professeur"
-                android:inputType="textPersonName"
-                android:background="@drawable/edit_text_background"
-                android:padding="12dp"
-                android:minHeight="48dp" />
+                android:hint="Nom du professeur"
+                android:inputType="text"
+                android:completionThreshold="1"/>
 
             <!-- Champs pour la date et l'heure sur une ligne -->
             <LinearLayout
@@ -72,7 +68,6 @@
                         android:layout_height="wrap_content"
                         android:hint="jj/mm/aaaa"
                         android:inputType="date"
-                        android:background="@drawable/edit_text_background"
                         android:padding="12dp"
                         android:minHeight="48dp" />
                 </LinearLayout>
@@ -96,7 +91,6 @@
                         android:layout_height="wrap_content"
                         android:hint="hh:mm"
                         android:inputType="time"
-                        android:background="@drawable/edit_text_background"
                         android:padding="12dp"
                         android:minHeight="48dp" />
                 </LinearLayout>
@@ -128,7 +122,6 @@
                         android:layout_height="wrap_content"
                         android:hint="hh:mm"
                         android:inputType="time"
-                        android:background="@drawable/edit_text_background"
                         android:padding="12dp"
                         android:minHeight="48dp" />
                 </LinearLayout>
@@ -152,7 +145,6 @@
                         android:layout_height="wrap_content"
                         android:hint="Entrez la raison"
                         android:inputType="textMultiLine"
-                        android:background="@drawable/edit_text_background"
                         android:padding="12dp"
                         android:maxLines="3"
                         android:minHeight="48dp"
@@ -173,7 +165,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:entries="@array/statut_absence"
-                android:background="@drawable/edit_text_background"
                 android:padding="12dp"
                 android:minHeight="48dp" />
 
@@ -192,7 +183,6 @@
                 android:layout_height="wrap_content"
                 android:hint="Entrez la matière"
                 android:inputType="text"
-                android:background="@drawable/edit_text_background"
                 android:padding="12dp"
                 android:minHeight="48dp" />
         </LinearLayout>

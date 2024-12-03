@@ -14,7 +14,6 @@ import com.example.gestionabscenceenseignants.Adapter.AbsenceAdapter;
 import com.example.gestionabscenceenseignants.R;
 import com.example.gestionabscenceenseignants.ViewModel.AbsenceViewModel;
 import com.example.gestionabscenceenseignants.model.Absence;
-
 import java.util.List;
 
 public class AbsenceFragment extends Fragment {

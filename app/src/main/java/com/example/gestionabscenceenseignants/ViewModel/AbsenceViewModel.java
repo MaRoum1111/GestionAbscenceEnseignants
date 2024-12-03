@@ -60,7 +60,6 @@ public class AbsenceViewModel extends ViewModel {
                 // Si l'ajout est réussi
                 isAdding.setValue(false); // Terminer l'état "en cours d'ajout"
             }
-
             @Override
             public void onFailure(String error) {
                 // Si l'ajout échoue

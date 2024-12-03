@@ -8,6 +8,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
@@ -82,6 +83,25 @@ public class UserRepository {
                     } else {
                         Log.e("UserRepository", "Erreur lors de la création de l'utilisateur dans Authentication : " + task.getException());
                         callback.onFailure("Erreur lors de la création de l'utilisateur dans Authentication.");
+                    }
+                });
+    }
+    public void getTeacherNamesAndCIN(UserCallback callback) {
+        db.collection("users")
+                .whereEqualTo("role", "Enseignant") // Filtre si vous avez une propriété "role"
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null) {
+                        List<User> teachers = new ArrayList<>();
+                        for (QueryDocumentSnapshot doc : task.getResult()) {
+                            User user = doc.toObject(User.class);
+                            teachers.add(user);
+                        }
+                        callback.onSuccessUsers(teachers);
+                    } else {
+                        callback.onFailure(task.getException() != null
+                                ? task.getException().getMessage()
+                                : "Erreur inconnue lors de la récupération des enseignants.");
                     }
                 });
     }
