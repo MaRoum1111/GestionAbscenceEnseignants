@@ -23,7 +23,7 @@ import com.example.gestionabscenceenseignants.model.User;
 
 public class addUserFragment extends Fragment {
 
-    private EditText editTextName, editTextEmail, editTextPassword;
+    private EditText editTextCIN,editTextName, editTextEmail, editTextPassword;
     private Spinner spinnerRole;
     private Button btnSubmit, btnCancel;
     private Uri profilePhotoUri; // URI pour stocker l'image du profil
@@ -39,6 +39,7 @@ public class addUserFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_add_user, container, false);
 
         // Initialisation des champs de formulaire
+        editTextCIN=view.findViewById(R.id.editTextCIN);
         editTextName = view.findViewById(R.id.editTextName);
         editTextEmail = view.findViewById(R.id.editTextEmail);
         editTextPassword = view.findViewById(R.id.editTextPassword);
@@ -71,13 +72,14 @@ public class addUserFragment extends Fragment {
         // Gestion du clic sur le bouton "Submit"
         btnSubmit.setOnClickListener(v -> {
             // Récupération des valeurs du formulaire
+            String cin=editTextCIN.getText().toString().trim();
             String name = editTextName.getText().toString().trim();
             String email = editTextEmail.getText().toString().trim();
             String password = editTextPassword.getText().toString().trim();
             String role = spinnerRole.getSelectedItem().toString();
 
             // Validation simple des champs
-            if (TextUtils.isEmpty(name) || TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
+            if (TextUtils.isEmpty(cin)||TextUtils.isEmpty(name) || TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
                 Toast.makeText(getContext(), "Tous les champs doivent être remplis", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -92,7 +94,7 @@ public class addUserFragment extends Fragment {
             String photoUriString = profilePhotoUri != null ? profilePhotoUri.toString() : null;
 
             // Création d'un nouvel utilisateur
-            User newUser = new User(null, name, email, password, role, photoUriString);
+            User newUser = new User(cin, name, email, password, role, photoUriString);
 
             // Ajout de l'utilisateur à la base de données via le ViewModel
             userViewModel.addUser(newUser);
@@ -112,6 +114,7 @@ public class addUserFragment extends Fragment {
 
     private void clearForm() {
         // Réinitialisation des champs du formulaire
+        editTextCIN.setText("");
         editTextName.setText("");
         editTextEmail.setText("");
         editTextPassword.setText("");

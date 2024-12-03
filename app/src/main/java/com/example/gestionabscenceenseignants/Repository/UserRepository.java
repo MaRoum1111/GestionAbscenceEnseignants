@@ -45,19 +45,27 @@ public class UserRepository {
                 });
     }
 
-    // Méthode pour ajouter un utilisateur
+    // Méthode pour ajouter un utilisateur avec le CIN comme ID de document
     public void addUser(User user, UserCallback callback) {
+        String cin = user.getCin(); // Assurez-vous que la classe User a un getter pour le champ CIN
+        if (cin == null || cin.isEmpty()) {
+            callback.onFailure("Le CIN est requis pour ajouter un utilisateur.");
+            return;
+        }
+
         db.collection("users")
-                .add(user)  // Ajoute l'utilisateur dans la collection "users"
-                .addOnSuccessListener(documentReference -> {
-                    Log.d("UserRepository", "Utilisateur ajouté avec succès");
-                    callback.onSuccessMessage(null);  // Pas besoin de retour spécifique ici, on passe null
+                .document(cin) // Utilise le CIN comme ID du document
+                .set(user) // Ajoute l'utilisateur à la collection "users"
+                .addOnSuccessListener(aVoid -> {
+                    Log.d("UserRepository", "Utilisateur ajouté avec succès avec CIN comme ID.");
+                    callback.onSuccessMessage("Utilisateur ajouté avec succès.");
                 })
                 .addOnFailureListener(e -> {
                     Log.e("UserRepository", "Erreur lors de l'ajout de l'utilisateur : " + e.getMessage(), e);
                     callback.onFailure("Erreur lors de l'ajout de l'utilisateur : " + e.getMessage());
                 });
     }
+
 
     // Interface pour gérer les callbacks
     public interface UserCallback {

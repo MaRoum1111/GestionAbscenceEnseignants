@@ -1,9 +1,7 @@
 package com.example.gestionabscenceenseignants.model;
 
-import android.net.Uri;
-
 public class User {
-    private String uid;
+    private String cin;
     private String name;
     private String email;
     private String password;
@@ -15,8 +13,8 @@ public class User {
     }
 
     // Constructeur
-    public User(String uid, String name, String email, String password, String role, String photo) {
-        this.uid = uid;
+    public User(String cin, String name, String email, String password, String role, String photo) {
+        this.cin = cin;
         this.name = name;
         this.email = email;
         this.password = password;
@@ -24,19 +22,19 @@ public class User {
         this.photo = photo;
     }
 
-    public User(String uid, String email, String role) {
-        this.uid = uid;
+    public User(String cin, String email, String role) {
+        this.cin = cin;
         this.email = email;
         this.role = role;
     }
 
     // Getters et Setters
-    public String getUid() {
-        return uid;
+    public String getCin() {
+        return cin;
     }
 
-    public void setUid(String uid) {
-        this.uid = uid;
+    public void setCin(String cin) {
+        this.cin = cin;
     }
 
     public String getName() {
