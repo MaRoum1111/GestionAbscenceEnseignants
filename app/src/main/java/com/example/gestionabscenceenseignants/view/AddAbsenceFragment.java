@@ -1,5 +1,7 @@
 package com.example.gestionabscenceenseignants.view;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +12,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -21,6 +22,7 @@ import com.example.gestionabscenceenseignants.ViewModel.AbsenceViewModel;
 import com.example.gestionabscenceenseignants.Repository.UserRepository;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class AddAbsenceFragment extends Fragment {
@@ -53,6 +55,12 @@ public class AddAbsenceFragment extends Fragment {
         btnAddAbsence = view.findViewById(R.id.addButton);
         btnCancel = view.findViewById(R.id.cancelButton);
 
+        // Set current date and time in the fields
+        setCurrentDateAndTime();
+
+        // Add DatePicker and TimePicker
+        addDateAndTimePickers();
+
         // Fetch teachers' names and CINs
         fetchTeachers();
 
@@ -65,22 +73,87 @@ public class AddAbsenceFragment extends Fragment {
         return view;
     }
 
+    private void setCurrentDateAndTime() {
+        Calendar calendar = Calendar.getInstance();
+
+        // Set current date
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        editTextDate.setText(String.format("%02d/%02d/%d", day, month + 1, year));
+
+        // Set current time
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int minute = calendar.get(Calendar.MINUTE);
+        String currentTime = String.format("%02d:%02d", hour, minute);
+        editTextStartTime.setText(currentTime);
+        editTextEndTime.setText(currentTime); // Default: same time for start and end
+    }
+
+    private void addDateAndTimePickers() {
+        editTextDate.setOnClickListener(v -> {
+            Calendar calendar = Calendar.getInstance();
+            int year = calendar.get(Calendar.YEAR);
+            int month = calendar.get(Calendar.MONTH);
+            int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+            DatePickerDialog datePickerDialog = new DatePickerDialog(
+                    requireContext(),
+                    (view1, selectedYear, selectedMonth, selectedDay) -> {
+                        String selectedDate = String.format("%02d/%02d/%d", selectedDay, selectedMonth + 1, selectedYear);
+                        editTextDate.setText(selectedDate);
+                    },
+                    year, month, day
+            );
+            datePickerDialog.show();
+        });
+
+        editTextStartTime.setOnClickListener(v -> {
+            Calendar calendar = Calendar.getInstance();
+            int hour = calendar.get(Calendar.HOUR_OF_DAY);
+            int minute = calendar.get(Calendar.MINUTE);
+
+            TimePickerDialog timePickerDialog = new TimePickerDialog(
+                    requireContext(),
+                    (view1, selectedHour, selectedMinute) -> {
+                        String selectedTime = String.format("%02d:%02d", selectedHour, selectedMinute);
+                        editTextStartTime.setText(selectedTime);
+                    },
+                    hour, minute, true
+            );
+            timePickerDialog.show();
+        });
+
+        editTextEndTime.setOnClickListener(v -> {
+            Calendar calendar = Calendar.getInstance();
+            int hour = calendar.get(Calendar.HOUR_OF_DAY);
+            int minute = calendar.get(Calendar.MINUTE);
+
+            TimePickerDialog timePickerDialog = new TimePickerDialog(
+                    requireContext(),
+                    (view1, selectedHour, selectedMinute) -> {
+                        String selectedTime = String.format("%02d:%02d", selectedHour, selectedMinute);
+                        editTextEndTime.setText(selectedTime);
+                    },
+                    hour, minute, true
+            );
+            timePickerDialog.show();
+        });
+    }
+
     private void fetchTeachers() {
         userRepository.getTeacherNamesAndCIN(new UserRepository.UserCallback() {
             @Override
-            public void onSuccessMessage(String message) {
-                // Handle success message if needed
-            }
+            public void onSuccessMessage(String message) {}
 
             @Override
             public void onSuccessUsers(List<User> users) {
                 teachersList = users;
                 List<String> teacherNames = new ArrayList<>();
                 for (User user : users) {
-                    teacherNames.add(user.getName());  // Assuming "name" is the teacher's name field
+                    teacherNames.add(user.getName());
                 }
 
-                // Setup AutoCompleteTextView with teacher names
                 ArrayAdapter<String> adapter = new ArrayAdapter<>(requireActivity(), android.R.layout.simple_dropdown_item_1line, teacherNames);
                 editTextProfName.setAdapter(adapter);
                 editTextProfName.setOnItemClickListener((parent, view, position, id) -> {
@@ -110,7 +183,6 @@ public class AddAbsenceFragment extends Fragment {
         String subjectName = editTextSubjectName.getText().toString().trim();
         String status = spinnerStatus.getSelectedItem().toString();
 
-        // Validate input fields
         if (profName.isEmpty() || date.isEmpty() || startTime.isEmpty() || endTime.isEmpty() || reason.isEmpty() || subjectName.isEmpty()) {
             Toast.makeText(getActivity(), "Veuillez remplir tous les champs", Toast.LENGTH_SHORT).show();
             return;
@@ -121,27 +193,15 @@ public class AddAbsenceFragment extends Fragment {
             return;
         }
 
-        // Create Absence object with selected CIN
         Absence absence = new Absence(profName, date, startTime, endTime, reason, status, subjectName, selectedCIN);
-
-        // Add absence using ViewModel
         absenceViewModel.addAbsence(absence);
 
-        // Observe the status of the message to display the toast
         absenceViewModel.getErrorMessage().observe(getViewLifecycleOwner(), message -> {
             if (message != null) {
                 Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
                 if (message.equals("Absence ajoutée avec succès")) {
                     requireActivity().getOnBackPressedDispatcher().onBackPressed();
                 }
-            }
-        });
-
-        // Observe the adding status
-        absenceViewModel.isAdding().observe(getViewLifecycleOwner(), isAdding -> {
-            if (isAdding != null && isAdding) {
-                // Display a loading indicator if needed
-                Toast.makeText(getActivity(), "Ajout en cours...", Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -5,9 +5,12 @@ import com.example.gestionabscenceenseignants.model.Absence;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AbsenceRepository {
     private final FirebaseFirestore db;
@@ -42,6 +45,48 @@ public class AbsenceRepository {
                             Log.e("AbsenceRepository", "La requête est terminée, mais la réponse est vide.");
                             callback.onFailure("Aucune donnée trouvée.");
                         }
+                    }
+                });
+    }
+    public void getAbsencesCountByProf(AuthCallback callback) {
+        db.collection("absences")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null) {
+                        Map<String, Integer> absenceCounts = new HashMap<>();
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Absence absence = document.toObject(Absence.class);
+                            String profName = absence.getProfName();
+                            absenceCounts.put(profName, absenceCounts.getOrDefault(profName, 0) + 1);
+                        }
+                        List<Absence> absenceSummary = new ArrayList<>();
+                        for (Map.Entry<String, Integer> entry : absenceCounts.entrySet()) {
+                            Absence summary = new Absence();
+                            summary.setProfName(entry.getKey());
+                            summary.setAbsenceCount(entry.getValue());
+                            absenceSummary.add(summary);
+                        }
+                        callback.onSuccess(absenceSummary);
+                    } else {
+                        callback.onFailure("Erreur lors de la récupération des absences.");
+                    }
+                });
+    }
+    public void getAbsencesByProf(String profCin, AuthCallback callback) {
+        db.collection("absences")
+                .whereEqualTo("cin", profCin)
+                .orderBy("date", Query.Direction.DESCENDING)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null && !task.getResult().isEmpty()) {
+                        List<Absence> absences = new ArrayList<>();
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Absence absence = document.toObject(Absence.class);
+                            absences.add(absence);
+                        }
+                        callback.onSuccess(absences);
+                    } else {
+                        callback.onFailure("Erreur lors de la récupération des absences.");
                     }
                 });
     }

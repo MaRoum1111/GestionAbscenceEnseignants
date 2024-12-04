@@ -35,6 +35,20 @@ public class AbsenceViewModel extends ViewModel {
             }
         });
     }
+    public void loadAbsenceCountsByProf() {
+        repository.getAbsencesCountByProf(new AbsenceRepository.AuthCallback() {
+            @Override
+            public void onSuccess(List<Absence> absenceSummary) {
+                absences.setValue(absenceSummary); // Met à jour la liste des absences
+            }
+
+            @Override
+            public void onFailure(String error) {
+                errorMessage.setValue(error); // Met à jour le message d'erreur
+            }
+        });
+    }
+
 
     // Getter pour LiveData des absences
     public LiveData<List<Absence>> getAbsences() {

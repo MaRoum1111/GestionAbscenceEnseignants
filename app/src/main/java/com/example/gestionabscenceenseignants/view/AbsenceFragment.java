@@ -31,10 +31,10 @@ public class AbsenceFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         // Initialiser le ViewModel
-        AbsenceViewModel absenceViewModel = new ViewModelProvider(this).get(AbsenceViewModel.class);
-        absenceViewModel.loadAbsences();
 
-        // Observer la liste des absences
+        AbsenceViewModel absenceViewModel = new ViewModelProvider(this).get(AbsenceViewModel.class);
+        absenceViewModel.loadAbsenceCountsByProf();
+
         absenceViewModel.getAbsences().observe(getViewLifecycleOwner(), new Observer<List<Absence>>() {
             @Override
             public void onChanged(List<Absence> absences) {

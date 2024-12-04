@@ -69,7 +69,9 @@
                         android:hint="jj/mm/aaaa"
                         android:inputType="date"
                         android:padding="12dp"
-                        android:minHeight="48dp" />
+                        android:minHeight="48dp"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -92,7 +94,9 @@
                         android:hint="hh:mm"
                         android:inputType="time"
                         android:padding="12dp"
-                        android:minHeight="48dp" />
+                        android:minHeight="48dp"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"/>
                 </LinearLayout>
             </LinearLayout>
 
@@ -123,7 +127,9 @@
                         android:hint="hh:mm"
                         android:inputType="time"
                         android:padding="12dp"
-                        android:minHeight="48dp" />
+                        android:minHeight="48dp"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -148,7 +154,9 @@
                         android:padding="12dp"
                         android:maxLines="3"
                         android:minHeight="48dp"
-                        android:scrollbars="vertical" />
+                        android:scrollbars="vertical"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"/>
                 </LinearLayout>
             </LinearLayout>
 

@@ -48,6 +48,14 @@
                 android:textSize="16sp"
                 android:textColor="@color/black"
                 android:paddingTop="8dp" />
+            <TextView
+                android:id="@+id/teacher_cin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="88888888"
+                android:textSize="16sp"
+                android:textColor="@color/design_default_color_error"
+                android:paddingTop="8dp" />
         </LinearLayout>
     </LinearLayout>
 
