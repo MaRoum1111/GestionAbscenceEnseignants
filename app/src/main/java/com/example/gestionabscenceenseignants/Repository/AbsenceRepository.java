@@ -53,18 +53,25 @@ public class AbsenceRepository {
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful() && task.getResult() != null) {
-                        Map<String, Integer> absenceCounts = new HashMap<>();
+                        Map<String, Map<String, Integer>> absenceCounts = new HashMap<>(); // Map pour stocker le CIN et le nombre d'absences
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             Absence absence = document.toObject(Absence.class);
+                            String profCin = absence.getCin(); // Récupérer le CIN du professeur
+                            absenceCounts.putIfAbsent(profCin, new HashMap<>()); // Initialiser la Map pour chaque CIN
                             String profName = absence.getProfName();
-                            absenceCounts.put(profName, absenceCounts.getOrDefault(profName, 0) + 1);
+                            absenceCounts.get(profCin).put(profName, absenceCounts.get(profCin).getOrDefault(profName, 0) + 1);
                         }
+
                         List<Absence> absenceSummary = new ArrayList<>();
-                        for (Map.Entry<String, Integer> entry : absenceCounts.entrySet()) {
-                            Absence summary = new Absence();
-                            summary.setProfName(entry.getKey());
-                            summary.setAbsenceCount(entry.getValue());
-                            absenceSummary.add(summary);
+                        for (Map.Entry<String, Map<String, Integer>> entry : absenceCounts.entrySet()) {
+                            String profCin = entry.getKey();
+                            for (Map.Entry<String, Integer> nameEntry : entry.getValue().entrySet()) {
+                                Absence summary = new Absence();
+                                summary.setCin(profCin); // Ajouter le CIN dans le résumé
+                                summary.setProfName(nameEntry.getKey()); // Ajouter le nom du professeur
+                                summary.setAbsenceCount(nameEntry.getValue()); // Ajouter le nombre d'absences
+                                absenceSummary.add(summary);
+                            }
                         }
                         callback.onSuccess(absenceSummary);
                     } else {
@@ -72,6 +79,7 @@ public class AbsenceRepository {
                     }
                 });
     }
+
     public void getAbsencesByProf(String profCin, AuthCallback callback) {
         db.collection("absences")
                 .whereEqualTo("cin", profCin)

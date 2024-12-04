@@ -13,11 +13,14 @@ import java.util.List;
 public class AbsenceAdapter extends RecyclerView.Adapter<AbsenceAdapter.AbsenceViewHolder> {
 
     private final List<Absence> absenceList;
+    private final OnAbsenceClickListener clickListener; // Interface pour le clic sur les éléments
 
-    // Constructeur pour initialiser la liste des absences
-    public AbsenceAdapter(List<Absence> absenceList) {
+    // Constructeur pour initialiser la liste et le listener
+    public AbsenceAdapter(List<Absence> absenceList, OnAbsenceClickListener clickListener) {
         this.absenceList = absenceList;
+        this.clickListener = clickListener;
     }
+
     @NonNull
     @Override
     public AbsenceViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -34,7 +37,18 @@ public class AbsenceAdapter extends RecyclerView.Adapter<AbsenceAdapter.AbsenceV
         // Lie les données de l'absence aux TextViews
         holder.profName.setText(absence.getProfName()); // Nom du professeur
         holder.absenceCount.setText("Total Absences : " + absence.getAbsenceCount()); // Nombre d'absences
-        holder.cin.setText(absence.getCin());
+        holder.cin.setText(absence.getCin()); // CIN
+
+        // Définir l'action du clic sur l'élément
+        holder.itemView.setOnClickListener(v -> {
+            if (clickListener != null) {
+                clickListener.onAbsenceClick(
+                        absence.getCin(),
+                        absence.getProfName(),
+                        absence.getAbsenceCount()
+                );
+            }
+        });
     }
 
     @Override
@@ -45,7 +59,7 @@ public class AbsenceAdapter extends RecyclerView.Adapter<AbsenceAdapter.AbsenceV
 
     // ViewHolder pour représenter chaque item de la RecyclerView
     public static class AbsenceViewHolder extends RecyclerView.ViewHolder {
-        TextView profName, absenceCount,cin;
+        TextView profName, absenceCount, cin;
 
         public AbsenceViewHolder(View itemView) {
             super(itemView);
@@ -53,7 +67,12 @@ public class AbsenceAdapter extends RecyclerView.Adapter<AbsenceAdapter.AbsenceV
             // Liaison avec les TextViews du layout item_absence.xml
             profName = itemView.findViewById(R.id.profName);
             absenceCount = itemView.findViewById(R.id.absenceCount);
-            cin=itemView.findViewById(R.id.cin);
+            cin = itemView.findViewById(R.id.cin);
         }
+    }
+
+    // Interface pour gérer les clics sur les éléments de la RecyclerView
+    public interface OnAbsenceClickListener {
+        void onAbsenceClick(String cin, String profName, int absenceCount);
     }
 }

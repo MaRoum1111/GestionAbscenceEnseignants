@@ -14,6 +14,7 @@ public class UserViewModel extends ViewModel {
     private final MutableLiveData<List<User>> users;
     private final MutableLiveData<String> statusMessage;
     private final MutableLiveData<List<User>> teacherList;
+    private final MutableLiveData<String> imageUrl;  // Pour stocker l'URL de l'image
 
     // Constructeur
     public UserViewModel() {
@@ -21,6 +22,7 @@ public class UserViewModel extends ViewModel {
         users = new MutableLiveData<>(); // LiveData pour la liste des utilisateurs
         statusMessage = new MutableLiveData<>(); // LiveData pour les messages de statut (succès ou erreurs)
         teacherList = new MutableLiveData<>(); // LiveData pour la liste des enseignants
+        imageUrl = new MutableLiveData<>(); // LiveData pour l'URL de l'image
     }
 
     // Méthode pour charger la liste des utilisateurs
@@ -28,7 +30,7 @@ public class UserViewModel extends ViewModel {
         repository.getUsers(new UserRepository.UserCallback() {
             @Override
             public void onSuccessMessage(String message) {
-
+                // Pas utilisé ici
             }
 
             @Override
@@ -56,7 +58,7 @@ public class UserViewModel extends ViewModel {
 
             @Override
             public void onSuccessUsers(List<User> users) {
-
+                // Pas utilisé ici
             }
 
             @Override
@@ -72,7 +74,7 @@ public class UserViewModel extends ViewModel {
         repository.getTeacherNamesAndCIN(new UserRepository.UserCallback() {
             @Override
             public void onSuccessMessage(String message) {
-
+                // Pas utilisé ici
             }
 
             @Override
@@ -85,6 +87,23 @@ public class UserViewModel extends ViewModel {
             public void onFailure(String errorMessage) {
                 // Mise à jour du message d'erreur en cas de problème
                 statusMessage.setValue(errorMessage);
+            }
+        });
+    }
+
+    // Nouvelle méthode pour récupérer l'URL de l'image en fonction du CIN
+    public void getPhotoByCin(String cin) {
+        repository.getImageByCin(cin, new UserRepository.OnImageRetrievedListener() {
+            @Override
+            public void onImageRetrieved(String imageUrlResult) {
+                // Mise à jour de l'URL de l'image
+                imageUrl.setValue(imageUrlResult);
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                // Mise à jour du message d'erreur en cas de problème
+                imageUrl.setValue(errorMessage);
             }
         });
     }
@@ -102,5 +121,10 @@ public class UserViewModel extends ViewModel {
     // Getter pour les messages de statut (succès ou erreur)
     public LiveData<String> getStatusMessage() {
         return statusMessage;
+    }
+
+    // Getter pour l'URL de l'image
+    public LiveData<String> getImageUrl() {
+        return imageUrl;
     }
 }

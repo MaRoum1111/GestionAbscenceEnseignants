@@ -28,31 +28,28 @@ public class UserRepository {
     // Méthode pour récupérer les utilisateurs
     public void getUsers(UserCallback callback) {
         db.collection("users")
-                .orderBy("name", Query.Direction.ASCENDING) // Tri par nom (modifiable selon vos besoins)
+                .orderBy("name", Query.Direction.ASCENDING) // Tri par nom
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful() && task.getResult() != null && !task.getResult().isEmpty()) {
                         List<User> users = new ArrayList<>();
-                        for (com.google.firebase.firestore.QueryDocumentSnapshot document : task.getResult()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
                             User user = document.toObject(User.class);
                             users.add(user);
                         }
                         Log.d("UserRepository", "Récupération réussie, nombre d'utilisateurs : " + users.size());
                         callback.onSuccessUsers(users);
                     } else {
-                        if (task.getException() != null) {
-                            FirebaseFirestoreException e = (FirebaseFirestoreException) task.getException();
-                            Log.e("UserRepository", "Erreur lors de la récupération des utilisateurs : " + e.getMessage(), e);
-                            callback.onFailure("Erreur lors de la récupération des utilisateurs : " + e.getMessage());
-                        } else {
-                            Log.e("UserRepository", "La requête est terminée, mais la réponse est vide.");
-                            callback.onFailure("Aucun utilisateur trouvé.");
-                        }
+                        String errorMessage = (task.getException() != null)
+                                ? task.getException().getMessage()
+                                : "Aucun utilisateur trouvé.";
+                        Log.e("UserRepository", "Erreur : " + errorMessage);
+                        callback.onFailure(errorMessage);
                     }
                 });
     }
 
-
+    // Méthode pour ajouter un utilisateur
     public void addUser(User user, final UserCallback callback) {
         String cin = user.getCin();
         if (cin == null || cin.isEmpty()) {
@@ -68,7 +65,7 @@ public class UserRepository {
                         if (firebaseUser != null) {
                             String uid = firebaseUser.getUid(); // UID généré par Firebase Authentication
                             DocumentReference userRef = db.collection("users").document(uid);
-                            user.setCin(cin);
+                            user.setCin(cin);  // Associer le CIN à l'utilisateur
                             // Mettre à jour le document de l'utilisateur dans Firestore
                             userRef.set(user, SetOptions.merge()) // Merge pour ne pas écraser les anciennes données
                                     .addOnSuccessListener(aVoid -> {
@@ -86,9 +83,11 @@ public class UserRepository {
                     }
                 });
     }
+
+    // Méthode pour récupérer les enseignants et leurs CIN
     public void getTeacherNamesAndCIN(UserCallback callback) {
         db.collection("users")
-                .whereEqualTo("role", "Enseignant") // Filtre si vous avez une propriété "role"
+                .whereEqualTo("role", "Enseignant") // Filtrer pour récupérer les enseignants
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful() && task.getResult() != null) {
@@ -106,7 +105,26 @@ public class UserRepository {
                 });
     }
 
+    // Méthode pour récupérer l'image selon le CIN
+    public void getImageByCin(String cin, final OnImageRetrievedListener listener) {
+        db.collection("users")
+                .whereEqualTo("cin", cin)  // Filtrer par CIN
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                        String imageUrl = task.getResult().getDocuments().get(0).getString("photo"); // Récupérer l'URL de l'image
+                        listener.onImageRetrieved(imageUrl); // Retourner l'URL de l'image
+                    } else {
+                        listener.onFailure("Image non trouvée pour ce CIN.");
+                    }
+                });
+    }
 
+    // Interface pour gérer le retour de l'URL de l'image
+    public interface OnImageRetrievedListener {
+        void onImageRetrieved(String imageUrl);  // L'URL de l'image
+        void onFailure(String errorMessage);  // Message d'erreur
+    }
 
     // Interface pour gérer les callbacks
     public interface UserCallback {

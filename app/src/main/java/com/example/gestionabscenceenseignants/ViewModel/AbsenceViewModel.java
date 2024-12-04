@@ -49,7 +49,20 @@ public class AbsenceViewModel extends ViewModel {
         });
     }
 
+    // Méthode pour charger les absences par professeur (en fonction de son CIN)
+    public void loadAbsencesByProf(String profCin) {
+        repository.getAbsencesByProf(profCin, new AbsenceRepository.AuthCallback() {
+            @Override
+            public void onSuccess(List<Absence> absencesList) {
+                absences.setValue(absencesList); // Si réussi, on met à jour le LiveData avec la liste d'absences
+            }
 
+            @Override
+            public void onFailure(String error) {
+                errorMessage.setValue(error); // Si échec, on met à jour le LiveData avec le message d'erreur
+            }
+        });
+    }
     // Getter pour LiveData des absences
     public LiveData<List<Absence>> getAbsences() {
         return absences;
