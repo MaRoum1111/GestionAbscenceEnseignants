@@ -28,7 +28,7 @@ public class LoginRepository {
 
     // Récupérer le rôle de l'utilisateur depuis Firestore
     private void fetchUserRole(String uid, AuthCallback callback) {
-        db.collection("Users").document(uid).get()
+        db.collection("users").document(uid).get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful() && task.getResult().exists()) {
                         String role = task.getResult().getString("role");

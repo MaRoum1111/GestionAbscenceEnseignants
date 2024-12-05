@@ -1,7 +1,9 @@
 package com.example.gestionabscenceenseignants.model;
 
 public class Absence {
-    private String profName;      // Nom du professeur
+    private String profName;
+    private String cin;
+    private String idAbsence;
     private String date;          // Date de l'absence
     private String startTime;     // Heure de début
     private String endTime;       // Heure de fin
@@ -9,33 +11,12 @@ public class Absence {
     private String status;        // Statut de l'absence (justifiée/non justifiée)
     private String subjectName;   // Nom de la matière
     private int absenceCount;
-    private String cin;
+
     // Nombre d'absences
 
     // No-argument constructor
     public Absence() {
         // Firebase requires this constructor
-    }
-    // Constructeur
-    public Absence(String profName, String date, String startTime, String endTime, String reason, String status, String subjectName, int absenceCount) {
-        this.profName = profName;
-        this.date = date;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.reason = reason;
-        this.status = status;
-        this.subjectName = subjectName;
-        this.absenceCount = absenceCount;
-    }
-
-    public Absence(String profName, String date, String startTime, String endTime, String reason, String status, String subjectName) {
-        this.profName = profName;
-        this.date = date;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.reason = reason;
-        this.status = status;
-        this.subjectName = subjectName;
     }
 
     public Absence(String profName, String date, String startTime, String endTime, String reason, String status, String subjectName, String cin) {
@@ -47,6 +28,17 @@ public class Absence {
         this.status = status;
         this.subjectName = subjectName;
         this.cin=cin;
+
+    }    public Absence(String idAbsence ,String profName, String date, String startTime, String endTime, String reason, String status, String subjectName, String cin) {
+        this.profName = profName;
+        this.date = date;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.reason = reason;
+        this.status = status;
+        this.subjectName = subjectName;
+        this.cin=cin;
+
     }
 
     // Getters et Setters pour chaque champ
@@ -119,5 +111,11 @@ public class Absence {
 
     public void setAbsenceCount(int absenceCount) {
         this.absenceCount = absenceCount;
+    }  public String getIdAbsence() {
+        return idAbsence;
+    }
+
+    public void setIdAbsence(String idAbsence) {
+        this.idAbsence = idAbsence;
     }
 }

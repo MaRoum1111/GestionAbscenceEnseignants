@@ -40,14 +40,6 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/teacher_email"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="email@exemple.com"
-                android:textSize="16sp"
-                android:textColor="@color/black"
-                android:paddingTop="8dp" />
-            <TextView
                 android:id="@+id/teacher_cin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
