@@ -3,7 +3,7 @@
     <style name="Base.Theme.GestionAbscenceEnseignants" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Couleurs principales -->
         <item name="colorPrimary">@color/blue</item>
-        <item name="colorSecondary">@color/blue_dark</item>
+        <item name="colorSecondary">@color/blue</item>
         <item name="colorOnBackground">@color/white</item>
         <!-- Couleurs des boutons -->
         <item name="colorButtonNormal">@color/blue</item>

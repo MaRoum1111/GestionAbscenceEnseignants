@@ -3,16 +3,22 @@ package com.example.gestionabscenceenseignants.view;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.drawerlayout.widget.DrawerLayout;
+
+import com.example.gestionabscenceenseignants.ViewModel.UserViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.example.gestionabscenceenseignants.R;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.ViewModelProvider;
 
 public class AdminActivity extends AppCompatActivity {
 
@@ -22,6 +28,7 @@ public class AdminActivity extends AppCompatActivity {
     private BottomAppBar bottomAppBar;
     private FloatingActionButton fab;
     private Toolbar toolbar;
+    private UserViewModel userViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,11 +46,22 @@ public class AdminActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); // Pour afficher le bouton hamburger
 
+        // Initialiser le ViewModel
+        userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
+
+        // Récupérer la vue du header dans le NavigationView
+        View headerView = navigationView.getHeaderView(0);
+        TextView navUserName = headerView.findViewById(R.id.nav_header_name);
+        TextView navUserEmail = headerView.findViewById(R.id.nav_header_email);
+
+        // Observer les données de l'utilisateur
+        userViewModel.getUserName().observe(this, navUserName::setText);
+        userViewModel.getUserEmail().observe(this, navUserEmail::setText);
+
         // Ouverture/fermeture du menu Drawer
         navigationView.setNavigationItemSelectedListener(menuItem -> {
             int id = menuItem.getItemId();
             if (id == R.id.nav_home) {
-                // Ajouter ici l'action pour "Home"
                 loadFragment(new HomeFragment());
             } else if (id == R.id.nav_settings) {
                 // Ajouter ici l'action pour "Settings"
@@ -72,6 +90,11 @@ public class AdminActivity extends AppCompatActivity {
             }
             return true; // Indique que l'item a été sélectionné et l'action a été effectuée
         });
+
+        // Afficher le HomeFragment par défaut lorsque l'activité démarre
+        if (savedInstanceState == null) {
+            loadFragment(new HomeFragment()); // Charger HomeFragment comme premier fragment
+        }
     }
 
     // Fonction pour charger un fragment

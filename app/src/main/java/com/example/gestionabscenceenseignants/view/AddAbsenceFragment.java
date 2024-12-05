@@ -145,7 +145,9 @@ public class AddAbsenceFragment extends Fragment {
     private void fetchTeachers() {
         userRepository.getTeacherNamesAndCIN(new UserRepository.UserCallback() {
             @Override
-            public void onSuccessMessage(String message) {}
+            public void onSuccessMessage(String message) {
+                // Implémente la logique de gestion du message si nécessaire
+            }
 
             @Override
             public void onSuccessUsers(List<User> users) {
@@ -170,10 +172,17 @@ public class AddAbsenceFragment extends Fragment {
 
             @Override
             public void onFailure(String errorMessage) {
+                // Implémente la gestion des erreurs
                 Toast.makeText(getActivity(), "Erreur: " + errorMessage, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onSuccessUser(User user) {
+                // Implémente ou laisse vide si tu n'en as pas besoin
             }
         });
     }
+
 
     private void addAbsence() {
         if (!validateInputs()) {

@@ -6,7 +6,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.SetOptions;
@@ -28,7 +27,7 @@ public class UserRepository {
     // Méthode pour récupérer les utilisateurs
     public void getUsers(UserCallback callback) {
         db.collection("users")
-                .orderBy("name", Query.Direction.ASCENDING) // Tri par nom
+                .orderBy("name", Query.Direction.ASCENDING)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful() && task.getResult() != null && !task.getResult().isEmpty()) {
@@ -65,9 +64,8 @@ public class UserRepository {
                         if (firebaseUser != null) {
                             String uid = firebaseUser.getUid(); // UID généré par Firebase Authentication
                             DocumentReference userRef = db.collection("users").document(uid);
-                            user.setCin(cin);  // Associer le CIN à l'utilisateur
-                            // Mettre à jour le document de l'utilisateur dans Firestore
-                            userRef.set(user, SetOptions.merge()) // Merge pour ne pas écraser les anciennes données
+                            user.setCin(cin);
+                            userRef.set(user, SetOptions.merge())
                                     .addOnSuccessListener(aVoid -> {
                                         Log.d("UserRepository", "Utilisateur ajouté avec succès dans Firestore");
                                         callback.onSuccessMessage("Utilisateur ajouté avec succès.");
@@ -87,7 +85,7 @@ public class UserRepository {
     // Méthode pour récupérer les enseignants et leurs CIN
     public void getTeacherNamesAndCIN(UserCallback callback) {
         db.collection("users")
-                .whereEqualTo("role", "Enseignant") // Filtrer pour récupérer les enseignants
+                .whereEqualTo("role", "Enseignant")
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful() && task.getResult() != null) {
@@ -105,11 +103,32 @@ public class UserRepository {
                 });
     }
 
+    // Méthode pour récupérer les informations de l'utilisateur connecté
+    public void getLoggedUser(UserCallback callback) {
+        FirebaseUser currentUser = auth.getCurrentUser();
+        if (currentUser != null) {
+            String uid = currentUser.getUid(); // Récupérer l'UID de l'utilisateur connecté
+            db.collection("users").document(uid)
+                    .get()
+                    .addOnSuccessListener(documentSnapshot -> {
+                        if (documentSnapshot.exists()) {
+                            User user = documentSnapshot.toObject(User.class);
+                            callback.onSuccessUser(user);
+                        } else {
+                            callback.onFailure("Aucun utilisateur trouvé.");
+                        }
+                    })
+                    .addOnFailureListener(e -> callback.onFailure("Erreur de récupération de l'utilisateur : " + e.getMessage()));
+        } else {
+            callback.onFailure("Utilisateur non connecté.");
+        }
+    }
 
-    // Interface pour gérer les callbacks
+    // Interface pour les callbacks
     public interface UserCallback {
-        void onSuccessMessage(String message);  // Pour les messages de succès
-        void onSuccessUsers(List<User> users);  // Pour les résultats sous forme de liste d'utilisateurs
-        void onFailure(String errorMessage);    // Pour gérer les erreurs
+        void onSuccessMessage(String message);
+        void onSuccessUsers(List<User> users);
+        void onSuccessUser(User user);
+        void onFailure(String error);
     }
 }

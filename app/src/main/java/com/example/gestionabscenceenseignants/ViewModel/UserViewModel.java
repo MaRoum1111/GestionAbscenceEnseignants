@@ -14,15 +14,50 @@ public class UserViewModel extends ViewModel {
     private final MutableLiveData<List<User>> users;
     private final MutableLiveData<String> statusMessage;
     private final MutableLiveData<List<User>> teacherList;
-    private final MutableLiveData<String> imageUrl;  // Pour stocker l'URL de l'image
+    private final MutableLiveData<String> imageUrl;
+    private final MutableLiveData<String> userName;
+    private final MutableLiveData<String> userEmail;
 
     // Constructeur
     public UserViewModel() {
-        repository = new UserRepository(); // Instanciation du UserRepository
-        users = new MutableLiveData<>(); // LiveData pour la liste des utilisateurs
-        statusMessage = new MutableLiveData<>(); // LiveData pour les messages de statut (succès ou erreurs)
-        teacherList = new MutableLiveData<>(); // LiveData pour la liste des enseignants
-        imageUrl = new MutableLiveData<>(); // LiveData pour l'URL de l'image
+        repository = new UserRepository();
+        users = new MutableLiveData<>();
+        statusMessage = new MutableLiveData<>();
+        teacherList = new MutableLiveData<>();
+        imageUrl = new MutableLiveData<>();
+        userName = new MutableLiveData<>();
+        userEmail = new MutableLiveData<>();
+        loadLoggedUserDetails();
+    }
+
+    // Charger les données de l'utilisateur connecté
+    public void loadLoggedUserDetails() {
+        repository.getLoggedUser(new UserRepository.UserCallback() {
+            @Override
+            public void onSuccessMessage(String message) {
+                // Pas nécessaire ici
+            }
+
+            @Override
+            public void onSuccessUsers(List<User> users) {
+                // Pas nécessaire ici
+            }
+
+            @Override
+            public void onFailure(String error) {
+                statusMessage.setValue("Erreur : " + error);
+            }
+
+            @Override
+            public void onSuccessUser(User user) {
+                if (user != null) {
+                    userName.setValue(user.getName());
+                    userEmail.setValue(user.getEmail());
+                } else {
+                    statusMessage.setValue("Utilisateur non trouvé.");
+                }
+            }
+        });
     }
 
     // Méthode pour charger la liste des utilisateurs
@@ -35,14 +70,17 @@ public class UserViewModel extends ViewModel {
 
             @Override
             public void onSuccessUsers(List<User> userList) {
-                // Mise à jour de la liste des utilisateurs si récupération réussie
                 users.setValue(userList);
             }
 
             @Override
             public void onFailure(String error) {
-                // Mise à jour du message d'erreur en cas de problème
                 statusMessage.setValue(error);
+            }
+
+            @Override
+            public void onSuccessUser(User user) {
+                // Cette méthode doit aussi être implémentée
             }
         });
     }
@@ -52,7 +90,6 @@ public class UserViewModel extends ViewModel {
         repository.addUser(user, new UserRepository.UserCallback() {
             @Override
             public void onSuccessMessage(String successMessage) {
-                // Mise à jour du message de succès si ajout réussi
                 statusMessage.setValue(successMessage);
             }
 
@@ -63,8 +100,12 @@ public class UserViewModel extends ViewModel {
 
             @Override
             public void onFailure(String error) {
-                // Mise à jour du message d'erreur en cas de problème
                 statusMessage.setValue(error);
+            }
+
+            @Override
+            public void onSuccessUser(User user) {
+                // Cette méthode doit aussi être implémentée
             }
         });
     }
@@ -79,35 +120,43 @@ public class UserViewModel extends ViewModel {
 
             @Override
             public void onSuccessUsers(List<User> teachers) {
-                // Mise à jour de la liste des enseignants si récupération réussie
                 teacherList.setValue(teachers);
             }
 
             @Override
             public void onFailure(String errorMessage) {
-                // Mise à jour du message d'erreur en cas de problème
                 statusMessage.setValue(errorMessage);
+            }
+
+            @Override
+            public void onSuccessUser(User user) {
+                // Cette méthode doit aussi être implémentée
             }
         });
     }
 
-    // Getter pour la liste des utilisateurs
+    // Getters
     public LiveData<List<User>> getUsers() {
         return users;
     }
 
-    // Getter pour la liste des enseignants
     public LiveData<List<User>> getTeacherList() {
         return teacherList;
     }
 
-    // Getter pour les messages de statut (succès ou erreur)
     public LiveData<String> getStatusMessage() {
         return statusMessage;
     }
 
-    // Getter pour l'URL de l'image
     public LiveData<String> getImageUrl() {
         return imageUrl;
+    }
+
+    public LiveData<String> getUserName() {
+        return userName;
+    }
+
+    public LiveData<String> getUserEmail() {
+        return userEmail;
     }
 }
