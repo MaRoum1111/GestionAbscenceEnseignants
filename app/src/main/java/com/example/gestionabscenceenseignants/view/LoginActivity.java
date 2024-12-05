@@ -60,9 +60,9 @@ public class LoginActivity extends AppCompatActivity {
     // Rediriger vers le tableau de bord en fonction du rôle
     private void navigateToDashboard(String role) {
         Intent intent;
-        if ("admin".equals(role)) {
+        if ("Admin".equals(role)) {
             intent = new Intent(this, AdminActivity.class);
-        } else if ("agent".equals(role)) {
+        } else if ("Agent".equals(role)) {
             intent = new Intent(this, AgentActivity.class);
         } else {
             intent = new Intent(this, TeacherActivity.class);

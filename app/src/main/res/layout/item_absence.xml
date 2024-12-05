@@ -42,15 +42,28 @@
                 android:textColor="@color/black"
                 android:layout_marginBottom="8dp" />
 
-            <!-- Nombre d'absences -->
+            <!-- cin -->
             <TextView
-                android:id="@+id/absenceCount"
+                android:id="@+id/cin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Nombre d'absences"
+                android:text="cin"
                 android:textSize="16sp"
                 android:textColor="@color/design_default_color_error"
                 android:layout_marginBottom="4dp" />
+
+            <!-- Nombre d'absences -->
+            <TextView
+                android:id="@+id/absenceCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="1dp"
+                android:layout_marginBottom="4dp"
+                android:text="Nombre d'absences"
+                android:textColor="@color/design_default_color_error"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_gravity="end" />
 
         </LinearLayout>
 

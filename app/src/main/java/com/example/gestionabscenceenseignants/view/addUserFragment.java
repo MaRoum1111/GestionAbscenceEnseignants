@@ -84,11 +84,6 @@ public class addUserFragment extends Fragment {
                 return;
             }
 
-            // Validation de l'email
-            if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                Toast.makeText(getContext(), "Email invalide", Toast.LENGTH_SHORT).show();
-                return;
-            }
 
             // Conversion de l'URI en chaîne de caractères
             String photoUriString = profilePhotoUri != null ? profilePhotoUri.toString() : null;

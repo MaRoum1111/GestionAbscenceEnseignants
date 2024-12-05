@@ -1,6 +1,5 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -41,12 +40,12 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/teacher_email"
+                android:id="@+id/teacher_cin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="email@exemple.com"
+                android:text="88888888"
                 android:textSize="16sp"
-                android:textColor="@color/black"
+                android:textColor="@color/design_default_color_error"
                 android:paddingTop="8dp" />
         </LinearLayout>
     </LinearLayout>
@@ -64,7 +63,7 @@
             android:id="@+id/total_absences"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Total des absences: 0"
+            android:text="Total des absences: "
             android:textSize="16sp"
             android:textColor="@color/blue"
             android:textStyle="bold"

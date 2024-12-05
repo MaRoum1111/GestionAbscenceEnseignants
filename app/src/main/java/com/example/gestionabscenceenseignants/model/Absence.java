@@ -1,22 +1,25 @@
 package com.example.gestionabscenceenseignants.model;
 
 public class Absence {
-    private String profName;      // Nom du professeur
+    private String profName;
+    private String cin;
+    private String idAbsence;
     private String date;          // Date de l'absence
     private String startTime;     // Heure de début
     private String endTime;       // Heure de fin
     private String reason;        // Raison de l'absence
     private String status;        // Statut de l'absence (justifiée/non justifiée)
     private String subjectName;   // Nom de la matière
-    private int absenceCount;     // Nombre d'absences
+    private int absenceCount;
+
+    // Nombre d'absences
 
     // No-argument constructor
     public Absence() {
         // Firebase requires this constructor
     }
 
-    // Constructeur
-    public Absence(String profName, String date, String startTime, String endTime, String reason, String status, String subjectName, int absenceCount) {
+    public Absence(String profName, String date, String startTime, String endTime, String reason, String status, String subjectName, String cin) {
         this.profName = profName;
         this.date = date;
         this.startTime = startTime;
@@ -24,10 +27,9 @@ public class Absence {
         this.reason = reason;
         this.status = status;
         this.subjectName = subjectName;
-        this.absenceCount = absenceCount;
-    }
+        this.cin=cin;
 
-    public Absence(String profName, String date, String startTime, String endTime, String reason, String status, String subjectName) {
+    }    public Absence(String idAbsence ,String profName, String date, String startTime, String endTime, String reason, String status, String subjectName, String cin) {
         this.profName = profName;
         this.date = date;
         this.startTime = startTime;
@@ -35,6 +37,8 @@ public class Absence {
         this.reason = reason;
         this.status = status;
         this.subjectName = subjectName;
+        this.cin=cin;
+
     }
 
     // Getters et Setters pour chaque champ
@@ -77,6 +81,13 @@ public class Absence {
     public void setReason(String reason) {
         this.reason = reason;
     }
+    public String getCin() {
+        return cin;
+    }
+
+    public void setCin(String cin) {
+        this.cin =cin;
+    }
 
     public String getStatus() {
         return status;
@@ -100,5 +111,11 @@ public class Absence {
 
     public void setAbsenceCount(int absenceCount) {
         this.absenceCount = absenceCount;
+    }  public String getIdAbsence() {
+        return idAbsence;
+    }
+
+    public void setIdAbsence(String idAbsence) {
+        this.idAbsence = idAbsence;
     }
 }

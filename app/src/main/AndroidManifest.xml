@@ -16,10 +16,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.GestionAbscenceEnseignants">
-
         <!-- Activité principale -->
         <activity
-            android:name=".view.AdminActivity"
+            android:name=".view.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,7 +27,7 @@
         </activity>
 
         <!-- Autres activités -->
-        <activity android:name=".view.LoginActivity" />
+        <activity android:name=".view.AdminActivity" />
         <activity android:name=".view.AgentActivity" />
         <activity android:name=".view.TeacherActivity" />
 

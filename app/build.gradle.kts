@@ -42,14 +42,17 @@ dependencies {
     implementation ("com.google.firebase:firebase-auth")       // Firebase Authentification
     implementation ("com.google.firebase:firebase-firestore")    // Firebase Firestore
     implementation ("com.google.firebase:firebase-storage")      // Firebase Storage
-
+    implementation (libs.github.glide)
+    annotationProcessor (libs.compiler)
     // Android Dependencies
     implementation(libs.appcompat)          // Composants Android
     implementation(libs.material)           // Material Design
     implementation(libs.activity)           // Composant Activity
     implementation(libs.constraintlayout)   // Layout avec ConstraintLayout
     implementation(libs.recyclerview)       // RecyclerView
-    implementation(libs.cardview)           // CardView
+    implementation(libs.cardview)
+    implementation(libs.navigation.runtime)
+    implementation(libs.navigation.fragment)           // CardView
 
     // Tests
     testImplementation(libs.junit)               // Tests unitaires
