@@ -1,5 +1,6 @@
 package com.example.gestionabscenceenseignants.view;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
@@ -14,13 +15,11 @@ import android.widget.Spinner;
 import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-
 import com.example.gestionabscenceenseignants.R;
 import com.example.gestionabscenceenseignants.model.Absence;
 import com.example.gestionabscenceenseignants.model.User;
 import com.example.gestionabscenceenseignants.ViewModel.AbsenceViewModel;
 import com.example.gestionabscenceenseignants.Repository.UserRepository;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -45,15 +44,7 @@ public class AddAbsenceFragment extends Fragment {
         userRepository = new UserRepository();
 
         // Initialize UI components
-        editTextProfName = view.findViewById(R.id.profName);
-        editTextDate = view.findViewById(R.id.date);
-        editTextStartTime = view.findViewById(R.id.startTime);
-        editTextEndTime = view.findViewById(R.id.endTime);
-        editTextReason = view.findViewById(R.id.reason);
-        editTextSubjectName = view.findViewById(R.id.subjectName);
-        spinnerStatus = view.findViewById(R.id.status);
-        btnAddAbsence = view.findViewById(R.id.addButton);
-        btnCancel = view.findViewById(R.id.cancelButton);
+        initUIComponents(view);
 
         // Set current date and time in the fields
         setCurrentDateAndTime();
@@ -73,6 +64,28 @@ public class AddAbsenceFragment extends Fragment {
         return view;
     }
 
+    private void initUIComponents(View view) {
+        editTextProfName = view.findViewById(R.id.profName);
+        editTextDate = view.findViewById(R.id.date);
+        editTextStartTime = view.findViewById(R.id.startTime);
+        editTextEndTime = view.findViewById(R.id.endTime);
+        editTextReason = view.findViewById(R.id.reason);
+        editTextSubjectName = view.findViewById(R.id.subjectName);
+        spinnerStatus = view.findViewById(R.id.status);
+        btnAddAbsence = view.findViewById(R.id.addButton);
+        btnCancel = view.findViewById(R.id.cancelButton);
+
+        // Set up spinner for absence status
+        ArrayAdapter<CharSequence> statusAdapter = ArrayAdapter.createFromResource(
+                requireContext(),
+                R.array.statut_absence, // Assuming you have this array in your resources
+                android.R.layout.simple_spinner_item
+        );
+        statusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerStatus.setAdapter(statusAdapter);
+    }
+
+    @SuppressLint("DefaultLocale")
     private void setCurrentDateAndTime() {
         Calendar calendar = Calendar.getInstance();
 
@@ -91,54 +104,42 @@ public class AddAbsenceFragment extends Fragment {
     }
 
     private void addDateAndTimePickers() {
-        editTextDate.setOnClickListener(v -> {
-            Calendar calendar = Calendar.getInstance();
-            int year = calendar.get(Calendar.YEAR);
-            int month = calendar.get(Calendar.MONTH);
-            int day = calendar.get(Calendar.DAY_OF_MONTH);
+        editTextDate.setOnClickListener(v -> showDatePicker());
+        editTextStartTime.setOnClickListener(v -> showTimePicker(editTextStartTime));
+        editTextEndTime.setOnClickListener(v -> showTimePicker(editTextEndTime));
+    }
 
-            DatePickerDialog datePickerDialog = new DatePickerDialog(
-                    requireContext(),
-                    (view1, selectedYear, selectedMonth, selectedDay) -> {
-                        String selectedDate = String.format("%02d/%02d/%d", selectedDay, selectedMonth + 1, selectedYear);
-                        editTextDate.setText(selectedDate);
-                    },
-                    year, month, day
-            );
-            datePickerDialog.show();
-        });
+    private void showDatePicker() {
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
 
-        editTextStartTime.setOnClickListener(v -> {
-            Calendar calendar = Calendar.getInstance();
-            int hour = calendar.get(Calendar.HOUR_OF_DAY);
-            int minute = calendar.get(Calendar.MINUTE);
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                requireContext(),
+                (view1, selectedYear, selectedMonth, selectedDay) -> {
+                    @SuppressLint("DefaultLocale") String selectedDate = String.format("%02d/%02d/%d", selectedDay, selectedMonth + 1, selectedYear);
+                    editTextDate.setText(selectedDate);
+                },
+                year, month, day
+        );
+        datePickerDialog.show();
+    }
 
-            TimePickerDialog timePickerDialog = new TimePickerDialog(
-                    requireContext(),
-                    (view1, selectedHour, selectedMinute) -> {
-                        String selectedTime = String.format("%02d:%02d", selectedHour, selectedMinute);
-                        editTextStartTime.setText(selectedTime);
-                    },
-                    hour, minute, true
-            );
-            timePickerDialog.show();
-        });
+    private void showTimePicker(EditText editText) {
+        Calendar calendar = Calendar.getInstance();
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int minute = calendar.get(Calendar.MINUTE);
 
-        editTextEndTime.setOnClickListener(v -> {
-            Calendar calendar = Calendar.getInstance();
-            int hour = calendar.get(Calendar.HOUR_OF_DAY);
-            int minute = calendar.get(Calendar.MINUTE);
-
-            TimePickerDialog timePickerDialog = new TimePickerDialog(
-                    requireContext(),
-                    (view1, selectedHour, selectedMinute) -> {
-                        String selectedTime = String.format("%02d:%02d", selectedHour, selectedMinute);
-                        editTextEndTime.setText(selectedTime);
-                    },
-                    hour, minute, true
-            );
-            timePickerDialog.show();
-        });
+        TimePickerDialog timePickerDialog = new TimePickerDialog(
+                requireContext(),
+                (view1, selectedHour, selectedMinute) -> {
+                    @SuppressLint("DefaultLocale") String selectedTime = String.format("%02d:%02d", selectedHour, selectedMinute);
+                    editText.setText(selectedTime);
+                },
+                hour, minute, true
+        );
+        timePickerDialog.show();
     }
 
     private void fetchTeachers() {
@@ -175,34 +176,62 @@ public class AddAbsenceFragment extends Fragment {
     }
 
     private void addAbsence() {
+        if (!validateInputs()) {
+            return;
+        }
+
+        Absence absence = new Absence(
+                editTextProfName.getText().toString().trim(),
+                editTextDate.getText().toString().trim(),
+                editTextStartTime.getText().toString().trim(),
+                editTextEndTime.getText().toString().trim(),
+                editTextReason.getText().toString().trim(),
+                spinnerStatus.getSelectedItem().toString(),
+                editTextSubjectName.getText().toString().trim(),
+                selectedCIN
+        );
+
+        absenceViewModel.addAbsence(absence);
+        absenceViewModel.getErrorMessage().observe(getViewLifecycleOwner(), message -> {
+            if (message != null) {
+                Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+                if (message.equals("Absence ajoutée avec succès")) {
+                    // Afficher le toast de succès
+                    Toast.makeText(getActivity(), "Ajouté avec succès", Toast.LENGTH_SHORT).show();
+                    navigateToFragmentAbsences();
+                }
+            }
+        });
+    }
+
+    private boolean validateInputs() {
         String profName = editTextProfName.getText().toString().trim();
         String date = editTextDate.getText().toString().trim();
         String startTime = editTextStartTime.getText().toString().trim();
         String endTime = editTextEndTime.getText().toString().trim();
         String reason = editTextReason.getText().toString().trim();
         String subjectName = editTextSubjectName.getText().toString().trim();
-        String status = spinnerStatus.getSelectedItem().toString();
 
         if (profName.isEmpty() || date.isEmpty() || startTime.isEmpty() || endTime.isEmpty() || reason.isEmpty() || subjectName.isEmpty()) {
             Toast.makeText(getActivity(), "Veuillez remplir tous les champs", Toast.LENGTH_SHORT).show();
-            return;
+            return false;
         }
 
         if (selectedCIN.isEmpty()) {
             Toast.makeText(getActivity(), "Veuillez sélectionner un enseignant valide", Toast.LENGTH_SHORT).show();
-            return;
+            return false;
         }
 
-        Absence absence = new Absence(profName, date, startTime, endTime, reason, status, subjectName, selectedCIN);
-        absenceViewModel.addAbsence(absence);
+        return true;
+    }
 
-        absenceViewModel.getErrorMessage().observe(getViewLifecycleOwner(), message -> {
-            if (message != null) {
-                Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-                if (message.equals("Absence ajoutée avec succès")) {
-                    requireActivity().getOnBackPressedDispatcher().onBackPressed();
-                }
-            }
-        });
+    // Méthode pour naviguer vers le fragment des absences
+    private void navigateToFragmentAbsences() {
+        AbsenceFragment fragmentAbsences = new AbsenceFragment();
+        requireActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.frame_layout, fragmentAbsences) // Remplacez `fragment_container` par l'ID de votre conteneur de fragments
+                .addToBackStack(null) // Ajout à la pile pour permettre de revenir en arrière
+                .commit();
     }
 }

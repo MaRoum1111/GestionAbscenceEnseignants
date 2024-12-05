@@ -56,7 +56,6 @@ public class EditAbsenceFragment extends Fragment {
         // Charger les données transmises par le fragment précédent
         if (getArguments() != null) {
             absenceId = getArguments().getString("idAbsence");
-            Log.d("EditAbsenceFragment", "Absence ID: " + absenceId);
             Cin=getArguments().getString("cin");
             profNameField.setText(getArguments().getString("profName"));
             dateField.setText(getArguments().getString("date"));

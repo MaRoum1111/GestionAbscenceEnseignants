@@ -105,26 +105,6 @@ public class UserRepository {
                 });
     }
 
-    // Méthode pour récupérer l'image selon le CIN
-    public void getImageByCin(String cin, final OnImageRetrievedListener listener) {
-        db.collection("users")
-                .whereEqualTo("cin", cin)  // Filtrer par CIN
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful() && !task.getResult().isEmpty()) {
-                        String imageUrl = task.getResult().getDocuments().get(0).getString("photo"); // Récupérer l'URL de l'image
-                        listener.onImageRetrieved(imageUrl); // Retourner l'URL de l'image
-                    } else {
-                        listener.onFailure("Image non trouvée pour ce CIN.");
-                    }
-                });
-    }
-
-    // Interface pour gérer le retour de l'URL de l'image
-    public interface OnImageRetrievedListener {
-        void onImageRetrieved(String imageUrl);  // L'URL de l'image
-        void onFailure(String errorMessage);  // Message d'erreur
-    }
 
     // Interface pour gérer les callbacks
     public interface UserCallback {

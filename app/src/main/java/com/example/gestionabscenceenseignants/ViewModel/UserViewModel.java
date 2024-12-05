@@ -91,23 +91,6 @@ public class UserViewModel extends ViewModel {
         });
     }
 
-    // Nouvelle méthode pour récupérer l'URL de l'image en fonction du CIN
-    public void getPhotoByCin(String cin) {
-        repository.getImageByCin(cin, new UserRepository.OnImageRetrievedListener() {
-            @Override
-            public void onImageRetrieved(String imageUrlResult) {
-                // Mise à jour de l'URL de l'image
-                imageUrl.setValue(imageUrlResult);
-            }
-
-            @Override
-            public void onFailure(String errorMessage) {
-                // Mise à jour du message d'erreur en cas de problème
-                imageUrl.setValue(errorMessage);
-            }
-        });
-    }
-
     // Getter pour la liste des utilisateurs
     public LiveData<List<User>> getUsers() {
         return users;

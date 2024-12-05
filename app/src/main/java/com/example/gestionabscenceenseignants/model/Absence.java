@@ -4,6 +4,7 @@ public class Absence {
     private String profName;
     private String cin;
     private String idAbsence;
+    private String idAgent; // Ajout de l'attribut idAgent
     private String date;          // Date de l'absence
     private String startTime;     // Heure de début
     private String endTime;       // Heure de fin
@@ -12,13 +13,12 @@ public class Absence {
     private String subjectName;   // Nom de la matière
     private int absenceCount;
 
-    // Nombre d'absences
-
     // No-argument constructor
     public Absence() {
         // Firebase requires this constructor
     }
 
+    // Constructeur avec idAgent
     public Absence(String profName, String date, String startTime, String endTime, String reason, String status, String subjectName, String cin) {
         this.profName = profName;
         this.date = date;
@@ -27,9 +27,12 @@ public class Absence {
         this.reason = reason;
         this.status = status;
         this.subjectName = subjectName;
-        this.cin=cin;
+        this.cin = cin;
+    }
 
-    }    public Absence(String idAbsence ,String profName, String date, String startTime, String endTime, String reason, String status, String subjectName, String cin) {
+    // Constructeur avec idAbsence
+    public Absence(String idAbsence, String profName, String date, String startTime, String endTime, String reason, String status, String subjectName, String cin) {
+        this.idAbsence = idAbsence;
         this.profName = profName;
         this.date = date;
         this.startTime = startTime;
@@ -37,8 +40,7 @@ public class Absence {
         this.reason = reason;
         this.status = status;
         this.subjectName = subjectName;
-        this.cin=cin;
-
+        this.cin = cin;
     }
 
     // Getters et Setters pour chaque champ
@@ -81,12 +83,13 @@ public class Absence {
     public void setReason(String reason) {
         this.reason = reason;
     }
+
     public String getCin() {
         return cin;
     }
 
     public void setCin(String cin) {
-        this.cin =cin;
+        this.cin = cin;
     }
 
     public String getStatus() {
@@ -111,11 +114,22 @@ public class Absence {
 
     public void setAbsenceCount(int absenceCount) {
         this.absenceCount = absenceCount;
-    }  public String getIdAbsence() {
+    }
+
+    public String getIdAbsence() {
         return idAbsence;
     }
 
     public void setIdAbsence(String idAbsence) {
         this.idAbsence = idAbsence;
+    }
+
+    // Getter et Setter pour idAgent
+    public String getIdAgent() {
+        return idAgent;
+    }
+
+    public void setIdAgent(String idAgent) {
+        this.idAgent = idAgent;
     }
 }
