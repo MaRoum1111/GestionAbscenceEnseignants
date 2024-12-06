@@ -10,6 +10,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -87,36 +88,42 @@ public class AbsenceRepository {
         getCinForUser(new AuthCallback() {
             @Override
             public void onSuccess(List<Absence> absences) {
-                // Ici, le CIN est une seule valeur, nous n'utilisons donc pas la liste d'absences
-                String cin = absences.get(0).getCin();  // Récupérer le CIN depuis l'objet Absence // Il s'agit de la valeur du CIN récupéré
-                absence.setIdAgent(cin);  // Assigner le CIN à l'objet Absence
+                // Assurer que nous avons bien récupéré un CIN
+                if (absences != null && !absences.isEmpty()) {
+                    String cin = absences.get(0).getIdAgent();  // Récupérer le CIN
 
-                // Ajout de l'absence à Firestore
-                db.collection("absences")
-                        .add(absence)  // Ajout de l'absence à Firestore
-                        .addOnSuccessListener(documentReference -> {
-                            String documentId = documentReference.getId(); // Récupérer l'ID généré
+                    // Assigner le CIN à l'objet Absence
+                    absence.setIdAgent(cin);
 
-                            // Mise à jour du champ idAbsence avec l'ID du document
-                            documentReference.update("idAbsence", documentId)
-                                    .addOnSuccessListener(aVoid -> {
-                                        Log.d("AbsenceRepository", "Absence ajoutée et mise à jour avec l'ID : " + documentId);
-                                        callback.onSuccess(null); // Appel du callback avec un succès
-                                    })
-                                    .addOnFailureListener(e -> {
-                                        Log.e("AbsenceRepository", "Erreur lors de la mise à jour de l'ID : " + e.getMessage(), e);
-                                        callback.onFailure("Erreur lors de la mise à jour de l'ID : " + e.getMessage());
-                                    });
-                        })
-                        .addOnFailureListener(e -> {
-                            Log.e("AbsenceRepository", "Erreur lors de l'ajout de l'absence : " + e.getMessage(), e);
-                            callback.onFailure("Erreur lors de l'ajout de l'absence : " + e.getMessage());
-                        });
+                    // Ajouter l'absence à Firestore
+                    db.collection("absences")
+                            .add(absence)
+                            .addOnSuccessListener(documentReference -> {
+                                String documentId = documentReference.getId();  // Récupérer l'ID généré
+
+                                // Mise à jour du champ idAbsence avec l'ID du document
+                                documentReference.update("idAbsence", documentId)
+                                        .addOnSuccessListener(aVoid -> {
+                                            Log.d("AbsenceRepository", "Absence ajoutée et mise à jour avec l'ID : " + documentId);
+                                            callback.onSuccess(null); // Appel du callback avec un succès
+                                        })
+                                        .addOnFailureListener(e -> {
+                                            Log.e("AbsenceRepository", "Erreur lors de la mise à jour de l'ID : " + e.getMessage(), e);
+                                            callback.onFailure("Erreur lors de la mise à jour de l'ID : " + e.getMessage());
+                                        });
+                            })
+                            .addOnFailureListener(e -> {
+                                Log.e("AbsenceRepository", "Erreur lors de l'ajout de l'absence : " + e.getMessage(), e);
+                                callback.onFailure("Erreur lors de l'ajout de l'absence : " + e.getMessage());
+                            });
+                } else {
+                    callback.onFailure("CIN non trouvé pour l'utilisateur connecté.");
+                }
             }
 
             @Override
-            public void onFailure(String errorMessage) {
-                callback.onFailure(errorMessage);  // Si l'échec de la récupération du CIN, on renvoie l'erreur
+            public void onFailure(String error) {
+                callback.onFailure(error); // Propager l'erreur du callback
             }
         });
     }
@@ -149,15 +156,14 @@ public class AbsenceRepository {
             callback.onFailure("ID du document invalide.");
             return;
         }
-
         // Créez un Map pour les champs à mettre à jour dans le document
         Map<String, Object> absenceUpdates = new HashMap<>();
         absenceUpdates.put("profName", updatedAbsence.getProfName());
         absenceUpdates.put("date", updatedAbsence.getDate());
         absenceUpdates.put("startTime", updatedAbsence.getStartTime());
         absenceUpdates.put("endTime", updatedAbsence.getEndTime());
-        absenceUpdates.put("reason", updatedAbsence.getReason());
-        absenceUpdates.put("subjectName", updatedAbsence.getSubjectName());
+        absenceUpdates.put("classe", updatedAbsence.getClasse());
+        absenceUpdates.put("salle", updatedAbsence.getSalle());
         absenceUpdates.put("status", updatedAbsence.getStatus());
         absenceUpdates.put("cin", updatedAbsence.getCin());
 
@@ -174,7 +180,6 @@ public class AbsenceRepository {
                 });
     }
 
-    // Méthode pour récupérer le CIN de l'utilisateur connecté
     public void getCinForUser(AuthCallback callback) {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser == null) {
@@ -189,14 +194,14 @@ public class AbsenceRepository {
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful() && task.getResult() != null && !task.getResult().isEmpty()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            // Vérifie si le CIN est bien présent
                             String cin = document.getString("cin");
                             if (cin != null) {
-                                List<Absence> absences = new ArrayList<>();
+                                // Créer un objet Absence avec le CIN
                                 Absence absence = new Absence();
                                 absence.setIdAgent(cin);  // Définir le CIN dans l'objet Absence
-                                absences.add(absence);  // Ajouter l'objet Absence avec le CIN
-                                callback.onSuccess(absences);  // Appel du callback avec la liste des absences
+
+                                // Passer l'objet Absence au callback
+                                callback.onSuccess(Collections.singletonList(absence));  // Envoie l'objet Absence dans le callback
                                 return;  // Quitter la boucle dès que l'on a trouvé le CIN
                             }
                         }
@@ -209,6 +214,7 @@ public class AbsenceRepository {
                     }
                 });
     }
+
 
     // Interface pour gérer les retours des méthodes
     public interface AuthCallback {

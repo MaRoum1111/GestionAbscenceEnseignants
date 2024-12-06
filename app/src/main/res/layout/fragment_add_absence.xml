@@ -141,7 +141,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Raison de l'absence"
+                        android:text=" Classe"
                         android:textSize="16sp"
                         android:layout_marginBottom="4dp"
                         android:textColor="@color/black" />
@@ -149,7 +149,7 @@
                         android:id="@+id/reason"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Entrez la raison"
+                        android:hint="Entrez la classe "
                         android:inputType="textMultiLine"
                         android:padding="12dp"
                         android:maxLines="3"
@@ -180,7 +180,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Nom de la matière"
+                android:text="Salle"
                 android:textSize="16sp"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="4dp"
@@ -189,7 +189,7 @@
                 android:id="@+id/subjectName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Entrez la matière"
+                android:hint=" Entrez le salle  "
                 android:inputType="text"
                 android:padding="12dp"
                 android:minHeight="48dp" />

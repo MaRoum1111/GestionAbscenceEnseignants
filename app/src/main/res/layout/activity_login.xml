@@ -7,16 +7,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    android:background="@drawable/loginbkg"
+    android:background="@drawable/loginbkg2"
     tools:context=".view.LoginActivity">
-
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="187dp"
-        android:layout_height="118dp"
-        android:layout_marginTop="-100dp"
-        app:srcCompat="@drawable/logo" />
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -30,71 +22,68 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:orientation="vertical"
-            android:layout_gravity="center_horizontal"
             android:padding="24dp">
 
 
             <TextView
+                android:id="@+id/loginText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Login"
-                android:id="@+id/loginText"
-                android:textSize="36sp"
+                android:text="Connexion"
                 android:textAlignment="center"
-                android:textStyle="bold"
-                android:textColor="@color/blue"/>
+                android:textColor="@color/blue"
+                android:textSize="36sp"
+                android:textStyle="bold" />
 
             <EditText
+                android:id="@+id/emailField"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:id="@+id/emailField"
+                android:layout_marginTop="40dp"
                 android:background="@drawable/edit_text_background"
                 android:drawableLeft="@drawable/baseline_person_24"
                 android:drawablePadding="8dp"
-                android:hint="Username"
+                android:hint="Email"
                 android:padding="8dp"
                 android:textColor="@color/black"
-                android:textColorHighlight="@color/cardview_dark_background"
-                android:layout_marginTop="40dp"/>
+                android:textColorHighlight="@color/cardview_dark_background" />
 
             <EditText
+                android:id="@+id/passwordField"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:id="@+id/passwordField"
+                android:layout_marginTop="20dp"
                 android:background="@drawable/edit_text_background"
                 android:drawableLeft="@drawable/baseline_lock_24"
                 android:drawablePadding="8dp"
-                android:hint="Password"
-                android:padding="8dp"
+                android:hint="Mot de passe"
                 android:inputType="textPassword"
+                android:padding="8dp"
                 android:textColor="@color/black"
-                android:textColorHighlight="@color/cardview_dark_background"
-                android:layout_marginTop="20dp"/>
+                android:textColorHighlight="@color/cardview_dark_background" />
 
             <Button
+                android:id="@+id/loginButton"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:id="@+id/loginButton"
-                android:text="Login"
-                android:textSize="18sp"
                 android:layout_marginTop="30dp"
                 android:backgroundTint="@color/blue"
-                app:cornerRadius = "20dp"/>
+                android:text="Se connecter"
+                android:textSize="18sp"
+                app:cornerRadius="20dp" />
 
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:text="Not yet registered? SignUp Now"
-        android:textSize="14sp"
-        android:textAlignment="center"
-        android:id="@+id/signupText"
-        android:textColor="@color/blue"
-        android:layout_marginBottom="20dp"/>
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="343dp"
+        android:layout_height="56dp"
+        android:layout_gravity="center"
+        app:srcCompat="@drawable/img" />
+
 
 </LinearLayout>

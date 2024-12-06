@@ -11,13 +11,8 @@
         android:title="Absence"/>
     <item
         android:id="@+id/nav_users"
-        android:icon="@drawable/icc_users"
-        android:title="Utilisateurs"/>
+        android:icon="@drawable/icc_baseline_today_24"
+        android:title="Emplois"/>
 
-    <item
-        android:id="@+id/nav_statistics"
-        android:icon="@drawable/icc_chart"
-        android:title="rapport"
-        />
 
 </menu>
