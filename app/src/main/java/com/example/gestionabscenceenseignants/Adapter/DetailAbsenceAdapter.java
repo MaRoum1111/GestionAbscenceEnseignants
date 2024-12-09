@@ -65,12 +65,6 @@ public class DetailAbsenceAdapter extends RecyclerView.Adapter<DetailAbsenceAdap
         return absenceList != null ? absenceList.size() : 0;  // Vérifier si absenceList est nul
     }
 
-    // Mettre à jour la liste des absences
-    public void setAbsenceList(List<Absence> absenceList) {
-        this.absenceList = absenceList;
-        notifyDataSetChanged();  // Mettre à jour l'adaptateur avec les nouvelles données
-    }
-
     // ViewHolder pour chaque item de la liste
     public static class AbsenceDetailViewHolder extends RecyclerView.ViewHolder {
         TextView subjectName, date, startTime, endTime, reason, status;

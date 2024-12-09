@@ -122,6 +122,65 @@ public class UserRepository {
         } else {
             callback.onFailure("Utilisateur non connecté.");
         }
+    }// Méthode pour supprimer un utilisateur
+    public void deleteUser(String cin, final UserCallback callback) {
+        FirebaseUser currentUser = auth.getCurrentUser();
+        if (currentUser != null) {
+            // Rechercher le document utilisateur avec le CIN
+            db.collection("users")
+                    .whereEqualTo("cin", cin)  // Filtrer par CIN
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                            // Le document existe, récupérer son ID
+                            String userId = task.getResult().getDocuments().get(0).getId(); // Prendre l'ID du premier document trouvé
+                            Log.d("UserRepository", "Document trouvé avec ID : " + userId);
+
+                            // Supprimer l'utilisateur
+                            db.collection("users").document(userId)
+                                    .delete()
+                                    .addOnSuccessListener(aVoid -> {
+                                        Log.d("UserRepository", "Utilisateur supprimé avec succès.");
+                                        callback.onSuccessMessage("Utilisateur supprimé avec succès.");
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        Log.e("UserRepository", "Erreur lors de la suppression de l'utilisateur : " + e.getMessage());
+                                        callback.onFailure("Erreur lors de la suppression de l'utilisateur.");
+                                    });
+                        } else {
+                            // Aucun utilisateur trouvé avec ce CIN
+                            callback.onFailure("Aucun utilisateur trouvé avec ce CIN.");
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.e("UserRepository", "Erreur lors de la récupération de l'utilisateur : " + e.getMessage());
+                        callback.onFailure("Erreur lors de la récupération de l'utilisateur.");
+                    });
+        } else {
+            callback.onFailure("Utilisateur non connecté.");
+        }
+    }
+
+
+    // Méthode pour modifier un utilisateur
+    public void editUser(User user, final UserCallback callback) {
+        String userId = user.getCin();  // Assurer que l'ID de l'utilisateur est disponible
+        if (userId == null || userId.isEmpty()) {
+            callback.onFailure("ID utilisateur invalide.");
+            return;
+        }
+
+        // Mise à jour des données de l'utilisateur dans Firestore
+        db.collection("users").document(userId)
+                .set(user, SetOptions.merge()) // Merge permet de ne pas écraser d'autres champs
+                .addOnSuccessListener(aVoid -> {
+                    Log.d("UserRepository", "Utilisateur modifié avec succès.");
+                    callback.onSuccessMessage("Utilisateur modifié avec succès.");
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("UserRepository", "Erreur lors de la modification de l'utilisateur : " + e.getMessage());
+                    callback.onFailure("Erreur lors de la modification de l'utilisateur.");
+                });
     }
 
     // Interface pour les callbacks
