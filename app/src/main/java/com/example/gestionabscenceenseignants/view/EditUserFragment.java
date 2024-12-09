@@ -22,7 +22,7 @@ import com.example.gestionabscenceenseignants.model.User;
 
 public class EditUserFragment extends Fragment {
 
-    private EditText editTextCIN, editTextName, editTextEmail, editTextPassword, subjectField;
+    private EditText editTextCIN, editTextName, editTextEmail, editTextPassword;
     private Spinner spinnerRole;
     private UserViewModel userViewModel;
     private String nom, Cin,email,pass,role;
@@ -114,10 +114,6 @@ public class EditUserFragment extends Fragment {
         }
         if (editTextPassword.getText().toString().isEmpty()) {
             editTextPassword.setError("Veuillez entrer un mot de passe");
-            return false;
-        }
-        if (subjectField.getText().toString().isEmpty()) {
-            subjectField.setError("Veuillez entrer la matière");
             return false;
         }
         return true;

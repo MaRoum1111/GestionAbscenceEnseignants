@@ -162,26 +162,58 @@ public class UserRepository {
     }
 
 
-    // Méthode pour modifier un utilisateur
+    // Méthode pour modifier un utilisateur sans ID explicite
     public void editUser(User user, final UserCallback callback) {
-        String userId = user.getCin();  // Assurer que l'ID de l'utilisateur est disponible
-        if (userId == null || userId.isEmpty()) {
-            callback.onFailure("ID utilisateur invalide.");
-            return;
-        }
+        FirebaseUser currentUser = auth.getCurrentUser();
+        if (currentUser != null) {
+            Log.d("UserRepository", "Utilisateur connecté : " + currentUser.getUid());
 
-        // Mise à jour des données de l'utilisateur dans Firestore
-        db.collection("users").document(userId)
-                .set(user, SetOptions.merge()) // Merge permet de ne pas écraser d'autres champs
-                .addOnSuccessListener(aVoid -> {
-                    Log.d("UserRepository", "Utilisateur modifié avec succès.");
-                    callback.onSuccessMessage("Utilisateur modifié avec succès.");
-                })
-                .addOnFailureListener(e -> {
-                    Log.e("UserRepository", "Erreur lors de la modification de l'utilisateur : " + e.getMessage());
-                    callback.onFailure("Erreur lors de la modification de l'utilisateur.");
-                });
+            // Utiliser le CIN pour identifier l'utilisateur à mettre à jour
+            db.collection("users")
+                    .whereEqualTo("cin", user.getCin()) // Assurez-vous que le CIN est unique
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            Log.d("UserRepository", "Recherche réussie, nombre de résultats : " + task.getResult().size());
+
+                            if (!task.getResult().isEmpty()) {
+                                // Récupérer l'ID du document correspondant
+                                String userId = task.getResult().getDocuments().get(0).getId();
+                                Log.d("UserRepository", "Utilisateur trouvé avec ID : " + userId);
+
+                                DocumentReference userRef = db.collection("users").document(userId);
+
+                                // Mettre à jour l'utilisateur
+                                userRef.set(user, SetOptions.merge()) // Utilisation de merge pour ne pas écraser d'autres champs non spécifiés
+                                        .addOnSuccessListener(aVoid -> {
+                                            Log.d("UserRepository", "Utilisateur mis à jour avec succès");
+                                            callback.onSuccessMessage("Utilisateur mis à jour avec succès.");
+                                        })
+                                        .addOnFailureListener(e -> {
+                                            Log.e("UserRepository", "Erreur lors de la mise à jour de l'utilisateur : " + e.getMessage());
+                                            callback.onFailure("Erreur lors de la mise à jour de l'utilisateur.");
+                                        });
+                            } else {
+                                // Si aucun utilisateur n'est trouvé avec le CIN
+                                Log.d("UserRepository", "Aucun utilisateur trouvé avec le CIN : " + user.getCin());
+                                callback.onFailure("Utilisateur non trouvé pour la mise à jour.");
+                            }
+                        } else {
+                            Log.e("UserRepository", "Erreur lors de la récupération de l'utilisateur : " + task.getException().getMessage());
+                            callback.onFailure("Erreur lors de la récupération de l'utilisateur.");
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.e("UserRepository", "Erreur lors de l'appel à Firestore : " + e.getMessage());
+                        callback.onFailure("Erreur lors de l'appel à Firestore.");
+                    });
+        } else {
+            Log.d("UserRepository", "Aucun utilisateur connecté");
+            callback.onFailure("Utilisateur non connecté.");
+        }
     }
+
+
 
     // Interface pour les callbacks
     public interface UserCallback {

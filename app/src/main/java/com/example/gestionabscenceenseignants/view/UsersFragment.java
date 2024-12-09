@@ -86,7 +86,7 @@ public class UsersFragment extends Fragment implements UsersAdapter.OnUserClickL
         // Passer les données de l'absence sélectionnée en tant qu'arguments
         Bundle args = new Bundle();
         args.putString("cin", user.getCin());
-        args.putString("Name",user.getName());
+        args.putString("name",user.getName());
         args.putString("email",user.getEmail());
         args.putString("pass", user.getPassword());
         args.putString("role", user.getRole());
