@@ -63,9 +63,9 @@
                     android:background="@drawable/bottom_background"
                     android:elevation="4dp"
                     app:itemIconSize="24dp"
-                    app:itemTextColor="@color/blue"
-                    app:itemIconTint="@color/blue"
-                    app:menu="@menu/bottom_nav_menu" />
+                    app:itemTextColor="@color/white"
+                    app:itemIconTint="@color/white"
+                    app:menu="@menu/bottom_menu_agent" />
             </com.google.android.material.bottomappbar.BottomAppBar>
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
     </LinearLayout>

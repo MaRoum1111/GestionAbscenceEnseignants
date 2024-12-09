@@ -7,14 +7,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-
 import com.example.gestionabscenceenseignants.R;
 import com.example.gestionabscenceenseignants.ViewModel.UserViewModel;
 import com.google.android.material.bottomappbar.BottomAppBar;
@@ -62,7 +60,7 @@ public class AgentActivity extends AppCompatActivity {
 
         // Afficher le HomeFragment par défaut lorsque l’activité démarre
         if (savedInstanceState == null) {
-            loadFragment(new HomeFragment());
+            loadFragment(new AccueilAgentFragment());
         }
     }
 

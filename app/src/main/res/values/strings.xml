@@ -1,39 +1,34 @@
 <resources>
-    <string name="app_name">GestionAbscenceEnseignants</string>
+    <string name="app_name" translatable="false">GestionAbscenceEnseignants</string>
     <!-- Descriptions pour les icônes -->
-    <string name="logo_desc">Logo de l\'application</string>
-    <string name="menu_desc">Menu principal</string>
-    <string name="absences_desc">Icône pour gérer les absences</string>
-    <string name="reclamations_desc">Icône pour suivre les réclamations</string>
-    <string name="users_desc">Icône pour gérer les utilisateurs</string>
-    <string name="notifications_desc">Icône pour les notifications</string>
+    <string name="logo_desc" translatable="false">Logo de l\'application</string>
+    <string name="menu_desc" translatable="false">Menu principal</string>
+    <string name="absences_desc" translatable="false">Icône pour gérer les absences</string>
+    <string name="reclamations_desc" translatable="false">Icône pour suivre les réclamations</string>
+    <string name="users_desc" translatable="false">Icône pour gérer les utilisateurs</string>
+    <string name="notifications_desc" translatable="false">Icône pour les notifications</string>
 
     <!-- Titres et textes des cartes -->
-    <string name="absences_title">Absences</string>
-    <string name="absences_subtitle">Gérer les absences</string>
-    <string name="reclamations_title">Réclamations</string>
-    <string name="reclamations_subtitle">Suivre les réclamations</string>
-    <string name="users_title">Utilisateurs</string>
-    <string name="users_subtitle">Gérer les utilisateurs</string>
+    <string name="absences_title" translatable="false">Absences</string>
+    <string name="absences_subtitle" translatable="false">Gérer les absences</string>
+    <string name="reclamations_title" translatable="false">Réclamations</string>
+    <string name="reclamations_subtitle" translatable="false">Suivre les réclamations</string>
+    <string name="users_title" translatable="false">Utilisateurs</string>
+    <string name="users_subtitle" translatable="false">Gérer les utilisateurs</string>
 
     <!-- Notifications -->
-    <string name="notifications_text">Vous avez %1$d notifications</string>
+    <string name="notifications_text" translatable="false">Vous avez %1$d notifications</string>
 
     <!-- Actions -->
-    <string name="view_details">Voir les détails</string>
-    <string name="logout">Déconnexion</string>
+    <string name="view_details" translatable="false">Voir les détails</string>
+    <string name="logout" translatable="false">Déconnexion</string>
 
     <!-- Messages génériques -->
-    <string name="loading">Chargement...</string>
-    <string name="error">Une erreur s\'est produite</string>
-    <string name="retry">Réessayer</string>
-
-    <!-- Menu Hamburger Options -->
-    <string name="profile">Profil</string>
-    <string name="settings">Paramètres</string>
-    <string name="logout_confirmation">Êtes-vous sûr de vouloir vous déconnecter ?</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="gestion_absences">Gestion des absences</string>
+    <string name="loading" translatable="false">Chargement...</string>
+    <string name="error" translatable="false">Une erreur s\'est produite</string>
+        <string name="total_enseignants">Total enseignants</string>
+        <string name="total_salles">Total salles</string>
+        <string name="ajouter_absence">Ajouter une absence</string>
+        <string name="consulter_emplois">Consulter emplois</string>
 </resources>
 
