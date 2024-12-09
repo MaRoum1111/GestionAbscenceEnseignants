@@ -32,7 +32,6 @@ public class EmploiAdapter extends RecyclerView.Adapter<EmploiAdapter.EmploiView
         holder.tvJour.setText(emploi.getJour());
         holder.tvHeure.setText(emploi.getHeure());
     }
-
     @Override
     public int getItemCount() {
         return emploiList.size();
