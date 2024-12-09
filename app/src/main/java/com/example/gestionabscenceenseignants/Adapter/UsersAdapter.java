@@ -30,7 +30,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
     @Override
     public void onBindViewHolder(@NonNull UsersViewHolder holder, int position) {
         User user = userList.get(position);
-        holder.Email.setText(user.getCin());
+        holder.cin.setText(user.getCin());
         holder.profName.setText(user.getName());
         holder.role.setText(user.getRole());
         holder.Email.setText(user.getEmail()); // Mise à jour de l'email
@@ -50,7 +50,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
             profName = itemView.findViewById(R.id.profName);
             Email = itemView.findViewById(R.id.email);
             role = itemView.findViewById(R.id.role);
-            cin=itemView.findViewWithTag((R.id.profCin));
+            cin=itemView.findViewById((R.id.profCin));
 
         }
     }
