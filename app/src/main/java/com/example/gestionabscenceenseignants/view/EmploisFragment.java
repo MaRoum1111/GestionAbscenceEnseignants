@@ -1,66 +1,101 @@
 package com.example.gestionabscenceenseignants.view;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import android.widget.Toast;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import com.example.gestionabscenceenseignants.R;
+import com.example.gestionabscenceenseignants.ViewModel.EmploiViewModel;
+import com.example.gestionabscenceenseignants.Adapter.EmploiAdapter;
+import com.example.gestionabscenceenseignants.model.Emploi;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import java.io.InputStream;
+import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link EmploisFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class EmploisFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private EmploiViewModel emploiViewModel;
+    private RecyclerView recyclerView;
+    private EmploiAdapter emploiAdapter;
+    private FloatingActionButton fabImportFile;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    // ActivityResultLauncher for file selection
+    private final ActivityResultLauncher<Intent> filePickerLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    Intent data = result.getData();
+                    if (data != null && data.getData() != null) {
+                        Uri fileUri = data.getData();
+                        handleFileImport(fileUri);
+                    }
+                } else {
+                    Toast.makeText(requireContext(), "Aucun fichier sélectionné", Toast.LENGTH_SHORT).show();
+                }
+            }
+    );
 
-    public EmploisFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment EmploisFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static EmploisFragment newInstance(String param1, String param2) {
-        EmploisFragment fragment = new EmploisFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
+    @Nullable
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_emplois, container, false);
+
+        // Initialize ViewModel
+        emploiViewModel = new ViewModelProvider(this).get(EmploiViewModel.class);
+
+        // Setup RecyclerView
+        recyclerView = view.findViewById(R.id.rv_emplois);
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+        emploiAdapter = new EmploiAdapter();
+        recyclerView.setAdapter(emploiAdapter);
+
+        // Setup FloatingActionButton
+        fabImportFile = view.findViewById(R.id.fab_import_file);
+        fabImportFile.setOnClickListener(v -> openFilePicker());
+
+        return view;
+    }
+    private void openFilePicker() {
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"); // MIME type for Excel files
+        filePickerLauncher.launch(intent);
+    }
+    private void handleFileImport(Uri fileUri) {
+        try {
+            InputStream inputStream = requireContext().getContentResolver().openInputStream(fileUri);
+
+            // Use ViewModel to process the file
+            List<Emploi> emplois = emploiViewModel.traiterFichierExcel(inputStream);
+
+            if (emplois != null && !emplois.isEmpty()) {
+                // Update RecyclerView with new data
+                emploiAdapter.submitList(emplois);
+
+                // Save to Firestore
+                emploiViewModel.enregistrerEmplois(emplois);
+
+                Toast.makeText(requireContext(), "Fichier importé avec succès", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(requireContext(), "Fichier vide ou invalide", Toast.LENGTH_SHORT).show();
+            }
+
+        } catch (Exception e) {
+            Log.e("EmploisFragment", "Erreur lors de l'importation du fichier : ", e);
+            Toast.makeText(requireContext(), "Erreur lors de l'importation du fichier", Toast.LENGTH_SHORT).show();
         }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_emplois, container, false);
     }
 }
