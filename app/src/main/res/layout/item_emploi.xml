@@ -1,0 +1,68 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="8dp"
+    android:background="?attr/selectableItemBackground"
+    android:gravity="center_vertical">
+
+    <!-- Image devant le texte -->
+    <ImageView
+        android:id="@+id/iv_file_icon"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/ic_execl_file"
+        android:contentDescription="Icône fichier"
+        android:layout_marginEnd="8dp"
+        app:tint="@color/blue_dark" />
+
+    <!-- Conteneur pour le texte -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <!-- Nom du fichier -->
+        <TextView
+            android:id="@+id/tv_file_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nom du fichier"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:paddingBottom="4dp" />
+    </LinearLayout>
+
+    <!-- Conteneur vertical pour date et heure alignés à droite -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="end">
+
+        <!-- Date -->
+        <TextView
+            android:id="@+id/tv_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Date"
+            android:textSize="14sp"
+            android:textColor="@color/blue_dark"
+            android:gravity="end" />
+
+        <!-- Heure -->
+        <TextView
+            android:id="@+id/tv_heure"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Heure"
+            android:textSize="14sp"
+            android:textColor="@color/gray"
+            android:gravity="end" />
+    </LinearLayout>
+
+</LinearLayout>

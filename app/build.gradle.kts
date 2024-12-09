@@ -41,7 +41,9 @@ dependencies {
     implementation (platform("com.google.firebase:firebase-bom:33.6.0"))
     implementation ("com.google.firebase:firebase-auth")       // Firebase Authentification
     implementation ("com.google.firebase:firebase-firestore")    // Firebase Firestore
-    implementation ("com.google.firebase:firebase-storage")      // Firebase Storage
+    implementation ("com.google.firebase:firebase-storage")
+    implementation (libs.poi)// Pour lire les fichiers Excel
+    implementation (libs.apache.poi.ooxml) // Pour les fichiers Excel au format .xlsx// Firebase Storage
     implementation (libs.github.glide)
     annotationProcessor (libs.compiler)
     // Android Dependencies

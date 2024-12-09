@@ -26,9 +26,11 @@
     <!-- Messages génériques -->
     <string name="loading" translatable="false">Chargement...</string>
     <string name="error" translatable="false">Une erreur s\'est produite</string>
-        <string name="total_enseignants">Total enseignants</string>
-        <string name="total_salles">Total salles</string>
-        <string name="ajouter_absence">Ajouter une absence</string>
-        <string name="consulter_emplois">Consulter emplois</string>
+    <string name="total_enseignants">Total enseignants</string>
+    <string name="total_salles">Total salles</string>
+    <string name="ajouter_absence">Ajouter une absence</string>
+    <string name="consulter_emplois">Consulter emplois</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
 

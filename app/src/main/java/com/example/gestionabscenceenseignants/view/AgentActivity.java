@@ -31,7 +31,7 @@ public class AgentActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_agent); // L'interface de l'agent
+        setContentView(R.layout.activity_admin);
 
         // Initialiser les vues
         drawerLayout = findViewById(R.id.drawer_layout);
@@ -56,7 +56,42 @@ public class AgentActivity extends AppCompatActivity {
         userViewModel.getUserName().observe(this, navUserName::setText);
         userViewModel.getUserEmail().observe(this, navUserEmail::setText);
 
+        // Gérer les éléments du menu dans le NavigationView
+        navigationView.setNavigationItemSelectedListener(menuItem -> {
+            int id = menuItem.getItemId();
+            Log.d("Agent Activity", "Item sélectionné : " + id); // Debugging
 
+            if (id == R.id.nav_home) {
+                loadFragment(new HomeFragment());
+            } else if (id == R.id.nav_settings) {
+                Toast.makeText(this, "Ouvrir les paramètres", Toast.LENGTH_SHORT).show();
+            } else if (id == R.id.nav_share) {
+                shareApp();
+            } else if (id == R.id.nav_about) {
+                Toast.makeText(this, "À propos de nous : Version 1.0", Toast.LENGTH_SHORT).show();
+            } else if (id == R.id.nav_logout) {
+                logout();
+            }
+
+            drawerLayout.closeDrawers(); // Fermer le Drawer après avoir sélectionné un item
+            return true;
+        });
+
+        // Configuration de BottomNavigationView
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int id = item.getItemId();
+            Log.d("AdminActivity", "Item sélectionné dans BottomNavigation : " + id); // Debugging
+
+            if (id == R.id.nav_home) {
+                loadFragment(new AccueilAgentFragment());
+            } else if (id == R.id.nav_absences) {
+                loadFragment(new AbsenceFragment());
+            } else if (id == R.id.nav_emplois) {
+                loadFragment(new EmploisFragment());
+            }
+
+            return true; // Indique que l'item a été sélectionné et l'action a été effectuée
+        });
 
         // Afficher le HomeFragment par défaut lorsque l’activité démarre
         if (savedInstanceState == null) {
@@ -84,11 +119,13 @@ public class AgentActivity extends AppCompatActivity {
 
     // Fonction pour gérer la déconnexion
     private void logout() {
+        Log.d("AdminActivity", "Déconnexion en cours..."); // Debugging
         Toast.makeText(this, "Déconnexion réussie", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
+
 
     // Fonction pour partager l'application
     private void shareApp() {

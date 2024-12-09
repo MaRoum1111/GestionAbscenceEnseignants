@@ -16,21 +16,31 @@
         app:cardBackgroundColor="@color/white">
 
         <!-- Image de l'enseignant -->
+
+        <!-- Partie droite contenant les TextViews -->
         <ImageView
             android:id="@+id/profImage"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginEnd="16dp"
-            android:src="@drawable/ic_teacher"
-            android:scaleType="centerCrop" />
+            android:scaleType="centerCrop"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_teacher" />
 
-        <!-- Partie droite contenant les TextViews -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_weight="1">
-
+            <TextView
+                android:id="@+id/profCin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Cin"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/blue_dark"
+                android:layout_marginBottom="8dp" />
             <!-- Nom du professeur -->
             <TextView
                 android:id="@+id/profName"

@@ -35,8 +35,8 @@
                 app:cardElevation="4dp">
 
                 <LinearLayout
-                    android:layout_width="160dp"
-                    android:layout_height="89dp"
+                    android:layout_width="163dp"
+                    android:layout_height="96dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
@@ -49,10 +49,11 @@
 
                     <!-- Texte -->
                     <TextView
-                        android:layout_width="82dp"
-                        android:layout_height="89dp"
-                        android:layout_marginStart="16dp"
-                        android:padding="16dp"
+                        android:layout_width="100dp"
+                        android:layout_height="75dp"
+                        android:layout_marginStart="0dp"
+                        android:padding="19dp"
+                        android:textSize="10dp"
                         android:text="Total Enseignants :"
                         android:textColor="@color/blueblue"
                         android:textStyle="bold" />
@@ -87,6 +88,7 @@
                         android:layout_height="89dp"
                         android:layout_marginStart="16dp"
                         android:padding="16dp"
+                        android:textSize="10dp"
                         android:text="Total Salles :"
                         android:textColor="@color/blueblue"
                         android:textStyle="bold" />
@@ -170,7 +172,7 @@
 
         <CalendarView
             android:id="@+id/calendarView"
-            android:layout_width="408dp"
+            android:layout_width="350dp"
             android:layout_height="320dp"
             android:layout_marginBottom="8dp"
             android:background="@color/white" />
