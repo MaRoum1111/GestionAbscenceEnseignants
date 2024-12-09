@@ -92,8 +92,9 @@ public class AdminActivity extends AppCompatActivity {
                 loadFragment(new UsersFragment());
             } else if (id == R.id.nav_statistics) {
                 loadFragment(new ReportFragment());
+            }else if (id == R.id.nav_emplois) {
+                loadFragment(new EmploisFragment());
             }
-
             return true; // Indique que l'item a été sélectionné et l'action a été effectuée
         });
 
@@ -123,11 +124,13 @@ public class AdminActivity extends AppCompatActivity {
 
     // Fonction pour gérer la déconnexion
     private void logout() {
+        Log.d("AdminActivity", "Déconnexion en cours..."); // Debugging
         Toast.makeText(this, "Déconnexion réussie", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
+
 
     // Fonction pour partager l'application
     private void shareApp() {
