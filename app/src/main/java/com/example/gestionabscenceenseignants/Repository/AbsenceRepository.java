@@ -215,6 +215,49 @@ public class AbsenceRepository {
                 });
     }
 
+    // Méthode pour récupérer les absences de l'utilisateur connecté
+    public void getConnectedProfAbsences(AuthCallback callback) {
+        // Étape 1 : Récupérer le CIN de l'utilisateur connecté
+        getCinForUser(new AuthCallback() {
+            @Override
+            public void onSuccess(List<Absence> absences) {
+                // Vérifier que nous avons récupéré un CIN valide
+                if (absences != null && !absences.isEmpty()) {
+                    String cin = absences.get(0).getIdAgent(); // Récupérer le CIN
+
+                    // Étape 2 : Récupérer les absences de Firestore pour ce CIN
+                    db.collection("absences")
+                            .whereEqualTo("cin", cin) // Filtrer les absences par CIN
+                            .orderBy("date", Query.Direction.DESCENDING) // Trier par date décroissante
+                            .get()
+                            .addOnCompleteListener(task -> {
+                                if (task.isSuccessful() && task.getResult() != null && !task.getResult().isEmpty()) {
+                                    List<Absence> userAbsences = new ArrayList<>();
+                                    // Parcourir les résultats et les convertir en objets Absence
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        Absence absence = document.toObject(Absence.class);
+                                        userAbsences.add(absence);
+                                    }
+                                    callback.onSuccess(userAbsences); // Retourner la liste des absences
+                                } else {
+                                    callback.onFailure("Aucune absence trouvée pour cet utilisateur.");
+                                }
+                            })
+                            .addOnFailureListener(e -> {
+                                Log.e("AbsenceRepository", "Erreur lors de la récupération des absences : " + e.getMessage(), e);
+                                callback.onFailure("Erreur lors de la récupération des absences.");
+                            });
+                } else {
+                    callback.onFailure("Impossible de récupérer le CIN de l'utilisateur connecté.");
+                }
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                callback.onFailure(errorMessage); // Propager l'erreur du CIN
+            }
+        });
+    }
 
     // Interface pour gérer les retours des méthodes
     public interface AuthCallback {

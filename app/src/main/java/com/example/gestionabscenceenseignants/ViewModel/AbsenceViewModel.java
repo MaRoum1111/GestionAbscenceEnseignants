@@ -53,7 +53,18 @@ public class AbsenceViewModel extends ViewModel {
             }
         });
     }
+public void AbsencesByConnectedProf(){
+        repository.getConnectedProfAbsences(new AbsenceRepository.AuthCallback() {@Override
+        public void onSuccess(List<Absence> absencesList) {
+            absences.setValue(absencesList); // Met à jour la liste des absences
+        }
 
+            @Override
+            public void onFailure(String error) {
+                errorMessage.setValue("Erreur lors du chargement : " + error);
+            }
+    });
+}
     // Ajouter une absence
     public void addAbsence(Absence absence) {
         isAdding.setValue(true); // Début de l'opération d'ajout
