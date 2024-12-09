@@ -105,12 +105,13 @@ public class DetailAbsenceFragment extends Fragment implements DetailAbsenceAdap
         // Passer les données de l'absence sélectionnée en tant qu'arguments
         Bundle args = new Bundle();
         args.putString("idAbsence", absence.getIdAbsence());
+        args.putString("profName",absence.getProfName());
         args.putString("cin",absence.getCin());
-        args.putString("subjectName", absence.getSubjectName());
+        args.putString("salle", absence.getSalle());
         args.putString("date", absence.getDate());
         args.putString("startTime", absence.getStartTime());
         args.putString("endTime", absence.getEndTime());
-        args.putString("reason", absence.getReason());
+        args.putString("classe", absence.getClasse());
         args.putString("status", absence.getStatus());
         editFragment.setArguments(args);
 

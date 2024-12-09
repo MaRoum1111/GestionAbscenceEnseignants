@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
@@ -10,23 +9,28 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <ImageView
+        android:id="@+id/nav_header_image"
         android:layout_width="70dp"
-        android:layout_height="50dp"
+        android:layout_height="70dp"
         android:src="@drawable/logo" />
 
     <TextView
+        android:id="@+id/nav_header_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Android Knowledge"
+        android:text="Nom de l'utilisateur"
         android:textColor="@color/white"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        android:layout_marginTop="8dp"/>
 
     <TextView
+        android:id="@+id/nav_header_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="contact@androidknowledge.com"
+        android:text="email@exemple.com"
         android:textColor="@color/white"
         android:textSize="14sp"
+        android:layout_marginTop="4dp"
         android:layout_marginBottom="16dp"/>
 
 </LinearLayout>

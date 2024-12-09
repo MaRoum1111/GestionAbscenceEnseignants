@@ -56,14 +56,13 @@ public class EditAbsenceFragment extends Fragment {
         // Charger les données transmises par le fragment précédent
         if (getArguments() != null) {
             absenceId = getArguments().getString("idAbsence");
-            Log.d("EditAbsenceFragment", "Absence ID: " + absenceId);
             Cin=getArguments().getString("cin");
             profNameField.setText(getArguments().getString("profName"));
             dateField.setText(getArguments().getString("date"));
             startTimeField.setText(getArguments().getString("startTime"));
             endTimeField.setText(getArguments().getString("endTime"));
-            reasonField.setText(getArguments().getString("reason"));
-            subjectField.setText(getArguments().getString("subjectName"));
+            reasonField.setText(getArguments().getString("classe"));
+            subjectField.setText(getArguments().getString("salle"));
             // Sélectionner le statut correspondant dans le Spinner
             String status = getArguments().getString("status");
             if (status != null) {

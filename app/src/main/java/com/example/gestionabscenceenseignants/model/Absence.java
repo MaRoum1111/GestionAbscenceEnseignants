@@ -4,41 +4,42 @@ public class Absence {
     private String profName;
     private String cin;
     private String idAbsence;
+    private String idAgent; // Ajout de l'attribut idAgent
     private String date;          // Date de l'absence
     private String startTime;     // Heure de début
     private String endTime;       // Heure de fin
-    private String reason;        // Raison de l'absence
+    private String Classe;        // Raison de l'absence
     private String status;        // Statut de l'absence (justifiée/non justifiée)
-    private String subjectName;   // Nom de la matière
+    private String Salle;   // Nom de la matière
     private int absenceCount;
-
-    // Nombre d'absences
-
     // No-argument constructor
     public Absence() {
         // Firebase requires this constructor
     }
 
-    public Absence(String profName, String date, String startTime, String endTime, String reason, String status, String subjectName, String cin) {
+    // Constructeur avec idAgent
+    public Absence(String profName, String date, String startTime, String endTime, String Classe, String status, String Salle, String cin) {
         this.profName = profName;
         this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
-        this.reason = reason;
+        this.Classe = Classe;
         this.status = status;
-        this.subjectName = subjectName;
-        this.cin=cin;
+        this.Salle = Salle;
+        this.cin = cin;
+    }
 
-    }    public Absence(String idAbsence ,String profName, String date, String startTime, String endTime, String reason, String status, String subjectName, String cin) {
+    // Constructeur avec idAbsence
+    public Absence(String idAbsence, String profName, String date, String startTime, String endTime, String Classe, String status, String Salle, String cin) {
+        this.idAbsence = idAbsence;
         this.profName = profName;
         this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
-        this.reason = reason;
+        this.Classe = Classe;
         this.status = status;
-        this.subjectName = subjectName;
-        this.cin=cin;
-
+        this.Salle = Salle;
+        this.cin = cin;
     }
 
     // Getters et Setters pour chaque champ
@@ -74,19 +75,20 @@ public class Absence {
         this.endTime = endTime;
     }
 
-    public String getReason() {
-        return reason;
+    public String getSalle() {
+        return Salle;
     }
 
-    public void setReason(String reason) {
-        this.reason = reason;
+    public void setSalle(String Salle) {
+        this.Salle = Salle;
     }
+
     public String getCin() {
         return cin;
     }
 
     public void setCin(String cin) {
-        this.cin =cin;
+        this.cin = cin;
     }
 
     public String getStatus() {
@@ -97,12 +99,12 @@ public class Absence {
         this.status = status;
     }
 
-    public String getSubjectName() {
-        return subjectName;
+    public String getClasse() {
+        return Classe;
     }
 
-    public void setSubjectName(String subjectName) {
-        this.subjectName = subjectName;
+    public void setClasse(String Classe) {
+        this.Classe= Classe;
     }
 
     public int getAbsenceCount() {
@@ -111,11 +113,22 @@ public class Absence {
 
     public void setAbsenceCount(int absenceCount) {
         this.absenceCount = absenceCount;
-    }  public String getIdAbsence() {
+    }
+
+    public String getIdAbsence() {
         return idAbsence;
     }
 
     public void setIdAbsence(String idAbsence) {
         this.idAbsence = idAbsence;
+    }
+
+    // Getter et Setter pour idAgent
+    public String getIdAgent() {
+        return idAgent;
+    }
+
+    public void setIdAgent(String idAgent) {
+        this.idAgent = idAgent;
     }
 }

@@ -1,76 +1,178 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="#F5F5F5">
 
-    <!-- En-tête -->
+    <!-- Partie 1 : Total Enseignants et Salles -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:paddingBottom="16dp" />
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:background="#F5F5F5"
+        android:orientation="vertical"
+        android:padding="16dp">
 
-    <!-- Barre de recherche -->
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Rechercher un enseignant"
-        android:padding="12dp"
-        android:background="@drawable/search_bar_background" />
+        <!-- Partie 2 : Labels avec icônes et actions -->
 
-    <!-- Liste des enseignants -->
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:paddingTop="16dp">
+        <LinearLayout
+            android:layout_width="348dp"
+            android:layout_height="120dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/rounded_edittext"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <!-- CardView pour Total Enseignants -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:layout_weight="1"
+                app:cardCornerRadius="30dp"
+                app:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="160dp"
+                    android:layout_height="89dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <!-- Image avant le texte -->
+                    <ImageView
+                        android:layout_width="48dp"
+                        android:layout_height="69dp"
+                        android:layout_marginStart="16dp"
+                        android:src="@drawable/ic_teacher2" /> <!-- Remplacez ic_teacher par votre image -->
+
+                    <!-- Texte -->
+                    <TextView
+                        android:layout_width="82dp"
+                        android:layout_height="89dp"
+                        android:layout_marginStart="16dp"
+                        android:padding="16dp"
+                        android:text="Total Enseignants :"
+                        android:textColor="@color/blueblue"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- CardView pour Total Salles -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:layout_weight="1"
+                app:cardCornerRadius="30dp"
+                app:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="89dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <!-- Image avant le texte -->
+                    <ImageView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_marginStart="16dp"
+                        android:src="@drawable/ic_sallz" />
+
+                    <!-- Texte -->
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="89dp"
+                        android:layout_marginStart="16dp"
+                        android:padding="16dp"
+                        android:text="Total Salles :"
+                        android:textColor="@color/blueblue"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="122dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/rounded_edittext"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:weightSum="3">
 
-            <!-- Exemple d'une ligne d'enseignant -->
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="8dp"
-                android:background="@drawable/edit_text_background"
+                android:layout_width="158dp"
+                android:layout_height="77dp"
+                android:layout_margin="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/rounded_edittext"
                 android:gravity="center"
-                android:orientation="horizontal"
-                android:padding="8dp">
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/icc_chart"
+                    app:tint="@color/blue" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Nom de l'enseignant"
-                    android:textColor="@color/black"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="3 absences"
-                    android:textColor="@color/black"
-                    android:textSize="14sp" />
-
+                    android:layout_gravity="center"
+                    android:paddingTop="8dp"
+                    android:text="Absence"
+                    android:textColor="@color/blueblue"
+                    android:textStyle="bold" />
             </LinearLayout>
-        </LinearLayout>
-    </ScrollView>
 
-    <!-- Bouton flottant -->
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_add_absence"
-        android:layout_width="wrap_content"
-        android:layout_height="76dp"
-        android:layout_gravity="end|bottom"
-        android:layout_margin="16dp"
-        android:contentDescription="Ajouter une absence"
-        android:src="@drawable/icc_add"
-        app:backgroundTint="@color/blue"
-        app:tint="@android:color/white" />
+            <LinearLayout
+                android:layout_width="156dp"
+                android:layout_height="79dp"
+                android:layout_margin="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/rounded_edittext"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/icc_absence"
+                    app:tint="@color/blue" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:paddingTop="8dp"
+                    android:text="Emplois"
+                    android:textColor="@color/blueblue"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Partie 3 : Calendrier -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:weightSum="3">
+
+        </LinearLayout>
+
+        <CalendarView
+            android:id="@+id/calendarView"
+            android:layout_width="408dp"
+            android:layout_height="320dp"
+            android:layout_marginBottom="8dp"
+            android:background="@color/white" />
+    </LinearLayout>
 </LinearLayout>

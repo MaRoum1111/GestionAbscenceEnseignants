@@ -1,18 +1,25 @@
 package com.example.gestionabscenceenseignants.view;
 
-import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.drawerlayout.widget.DrawerLayout;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import com.example.gestionabscenceenseignants.ViewModel.UserViewModel;
 import com.example.gestionabscenceenseignants.R;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.ViewModelProvider;
 
 public class AdminActivity extends AppCompatActivity {
 
@@ -20,8 +27,8 @@ public class AdminActivity extends AppCompatActivity {
     private NavigationView navigationView;
     private BottomNavigationView bottomNavigationView;
     private BottomAppBar bottomAppBar;
-    private FloatingActionButton fab;
     private Toolbar toolbar;
+    private UserViewModel userViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,23 +44,37 @@ public class AdminActivity extends AppCompatActivity {
 
         // Configuration de la toolbar
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true); // Pour afficher le bouton hamburger
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true); // Afficher le bouton hamburger
 
-        // Ouverture/fermeture du menu Drawer
+        // Initialiser le ViewModel
+        userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
+
+        // Récupérer la vue du header dans le NavigationView
+        View headerView = navigationView.getHeaderView(0);
+        TextView navUserName = headerView.findViewById(R.id.nav_header_name);
+        TextView navUserEmail = headerView.findViewById(R.id.nav_header_email);
+
+        // Observer les données de l'utilisateur
+        userViewModel.getUserName().observe(this, navUserName::setText);
+        userViewModel.getUserEmail().observe(this, navUserEmail::setText);
+
+        // Gérer les éléments du menu dans le NavigationView
         navigationView.setNavigationItemSelectedListener(menuItem -> {
             int id = menuItem.getItemId();
+            Log.d("AdminActivity", "Item sélectionné : " + id); // Debugging
+
             if (id == R.id.nav_home) {
-                // Ajouter ici l'action pour "Home"
                 loadFragment(new HomeFragment());
             } else if (id == R.id.nav_settings) {
-                // Ajouter ici l'action pour "Settings"
+                Toast.makeText(this, "Ouvrir les paramètres", Toast.LENGTH_SHORT).show();
             } else if (id == R.id.nav_share) {
-                // Ajouter ici l'action pour "Share"
+                shareApp();
             } else if (id == R.id.nav_about) {
-                // Ajouter ici l'action pour "About Us"
+                Toast.makeText(this, "À propos de nous : Version 1.0", Toast.LENGTH_SHORT).show();
             } else if (id == R.id.nav_logout) {
-                // Ajouter l'action de déconnexion
+                logout();
             }
+
             drawerLayout.closeDrawers(); // Fermer le Drawer après avoir sélectionné un item
             return true;
         });
@@ -61,6 +82,8 @@ public class AdminActivity extends AppCompatActivity {
         // Configuration de BottomNavigationView
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int id = item.getItemId();
+            Log.d("AdminActivity", "Item sélectionné dans BottomNavigation : " + id); // Debugging
+
             if (id == R.id.nav_home) {
                 loadFragment(new HomeFragment());
             } else if (id == R.id.nav_absences) {
@@ -70,8 +93,14 @@ public class AdminActivity extends AppCompatActivity {
             } else if (id == R.id.nav_statistics) {
                 loadFragment(new ReportFragment());
             }
+
             return true; // Indique que l'item a été sélectionné et l'action a été effectuée
         });
+
+        // Afficher le HomeFragment par défaut lorsque l’activité démarre
+        if (savedInstanceState == null) {
+            loadFragment(new HomeFragment());
+        }
     }
 
     // Fonction pour charger un fragment
@@ -84,10 +113,28 @@ public class AdminActivity extends AppCompatActivity {
     // Gérer l'ouverture du Drawer avec la toolbar
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        Log.d("AdminActivity", "Menu item sélectionné avec la toolbar: " + item.getItemId()); // Debugging
         if (item.getItemId() == android.R.id.home) {
             drawerLayout.openDrawer(navigationView);
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    // Fonction pour gérer la déconnexion
+    private void logout() {
+        Toast.makeText(this, "Déconnexion réussie", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
+
+    // Fonction pour partager l'application
+    private void shareApp() {
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Gestion Absences");
+        shareIntent.putExtra(Intent.EXTRA_TEXT, "Découvrez cette application : Gestion Absences");
+        startActivity(Intent.createChooser(shareIntent, "Partager via"));
     }
 }

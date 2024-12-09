@@ -40,11 +40,11 @@ public class DetailAbsenceAdapter extends RecyclerView.Adapter<DetailAbsenceAdap
 
         if (absence != null) {
             // Lier les données aux TextViews
-            holder.subjectName.setText("Matière: "+absence.getSubjectName());
+            holder.subjectName.setText("Salle: "+absence.getSalle());
             holder.date.setText("Date: "+absence.getDate());
             holder.startTime.setText("Heure de début: "+absence.getStartTime());
             holder.endTime.setText("Heure de fin: "+absence.getEndTime());
-            holder.reason.setText("Raison: "+absence.getReason());
+            holder.reason.setText("Classe: "+absence.getClasse());
             holder.status.setText("Statut: "+absence.getStatus());
 
             // Définir la couleur du statut selon sa valeur
