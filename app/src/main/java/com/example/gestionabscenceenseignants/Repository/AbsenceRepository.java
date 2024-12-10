@@ -215,50 +215,59 @@ public class AbsenceRepository {
                 });
     }
 
-    // Méthode pour récupérer les absences de l'utilisateur connecté
-    public void getConnectedProfAbsences(AuthCallback callback) {
-        // Étape 1 : Récupérer le CIN de l'utilisateur connecté
-        getCinForUser(new AuthCallback() {
-            @Override
-            public void onSuccess(List<Absence> absences) {
-                // Vérifier que nous avons récupéré un CIN valide
-                if (absences != null && !absences.isEmpty()) {
-                    String cin = absences.get(0).getIdAgent(); // Récupérer le CIN
+    public void getAbsencesForCurrentTeacher(AuthCallback callback) {
+        FirebaseUser currentUser = mAuth.getCurrentUser(); // Récupère l'utilisateur connecté
+        if (currentUser == null) {
+            Log.e("AbsenceRepository", "Utilisateur non connecté.");
+            callback.onFailure("Utilisateur non connecté.");
+            return;
+        }
 
-                    // Étape 2 : Récupérer les absences de Firestore pour ce CIN
-                    db.collection("absences")
-                            .whereEqualTo("cin", cin) // Filtrer les absences par CIN
-                            .orderBy("date", Query.Direction.DESCENDING) // Trier par date décroissante
-                            .get()
-                            .addOnCompleteListener(task -> {
-                                if (task.isSuccessful() && task.getResult() != null && !task.getResult().isEmpty()) {
-                                    List<Absence> userAbsences = new ArrayList<>();
-                                    // Parcourir les résultats et les convertir en objets Absence
-                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                        Absence absence = document.toObject(Absence.class);
-                                        userAbsences.add(absence);
-                                    }
-                                    callback.onSuccess(userAbsences); // Retourner la liste des absences
-                                } else {
-                                    callback.onFailure("Aucune absence trouvée pour cet utilisateur.");
-                                }
-                            })
-                            .addOnFailureListener(e -> {
-                                Log.e("AbsenceRepository", "Erreur lors de la récupération des absences : " + e.getMessage(), e);
-                                callback.onFailure("Erreur lors de la récupération des absences.");
-                            });
-                } else {
-                    callback.onFailure("Impossible de récupérer le CIN de l'utilisateur connecté.");
-                }
-            }
+        // Étape 1 : Récupérer le CIN à partir de l'email de l'utilisateur connecté
+        db.collection("users")
+                .whereEqualTo("email", currentUser.getEmail()) // Filtrer par email
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null && !task.getResult().isEmpty()) {
+                        // Récupérer le CIN
+                        String cin = task.getResult().getDocuments().get(0).getString("cin");
 
-            @Override
-            public void onFailure(String errorMessage) {
-                callback.onFailure(errorMessage); // Propager l'erreur du CIN
-            }
-        });
+                        if (cin != null) {
+                            // Étape 2 : Récupérer les absences liées à ce CIN
+                            db.collection("absences")
+                                    .whereEqualTo("cin", cin) // Filtrer par CIN
+                                    .orderBy("date", Query.Direction.DESCENDING) // Trier par date décroissante
+                                    .get()
+                                    .addOnCompleteListener(absencesTask -> {
+                                        if (absencesTask.isSuccessful() && absencesTask.getResult() != null) {
+                                            List<Absence> absences = new ArrayList<>();
+                                            for (QueryDocumentSnapshot document : absencesTask.getResult()) {
+                                                // Convertir les documents en objets Absence
+                                                Absence absence = document.toObject(Absence.class);
+                                                absences.add(absence);
+                                            }
+
+                                            // Retourner les absences via le callback
+                                            callback.onSuccess(absences);
+                                        } else {
+                                            Log.e("AbsenceRepository", "Aucune absence trouvée pour ce CIN.");
+                                            callback.onFailure("Aucune absence trouvée pour cet enseignant.");
+                                        }
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        Log.e("AbsenceRepository", "Erreur lors de la récupération des absences : " + e.getMessage());
+                                        callback.onFailure("Erreur lors de la récupération des absences.");
+                                    });
+                        } else {
+                            Log.e("AbsenceRepository", "CIN non trouvé pour l'utilisateur.");
+                            callback.onFailure("CIN non trouvé pour l'utilisateur connecté.");
+                        }
+                    } else {
+                        Log.e("AbsenceRepository", "Erreur lors de la récupération de l'utilisateur : " + task.getException());
+                        callback.onFailure("Erreur lors de la récupération de l'utilisateur connecté.");
+                    }
+                });
     }
-
     // Interface pour gérer les retours des méthodes
     public interface AuthCallback {
         void onSuccess(List<Absence> absences);
