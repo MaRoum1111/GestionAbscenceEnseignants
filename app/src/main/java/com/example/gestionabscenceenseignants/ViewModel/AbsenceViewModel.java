@@ -9,6 +9,7 @@ import com.example.gestionabscenceenseignants.model.Absence;
 import java.util.List;
 
 public class AbsenceViewModel extends ViewModel {
+
     private final AbsenceRepository repository; // Instance pour gérer les absences
     private final MutableLiveData<List<Absence>> absences; // Liste des absences
     private final MutableLiveData<String> errorMessage; // Messages d'erreur ou de succès
@@ -53,6 +54,7 @@ public class AbsenceViewModel extends ViewModel {
             }
         });
     }
+
     // Récupérer les absences du professeur actuellement connecté
     public void getAbsencesForCurrentTeacher() {
         repository.getAbsencesForCurrentTeacher(new AbsenceRepository.AuthCallback() {
@@ -122,12 +124,22 @@ public class AbsenceViewModel extends ViewModel {
         });
     }
 
-    // Réinitialiser le message d'erreur ou de succès
-    public void resetErrorMessage() {
-        errorMessage.setValue(null); // Réinitialise le message
+    // Charger les absences par date
+    public void fetchAbsencesByDate(String selectedDate) {
+        repository.getAbsencesByDate(selectedDate, new AbsenceRepository.AuthCallback() {
+            @Override
+            public void onSuccess(List<Absence> absencesList) {
+                absences.setValue(absencesList); // Met à jour la liste des absences
+            }
+
+            @Override
+            public void onFailure(String error) {
+                errorMessage.setValue("Erreur lors de la récupération par date : " + error);
+            }
+        });
     }
 
-    // Getter : liste des absences
+    // Getters : liste des absences
     public LiveData<List<Absence>> getAbsences() {
         return absences;
     }
@@ -137,13 +149,4 @@ public class AbsenceViewModel extends ViewModel {
         return errorMessage;
     }
 
-    // Getter : état d'ajout d'une absence
-    public LiveData<Boolean> isAdding() {
-        return isAdding;
-    }
-
-    // Getter : état de suppression d'une absence
-    public LiveData<Boolean> isDeleting() {
-        return isDeleting;
-    }
 }

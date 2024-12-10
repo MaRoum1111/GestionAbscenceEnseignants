@@ -179,6 +179,24 @@ public class AbsenceRepository {
                     callback.onFailure("Erreur lors de la mise à jour de l'absence : " + e.getMessage());
                 });
     }
+    public void getAbsencesByDate(String selectedDate, AuthCallback callback) {
+        db.collection("absences")
+                .whereEqualTo("date", selectedDate) // Filtre par la date sélectionnée
+                .orderBy("startTime", Query.Direction.ASCENDING) // Optionnel : trier par heure de début
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null) {
+                        List<Absence> absences = new ArrayList<>();
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Absence absence = document.toObject(Absence.class);
+                            absences.add(absence);
+                        }
+                        callback.onSuccess(absences); // Retourner les absences
+                    } else {
+                        callback.onFailure("Aucune absence trouvée pour la date sélectionnée.");
+                    }
+                });
+    }
 
     public void getCinForUser(AuthCallback callback) {
         FirebaseUser currentUser = mAuth.getCurrentUser();
