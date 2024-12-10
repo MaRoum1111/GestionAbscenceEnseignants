@@ -40,11 +40,11 @@ public class DetailAbsenceAdapter extends RecyclerView.Adapter<DetailAbsenceAdap
 
         if (absence != null) {
             // Lier les données aux TextViews
-            holder.subjectName.setText("Salle: "+absence.getSalle());
+            holder.salle.setText("Salle: "+absence.getSalle());
             holder.date.setText("Date: "+absence.getDate());
             holder.startTime.setText("Heure de début: "+absence.getStartTime());
             holder.endTime.setText("Heure de fin: "+absence.getEndTime());
-            holder.reason.setText("Classe: "+absence.getClasse());
+            holder.classe.setText("Classe: "+absence.getClasse());
             holder.status.setText("Statut: "+absence.getStatus());
 
             // Définir la couleur du statut selon sa valeur
@@ -67,18 +67,17 @@ public class DetailAbsenceAdapter extends RecyclerView.Adapter<DetailAbsenceAdap
 
     // ViewHolder pour chaque item de la liste
     public static class AbsenceDetailViewHolder extends RecyclerView.ViewHolder {
-        TextView subjectName, date, startTime, endTime, reason, status;
+        TextView salle, date, startTime, endTime, classe, status;
         ImageView deleteIcon, editIcon;
 
         public AbsenceDetailViewHolder(@NonNull View itemView) {
             super(itemView);
-
             // Liaison des vues
-            subjectName = itemView.findViewById(R.id.subjectName);
+            salle = itemView.findViewById(R.id.salle);
             date = itemView.findViewById(R.id.date);
             startTime = itemView.findViewById(R.id.startTime);
             endTime = itemView.findViewById(R.id.endTime);
-            reason = itemView.findViewById(R.id.reason);
+            classe = itemView.findViewById(R.id.classe);
             status = itemView.findViewById(R.id.status);
             deleteIcon = itemView.findViewById(R.id.deleteIcon);
             editIcon = itemView.findViewById(R.id.editIcon);

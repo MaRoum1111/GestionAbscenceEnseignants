@@ -23,10 +23,10 @@
             android:weightSum="2">
 
             <TextView
-                android:id="@+id/subjectName"
+                android:id="@+id/salle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Matière"
+                android:text="Salle:"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:textColor="@color/black"
@@ -73,10 +73,10 @@
 
         <!-- Raison de l'absence -->
         <TextView
-            android:id="@+id/reason"
+            android:id="@+id/classe"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Raison"
+            android:text="Classe:"
             android:textSize="16sp"
             android:textColor="@color/black"
             android:layout_marginTop="8dp" />
