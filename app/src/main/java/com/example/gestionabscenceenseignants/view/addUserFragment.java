@@ -29,7 +29,6 @@ public class addUserFragment extends Fragment {
     private Spinner spinnerRole;
     private Button btnSubmit, btnCancel;
     private Uri profilePhotoUri; // URI pour stocker l'image du profil
-    private ImageView imageViewProfile; // ImageView pour afficher la photo du profil
     private UserViewModel userViewModel;
 
     // Déclaration du ActivityResultLauncher pour la sélection de photo
@@ -48,28 +47,9 @@ public class addUserFragment extends Fragment {
         spinnerRole = view.findViewById(R.id.spinnerRole);
         btnSubmit = view.findViewById(R.id.btnSubmit);
         btnCancel = view.findViewById(R.id.btnCancel);
-        imageViewProfile = view.findViewById(R.id.imageViewProfile); // Initialisation de ImageView
-
         // Initialisation du ViewModel
         userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
 
-        // Enregistrement du ActivityResultLauncher pour obtenir une image
-        getContentLauncher = registerForActivityResult(new ActivityResultContracts.GetContent(), new ActivityResultCallback<Uri>() {
-            @Override
-            public void onActivityResult(Uri result) {
-                if (result != null) {
-                    profilePhotoUri = result;
-                    // Mise à jour de l'image dans l'ImageView avec l'image sélectionnée
-                    imageViewProfile.setImageURI(result);
-                }
-            }
-        });
-
-        // Configuration du clic sur l'ImageView pour lancer le sélecteur d'image
-        imageViewProfile.setOnClickListener(v -> {
-            // Lancer le sélecteur d'image
-            getContentLauncher.launch("image/*");
-        });
 
         // Gestion du clic sur le bouton "Submit"
         btnSubmit.setOnClickListener(v -> {
@@ -103,12 +83,8 @@ public class addUserFragment extends Fragment {
                 editTextPassword.requestFocus();
                 return;
             }
-
-            // Conversion de l'URI en chaîne de caractères
-            String photoUriString = profilePhotoUri != null ? profilePhotoUri.toString() : null;
-
             // Création d'un nouvel utilisateur
-            User newUser = new User(cin, name, email, password, role, photoUriString);
+            User newUser = new User(cin, name, email, password, role);
 
             // Ajout de l'utilisateur à la base de données via le ViewModel
             userViewModel.addUser(newUser);
@@ -133,6 +109,5 @@ public class addUserFragment extends Fragment {
         editTextEmail.setText("");
         editTextPassword.setText("");
         spinnerRole.setSelection(0); // Réinitialisation du Spinner
-        imageViewProfile.setImageResource(R.drawable.icc_add); // Réinitialisation de l'image du profil
     }
 }

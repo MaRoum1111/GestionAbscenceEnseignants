@@ -14,7 +14,6 @@ public class UserViewModel extends ViewModel {
     private final MutableLiveData<List<User>> users;
     private final MutableLiveData<String> statusMessage;
     private final MutableLiveData<List<User>> teacherList;
-    private final MutableLiveData<String> imageUrl;
     private final MutableLiveData<String> userName;
     private final MutableLiveData<String> userEmail;
 
@@ -24,7 +23,6 @@ public class UserViewModel extends ViewModel {
         users = new MutableLiveData<>();
         statusMessage = new MutableLiveData<>();
         teacherList = new MutableLiveData<>();
-        imageUrl = new MutableLiveData<>();
         userName = new MutableLiveData<>();
         userEmail = new MutableLiveData<>();
         loadLoggedUserDetails();
@@ -109,28 +107,51 @@ public class UserViewModel extends ViewModel {
             }
         });
     }
-
-    // Méthode pour charger les enseignants (nom et CIN)
-    public void loadTeacherNamesAndCIN() {
-        repository.getTeacherNamesAndCIN(new UserRepository.UserCallback() {
+    // Méthode pour supprimer un utilisateur
+    public void deleteUser(String userId) {
+        repository.deleteUser(userId, new UserRepository.UserCallback() {
             @Override
-            public void onSuccessMessage(String message) {
+            public void onSuccessMessage(String successMessage) {
+                statusMessage.setValue(successMessage);
+            }
+
+            @Override
+            public void onSuccessUsers(List<User> users) {
                 // Pas utilisé ici
             }
 
             @Override
-            public void onSuccessUsers(List<User> teachers) {
-                teacherList.setValue(teachers);
-            }
-
-            @Override
-            public void onFailure(String errorMessage) {
-                statusMessage.setValue(errorMessage);
+            public void onFailure(String error) {
+                statusMessage.setValue(error);
             }
 
             @Override
             public void onSuccessUser(User user) {
-                // Cette méthode doit aussi être implémentée
+                // Pas utilisé ici
+            }
+        });
+    }
+    // Méthode pour modifier un utilisateur
+    public void editUser(User user) {
+        repository.editUser(user, new UserRepository.UserCallback() {
+            @Override
+            public void onSuccessMessage(String successMessage) {
+                statusMessage.setValue(successMessage);
+            }
+
+            @Override
+            public void onSuccessUsers(List<User> users) {
+                // Pas utilisé ici
+            }
+
+            @Override
+            public void onFailure(String error) {
+                statusMessage.setValue(error);
+            }
+
+            @Override
+            public void onSuccessUser(User user) {
+                // Pas utilisé ici
             }
         });
     }
@@ -146,10 +167,6 @@ public class UserViewModel extends ViewModel {
 
     public LiveData<String> getStatusMessage() {
         return statusMessage;
-    }
-
-    public LiveData<String> getImageUrl() {
-        return imageUrl;
     }
 
     public LiveData<String> getUserName() {
