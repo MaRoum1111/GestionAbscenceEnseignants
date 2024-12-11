@@ -15,9 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.gestionabscenceenseignants.R;
-import com.example.gestionabscenceenseignants.ViewModel.AbsenceViewModel;
 import com.example.gestionabscenceenseignants.ViewModel.UserViewModel;
-import com.example.gestionabscenceenseignants.model.Absence;
 import com.example.gestionabscenceenseignants.model.User;
 
 public class EditUserFragment extends Fragment {
@@ -25,11 +23,11 @@ public class EditUserFragment extends Fragment {
     private EditText editTextCIN, editTextName, editTextEmail, editTextPassword;
     private Spinner spinnerRole;
     private UserViewModel userViewModel;
-    private String nom, Cin,email,pass,role;
+    private String nom, Cin, email, pass, role;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+        // Inflater le layout du fragment
         return inflater.inflate(R.layout.fragment_edit_user, container, false);
     }
 
@@ -49,8 +47,7 @@ public class EditUserFragment extends Fragment {
         // Initialiser le ViewModel
         userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
 
-
-// Charger les données transmises par le fragment précédent
+        // Charger les données transmises par le fragment précédent
         if (getArguments() != null) {
             Cin = getArguments().getString("cin");
             nom = getArguments().getString("name");
@@ -75,10 +72,11 @@ public class EditUserFragment extends Fragment {
                 }
             }
         }
+
         // Gérer le clic sur le bouton de validation
         btnSubmit.setOnClickListener(v -> {
             if (validateFields()) {
-                User updateduser = new User(
+                User updatedUser = new User(
                         editTextCIN.getText().toString(),
                         editTextName.getText().toString(),
                         editTextEmail.getText().toString(),
@@ -86,12 +84,12 @@ public class EditUserFragment extends Fragment {
                         spinnerRole.getSelectedItem().toString()
                 );
 
-                // Appeler la méthode de mise à jour dans le ViewModel
-                userViewModel.editUser(updateduser);
-
+                // Après la modification réussie de l'utilisateur
+                userViewModel.editUser(updatedUser);
                 Toast.makeText(getContext(), "Utilisateur mis à jour avec succès", Toast.LENGTH_SHORT).show();
 
-                // Retourner au fragment précédent
+// Forcer le rafraîchissement des utilisateurs dans le fragment des utilisateurs
+                userViewModel.loadUsers();
                 requireActivity().getSupportFragmentManager().popBackStack();
             }
         });
@@ -100,6 +98,40 @@ public class EditUserFragment extends Fragment {
         btnCancel.setOnClickListener(v -> {
             requireActivity().getSupportFragmentManager().popBackStack();
         });
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Cette méthode est appelée lorsque le fragment est visible à l'utilisateur
+        // Idéal pour actualiser les données ou effectuer des tâches spécifiques lorsque le fragment est en première ligne
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        // Cette méthode est appelée lorsque le fragment n'est plus en avant-plan
+        // Peut être utilisée pour sauvegarder l'état ou libérer des ressources
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        // Cette méthode est appelée quand la vue du fragment est détruite
+        // Idéal pour libérer les références aux vues et autres ressources associées
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        // Cette méthode est appelée quand le fragment est détruit
+        // Elle permet de nettoyer les ressources et références importantes
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        // Cette méthode est appelée quand le fragment est détaché de son activité
+        // Utile pour effectuer des actions de nettoyage spécifiques liées au fragment
     }
 
     // Méthode pour valider les champs
@@ -118,4 +150,5 @@ public class EditUserFragment extends Fragment {
         }
         return true;
     }
+
 }

@@ -26,6 +26,7 @@ public class UsersFragment extends Fragment implements UsersAdapter.OnUserClickL
 
     private RecyclerView recyclerView;
     private UsersAdapter adapter;
+    private UserViewModel userViewModel;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -38,7 +39,7 @@ public class UsersFragment extends Fragment implements UsersAdapter.OnUserClickL
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         // Initialiser le ViewModel
-        UserViewModel userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
+        userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
 
         // Observer la liste des utilisateurs
         userViewModel.getUsers().observe(getViewLifecycleOwner(), new Observer<List<User>>() {
@@ -73,10 +74,8 @@ public class UsersFragment extends Fragment implements UsersAdapter.OnUserClickL
         return view;
     }
 
-
     @Override
     public void onEditClick(User user) {
-
         // Gestion de l'édition de l'absence
         Log.d("DetailuserFragment", "Modification de l'user : " + user.toString());
 
@@ -114,4 +113,53 @@ public class UsersFragment extends Fragment implements UsersAdapter.OnUserClickL
             }
         });
     }
-}  
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d("UsersFragment", "onStart appelé");
+        // Code spécifique à l'initialisation de l'activité ou à la reprise de l'activité
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d("UsersFragment", "onResume appelé");
+        // Code pour mettre à jour l'UI ou reprendre des tâches
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d("UsersFragment", "onPause appelé");
+        // Code pour sauvegarder l'état ou libérer des ressources
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d("UsersFragment", "onStop appelé");
+        // Code pour arrêter les processus ou libérer des ressources
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.d("UsersFragment", "onDestroyView appelé");
+        // Code pour nettoyer la vue (par exemple, détacher les observateurs)
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d("UsersFragment", "onDestroy appelé");
+        // Code pour nettoyer les ressources avant la destruction du fragment
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        Log.d("UsersFragment", "onDetach appelé");
+        // Code pour nettoyer les ressources associées au fragment
+    }
+}

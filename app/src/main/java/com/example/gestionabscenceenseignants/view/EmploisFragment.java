@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -17,11 +18,13 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.gestionabscenceenseignants.R;
 import com.example.gestionabscenceenseignants.ViewModel.EmploiViewModel;
 import com.example.gestionabscenceenseignants.Adapter.EmploiAdapter;
 import com.example.gestionabscenceenseignants.model.Emploi;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.io.InputStream;
 import java.util.List;
 
@@ -51,6 +54,7 @@ public class EmploisFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        Log.d("EmploisFragment", "onCreateView: Fragment created");
         View view = inflater.inflate(R.layout.fragment_emplois, container, false);
 
         // Initialize ViewModel
@@ -68,12 +72,62 @@ public class EmploisFragment extends Fragment {
 
         return view;
     }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Log.d("EmploisFragment", "onViewCreated: View created");
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d("EmploisFragment", "onStart: Fragment started");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d("EmploisFragment", "onResume: Fragment resumed");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d("EmploisFragment", "onPause: Fragment paused");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d("EmploisFragment", "onStop: Fragment stopped");
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.d("EmploisFragment", "onDestroyView: View destroyed");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d("EmploisFragment", "onDestroy: Fragment destroyed");
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        Log.d("EmploisFragment", "onDetach: Fragment detached");
+    }
+
     private void openFilePicker() {
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"); // MIME type for Excel files
         filePickerLauncher.launch(intent);
     }
+
     private void handleFileImport(Uri fileUri) {
         try {
             InputStream inputStream = requireContext().getContentResolver().openInputStream(fileUri);

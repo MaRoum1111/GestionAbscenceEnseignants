@@ -100,6 +100,54 @@ public class TeacherActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        // Cette méthode est appelée lorsque l'activité devient visible pour l'utilisateur
+        Log.d("TeacherActivity", "onStart: L'activité est visible");
+        // Utilisez cette méthode pour préparer des ressources nécessaires à l'activité
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Cette méthode est appelée lorsque l'activité commence à interagir avec l'utilisateur
+        Log.d("TeacherActivity", "onResume: L'activité est prête à interagir avec l'utilisateur");
+        // Idéal pour mettre à jour l'interface utilisateur ou commencer des animations
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // Cette méthode est appelée lorsque l'activité est mise en pause (l'utilisateur la quitte temporairement)
+        Log.d("TeacherActivity", "onPause: L'activité est en pause");
+        // Idéale pour sauvegarder des données ou annuler des opérations en cours
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        // Cette méthode est appelée lorsque l'activité n'est plus visible
+        Log.d("TeacherActivity", "onStop: L'activité n'est plus visible");
+        // Idéale pour libérer des ressources et effectuer des tâches de nettoyage
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Cette méthode est appelée lorsque l'activité est détruite
+        Log.d("TeacherActivity", "onDestroy: L'activité est détruite");
+        // Utilisez cette méthode pour libérer toutes les ressources utilisées
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        // Cette méthode est appelée lorsque l'activité revient après avoir été arrêtée
+        Log.d("TeacherActivity", "onRestart: L'activité redémarre");
+        // Utile pour réinitialiser des états ou préparer l'interface avant que l'activité ne soit à nouveau visible
+    }
+
     // Fonction pour charger un fragment
     private void loadFragment(Fragment fragment) {
         getSupportFragmentManager().beginTransaction()
@@ -126,7 +174,6 @@ public class TeacherActivity extends AppCompatActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
-
 
     // Fonction pour partager l'application
     private void shareApp() {

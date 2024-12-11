@@ -26,10 +26,18 @@ public class EditAbsenceFragment extends Fragment {
     private AutoCompleteTextView profNameField;
     private Spinner statusSpinner;
     private AbsenceViewModel absenceViewModel;
-    private String absenceId,Cin;
+    private String absenceId, Cin;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Log.d("EditAbsenceFragment", "onCreate called");
+        // Initialisation ou récupération des données globales si nécessaire
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Log.d("EditAbsenceFragment", "onCreateView called");
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_edit_absence, container, false);
     }
@@ -37,6 +45,7 @@ public class EditAbsenceFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        Log.d("EditAbsenceFragment", "onViewCreated called");
 
         // Initialiser les champs
         profNameField = view.findViewById(R.id.profName);
@@ -56,7 +65,7 @@ public class EditAbsenceFragment extends Fragment {
         // Charger les données transmises par le fragment précédent
         if (getArguments() != null) {
             absenceId = getArguments().getString("idAbsence");
-            Cin=getArguments().getString("cin");
+            Cin = getArguments().getString("cin");
             profNameField.setText(getArguments().getString("profName"));
             dateField.setText(getArguments().getString("date"));
             startTimeField.setText(getArguments().getString("startTime"));
@@ -87,7 +96,7 @@ public class EditAbsenceFragment extends Fragment {
                         endTimeField.getText().toString(),
                         reasonField.getText().toString(),
                         statusSpinner.getSelectedItem().toString(),
-                        subjectField.getText().toString(),Cin
+                        subjectField.getText().toString(), Cin
                 );
 
                 // Appeler la méthode de mise à jour dans le ViewModel
@@ -104,6 +113,42 @@ public class EditAbsenceFragment extends Fragment {
         cancelButton.setOnClickListener(v -> {
             requireActivity().getSupportFragmentManager().popBackStack();
         });
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d("EditAbsenceFragment", "onStart called");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d("EditAbsenceFragment", "onResume called");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d("EditAbsenceFragment", "onPause called");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d("EditAbsenceFragment", "onStop called");
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.d("EditAbsenceFragment", "onDestroyView called");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d("EditAbsenceFragment", "onDestroy called");
     }
 
     // Méthode pour valider les champs
