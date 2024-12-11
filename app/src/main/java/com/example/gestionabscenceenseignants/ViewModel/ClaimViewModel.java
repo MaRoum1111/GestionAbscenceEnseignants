@@ -10,11 +10,12 @@ import com.example.gestionabscenceenseignants.model.Claim;
 import java.util.List;
 
 public class ClaimViewModel extends ViewModel {
-    private final ClaimRepository repository; // Instance pour gérer les absences
-    private final MutableLiveData<List<Claim>> claims; // Liste des absences
-    private final MutableLiveData<String> errorMessage; // Messages d'erreur ou de succès
-    private final MutableLiveData<Boolean> isAdding; // État d'ajout d'une absence
-    private final MutableLiveData<Boolean> isDeleting; // État de suppression d'une absence
+    private final ClaimRepository repository;
+    private final MutableLiveData<List<Claim>> claims ;
+    private final MutableLiveData<String> errorMessage;
+    private final MutableLiveData<Boolean> isAdding;
+    private final MutableLiveData<Boolean> isDeleting;
+
 
     // Constructeur : initialisation des variables
     public ClaimViewModel(){
@@ -32,7 +33,7 @@ public class ClaimViewModel extends ViewModel {
             public void onSuccess(List<Claim> claimList) {
                 isAdding.setValue(false); // Fin de l'ajout
                 claims.setValue(claimList); // Met à jour la liste des absences
-                errorMessage.setValue("Absence ajoutée avec succès.");
+                errorMessage.setValue("Réclamations envoyée avec succès.");
             }
 
             @Override
@@ -42,7 +43,20 @@ public class ClaimViewModel extends ViewModel {
             }
         });
     }
+    // Récupérer les absences du professeur actuellement connecté
+    public void getClaimsForCurrentTeacher() {
+        repository.getClaimsForCurrentTeacher(new ClaimRepository.AuthCallback() {
+            @Override
+            public void onSuccess(List<Claim> claim) {
+                claims.setValue(claim); // Met à jour la liste des absences
+            }
 
+            @Override
+            public void onFailure(String error) {
+                errorMessage.setValue("Erreur lors de la récupération des absences : " + error); // Message d'erreur
+            }
+        });
+    }
 
 
     // Réinitialiser le message d'erreur ou de succès
@@ -50,6 +64,9 @@ public class ClaimViewModel extends ViewModel {
         errorMessage.setValue(null); // Réinitialise le message
     }
 
+    public LiveData <List<Claim>> getClaim(){
+        return claims;
+    };
     // Getter : message d'erreur ou de succès
     public LiveData<String> getErrorMessage() {
         return errorMessage;
@@ -64,4 +81,6 @@ public class ClaimViewModel extends ViewModel {
     public LiveData<Boolean> isDeleting() {
         return isDeleting;
     }
+
 }
+
