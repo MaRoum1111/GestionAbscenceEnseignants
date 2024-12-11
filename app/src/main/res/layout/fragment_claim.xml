@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+
+        <!-- Titre -->
+        <TextView
+            android:id="@+id/reclamationtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Demande de Réclamation"
+            android:textSize="24sp"
+            android:textColor="@color/black"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="sans-serif-medium" />
+
+        <!-- Champ de saisie pour CIN -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="CIN:"
+            android:textSize="18sp"
+            android:layout_marginBottom="4dp"
+            android:textColor="@color/black" />
+
+        <EditText
+            android:id="@+id/cin_enseignant"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Entrez le CIN"
+            android:inputType="number"
+            android:background="@drawable/rounded_edittext"
+            android:padding="12dp"
+            android:layout_marginBottom="16dp" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Détails de la Séance :"
+            android:textSize="18sp"
+            android:layout_marginBottom="4dp"
+            android:textColor="@color/black" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp"
+            android:weightSum="2">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Date de l'absence"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="4dp"
+                    android:textColor="@color/black" />
+                <EditText
+                    android:id="@+id/date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="jj/mm/aaaa"
+                    android:inputType="date"
+                    android:padding="12dp"
+                    android:minHeight="48dp"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_marginStart="8dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Heure de début"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="4dp"
+                    android:textColor="@color/black" />
+                <EditText
+                    android:id="@+id/startTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="hh:mm"
+                    android:inputType="time"
+                    android:padding="12dp"
+                    android:minHeight="48dp"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Champs pour l'heure de fin et la raison sur une ligne -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp"
+            android:weightSum="2">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Heure de fin"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="4dp"
+                    android:textColor="@color/black" />
+                <EditText
+                    android:id="@+id/endTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="hh:mm"
+                    android:inputType="time"
+                    android:padding="12dp"
+                    android:minHeight="48dp"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_marginStart="8dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" Classe"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="4dp"
+                    android:textColor="@color/black" />
+                <EditText
+                    android:id="@+id/classe"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Entrez la classe "
+                    android:inputType="textMultiLine"
+                    android:padding="12dp"
+                    android:maxLines="3"
+                    android:minHeight="48dp"
+                    android:scrollbars="vertical"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"/>
+            </LinearLayout>
+        </LinearLayout>
+        <!-- Zone de texte pour description -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Description de la Réclamation :"
+            android:textSize="18sp"
+            android:layout_marginBottom="4dp"
+            android:textColor="@color/black" />
+
+        <EditText
+            android:id="@+id/claim"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:hint="Décrivez votre réclamation"
+            android:inputType="textMultiLine"
+            android:gravity="top|start"
+            android:background="@drawable/rounded_edittext"
+            android:padding="12dp"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Bouton Soumettre -->
+        <Button
+            android:id="@+id/submitClaimButton"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/blue"
+            android:minHeight="48dp"
+            android:padding="16dp"
+            android:text="Soumettre"
+            android:textSize="18sp" />
+
+
+    </LinearLayout>
+</ScrollView>
