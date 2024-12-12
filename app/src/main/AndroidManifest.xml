@@ -5,6 +5,7 @@
     <!-- Permissions nécessaires pour l'accès aux fichiers -->
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
     <!-- Permission pour internet -->
     <uses-permission android:name="android.permission.INTERNET" />

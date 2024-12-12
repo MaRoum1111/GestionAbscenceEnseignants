@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.example.gestionabscenceenseignants.model.Emploi;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.WriteBatch;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -27,9 +28,12 @@ public class EmploiRepository {
             Sheet sheet = workbook.getSheetAt(0); // Première feuille
             for (Row row : sheet) {
                 if (row.getRowNum() == 0) continue; // Ignorer l'en-tête
-                String nom = row.getCell(0).getStringCellValue();
-                String jour = row.getCell(1).getStringCellValue();
-                String heure = row.getCell(2).getStringCellValue();
+
+                // Lecture des cellules avec gestion des valeurs nulles
+                String nom = getStringCellValue(row, 0);
+                String jour = getStringCellValue(row, 1);
+                String heure = getStringCellValue(row, 2);
+
                 emploisList.add(new Emploi(nom, jour, heure));
             }
             workbook.close();
@@ -39,15 +43,35 @@ public class EmploiRepository {
         return emploisList;
     }
 
+    private String getStringCellValue(Row row, int cellIndex) {
+        if (row.getCell(cellIndex) != null) {
+            return row.getCell(cellIndex).toString(); // Pour gérer tous les types de cellules
+        }
+        return ""; // Retourner une chaîne vide si la cellule est nulle
+    }
+
     public void saveEmploisToFirestore(List<Emploi> emplois) {
+        WriteBatch batch = firestore.batch(); // Utilisation du WriteBatch pour des écritures groupées
+
         for (Emploi emploi : emplois) {
+            // Créer un document avec un identifiant auto-généré
             firestore.collection("emplois")
-                    .add(emploi)
+                    .add(emploi) // Ajouter l'emploi à Firestore
                     .addOnSuccessListener(docRef ->
                             Log.d("Firestore", "Données ajoutées : " + docRef.getId()))
                     .addOnFailureListener(e ->
                             Log.e("Firestore", "Erreur lors de l'ajout", e));
+
+            // Tu peux également ajouter un contrôle d'erreur ici ou d'autres fonctionnalités
         }
+
+        // Commit du batch une fois toutes les écritures prêtes
+        batch.commit().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Log.d("Firestore", "Batch commit success");
+            } else {
+                Log.e("Firestore", "Batch commit failed", task.getException());
+            }
+        });
     }
 }
-
