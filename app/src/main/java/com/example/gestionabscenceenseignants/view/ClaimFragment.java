@@ -26,9 +26,6 @@ public class ClaimFragment extends Fragment {
     private Button btnSubmitClaim;
     private ClaimViewModel claimViewModel;
 
-
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_claim, container, false);
@@ -74,13 +71,6 @@ public class ClaimFragment extends Fragment {
         int day = calendar.get(Calendar.DAY_OF_MONTH);
         editTextDate.setText(String.format("%02d/%02d/%d", day, month + 1, year));
         editTextclaimDate.setText(String.format("%02d/%02d/%d", day, month + 1, year));
-
-        // Set current time
-        int hour = calendar.get(Calendar.HOUR_OF_DAY);
-        int minute = calendar.get(Calendar.MINUTE);
-        String currentTime = String.format("%02d:%02d", hour, minute);
-        editTextStartTime.setText(currentTime);
-        editTextEndTime.setText(currentTime); // Default: same time for start and end
     }
 
     private void addDateAndTimePickers() {
@@ -103,7 +93,7 @@ public class ClaimFragment extends Fragment {
                     editTextDate.setText(selectedDate);
                     editTextclaimDate.setText(selectedDate);
                 },
-                year, month, day
+                day, year, month
         );
         datePickerDialog.show();
     }
@@ -124,8 +114,6 @@ public class ClaimFragment extends Fragment {
         );
         timePickerDialog.show();
     }
-
-
 
     private void addClaim() {
         if (!validateInputs()) {

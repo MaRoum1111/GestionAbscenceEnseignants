@@ -20,37 +20,27 @@ import java.util.List;
 
 public class AbsenceFragment extends Fragment {
 
-    private RecyclerView recyclerView;
-    private AbsenceAdapter adapter;
-    private AbsenceViewModel absenceViewModel;
+    private RecyclerView recyclerView;  // RecyclerView pour afficher les absences
+    private AbsenceAdapter adapter;  // L'adaptateur pour gérer la liste d'absences
+    private AbsenceViewModel absenceViewModel;  // ViewModel pour gérer les données d'absences
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Initialisations qui ne nécessitent pas d'éléments de la vue
-        absenceViewModel = new ViewModelProvider(this).get(AbsenceViewModel.class);
+        // Initialiser le ViewModel pour obtenir et gérer les données des absences
+        initializeViewModel();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, @Nullable Bundle savedInstanceState) {
-        // Charger la vue
+        // Inflater la vue pour le fragment
         View view = inflater.inflate(R.layout.fragment_absence, container, false);
 
-        // Initialiser le RecyclerView
-        recyclerView = view.findViewById(R.id.recyclerViewAbsences);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        // Initialiser le RecyclerView pour afficher les absences
+        initializeRecyclerView(view);
 
-        // Gérer le clic du bouton flottant
-        FloatingActionButton boutonAdd = view.findViewById(R.id.btnFloatingAction);
-        boutonAdd.setOnClickListener(v -> {
-            Fragment addAbsenceFragment = new AddAbsenceFragment();
-
-            // Remplacer le fragment actuel par le nouveau
-            getParentFragmentManager().beginTransaction()
-                    .replace(R.id.frame_layout, addAbsenceFragment)
-                    .addToBackStack(null)  // Ajoute à la pile pour pouvoir revenir
-                    .commit();
-        });
+        // Initialiser le bouton flottant pour ajouter une absence
+        initializeFloatingActionButton(view);
 
         return view;
     }
@@ -58,79 +48,113 @@ public class AbsenceFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        // Observer les données des absences et mettre à jour l'interface utilisateur en conséquence
+        observeAbsencesData();
+    }
 
-        // Observer les données des absences
-        absenceViewModel.loadAbsenceCountsByProf();
+    // Fonction d'initialisation du ViewModel pour gérer les données
+    private void initializeViewModel() {
+        absenceViewModel = new ViewModelProvider(this).get(AbsenceViewModel.class);
+    }
+
+    // Fonction d'initialisation du RecyclerView
+    private void initializeRecyclerView(View view) {
+        recyclerView = view.findViewById(R.id.recyclerViewAbsences);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));  // Utilisation d'un LinearLayoutManager pour la liste
+    }
+
+    // Fonction d'initialisation du bouton flottant pour ajouter une absence
+    private void initializeFloatingActionButton(View view) {
+        FloatingActionButton boutonAdd = view.findViewById(R.id.btnFloatingAction);
+        boutonAdd.setOnClickListener(v -> openAddAbsenceFragment());  // Ouvrir le fragment d'ajout d'absence lorsque le bouton est cliqué
+    }
+
+    // Fonction pour ouvrir le fragment AddAbsenceFragment
+    private void openAddAbsenceFragment() {
+        Fragment addAbsenceFragment = new AddAbsenceFragment();
+        getParentFragmentManager().beginTransaction()
+                .replace(R.id.frame_layout, addAbsenceFragment)  // Remplacer le fragment actuel par celui d'ajout d'absence
+                .addToBackStack(null)  // Ajouter la transaction à la pile arrière pour pouvoir revenir en arrière
+                .commit();
+    }
+
+    // Fonction pour observer les données d'absences et mettre à jour le RecyclerView
+    private void observeAbsencesData() {
+        absenceViewModel.loadAbsenceCountsByProf();  // Charger les données d'absences par professeur
         absenceViewModel.getAbsences().observe(getViewLifecycleOwner(), new Observer<List<Absence>>() {
             @Override
             public void onChanged(List<Absence> absences) {
                 if (absences != null) {
-                    if (adapter == null) {
-                        adapter = new AbsenceAdapter(absences, new AbsenceAdapter.OnAbsenceClickListener() {
-                            @Override
-                            public void onAbsenceClick(String cin, String profName, int absenceCount) {
-                                Bundle bundle = new Bundle();
-                                bundle.putString("cin", cin);
-                                bundle.putString("profName", profName);
-                                bundle.putInt("absenceCount", absenceCount);
-
-                                DetailAbsenceFragment detailAbsenceFragment = new DetailAbsenceFragment();
-                                detailAbsenceFragment.setArguments(bundle);
-
-                                getParentFragmentManager().beginTransaction()
-                                        .replace(R.id.frame_layout, detailAbsenceFragment)
-                                        .addToBackStack(null)
-                                        .commit();
-                            }
-                        });
-                        recyclerView.setAdapter(adapter);
-                    } else {
-                        adapter.updateData(absences); // Mise à jour des données
-                    }
+                    updateRecyclerView(absences);  // Mettre à jour l'adaptateur avec les nouvelles données
                 }
             }
         });
     }
 
+    // Fonction pour mettre à jour le RecyclerView avec les données des absences
+    private void updateRecyclerView(List<Absence> absences) {
+        if (adapter == null) {
+            // Si l'adaptateur n'est pas encore initialisé, créer un nouvel adaptateur
+            adapter = new AbsenceAdapter(absences, new AbsenceAdapter.OnAbsenceClickListener() {
+                @Override
+                public void onAbsenceClick(String cin, String profName, int absenceCount) {
+                    openDetailAbsenceFragment(cin, profName, absenceCount);  // Ouvrir le fragment de détail d'absence lors du clic sur une absence
+                }
+            });
+            recyclerView.setAdapter(adapter);  // Associer l'adaptateur au RecyclerView
+        } else {
+            adapter.updateData(absences);  // Si l'adaptateur existe déjà, mettre à jour les données
+        }
+    }
+
+    // Fonction pour ouvrir le fragment de détail d'absence avec les informations nécessaires
+    private void openDetailAbsenceFragment(String cin, String profName, int absenceCount) {
+        Bundle bundle = new Bundle();
+        bundle.putString("cin", cin);
+        bundle.putString("profName", profName);
+        bundle.putInt("absenceCount", absenceCount);
+
+        DetailAbsenceFragment detailAbsenceFragment = new DetailAbsenceFragment();
+        detailAbsenceFragment.setArguments(bundle);  // Passer les données au fragment de détail
+
+        getParentFragmentManager().beginTransaction()
+                .replace(R.id.frame_layout, detailAbsenceFragment)  // Remplacer le fragment actuel par celui de détail
+                .addToBackStack(null)  // Ajouter à la pile pour pouvoir revenir en arrière
+                .commit();
+    }
+
     @Override
     public void onStart() {
         super.onStart();
-        // Appelé lorsque le fragment devient visible à l'utilisateur
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        // Appelé lorsque l'utilisateur peut interagir avec le fragment
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        // Appelé lorsque l'utilisateur quitte temporairement le fragment
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        // Appelé lorsque le fragment n'est plus visible
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        // Libérer les ressources liées à la vue
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        // Effectuer les nettoyages finaux du fragment
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        // Appelé lorsque le fragment est détaché de l'activité
     }
 }
