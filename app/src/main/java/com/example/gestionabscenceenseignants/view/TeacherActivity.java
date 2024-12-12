@@ -89,7 +89,7 @@ public class TeacherActivity extends AppCompatActivity {
             } else if (id == R.id.nav_absences) {
                 loadFragment(new AbsenceTeacherFragment());
             } else if (id == R.id.nav_emplois){
-                loadFragment(new ListeClaimFragement());
+                loadFragment(new ListeClaimFragment());
             }
             return true; // Indique que l'item a été sélectionné et l'action a été effectuée
         });
