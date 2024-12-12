@@ -16,7 +16,7 @@
             android:id="@+id/reclamationtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Demande de Réclamation"
+            android:text="Modifier de Réclamation"
             android:textSize="24sp"
             android:textColor="@color/black"
             android:layout_marginBottom="16dp"
@@ -185,7 +185,6 @@
                     android:focusableInTouchMode="true"/>
             </LinearLayout>
         </LinearLayout>
-
         <EditText
             android:id="@+id/claim"
             android:layout_width="match_parent"
@@ -197,17 +196,36 @@
             android:padding="12dp"
             android:layout_marginBottom="16dp" />
 
-        <!-- Bouton Soumettre -->
-        <Button
-            android:id="@+id/submitClaimButton"
-            android:layout_width="150dp"
+        <!-- Boutons en bas -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/blue"
-            android:minHeight="48dp"
-            android:padding="16dp"
-            android:text="Soumettre"
-            android:textSize="18sp" />
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="20dp">
 
+            <Button
+                android:id="@+id/editButton"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/blue"
+                android:minHeight="48dp"
+                android:padding="16dp"
+                android:text="Valider"
+                android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/cancelButton"
+                android:layout_width="154dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/white"
+                android:elevation="10dp"
+                android:minHeight="48dp"
+                android:padding="16dp"
+                android:text="Annuler"
+                android:textColor="@color/blue"
+                android:textSize="18sp" />
+        </LinearLayout>
 
     </LinearLayout>
 </ScrollView>

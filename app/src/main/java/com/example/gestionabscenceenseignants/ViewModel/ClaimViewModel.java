@@ -4,7 +4,9 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.gestionabscenceenseignants.Repository.AbsenceRepository;
 import com.example.gestionabscenceenseignants.Repository.ClaimRepository;
+import com.example.gestionabscenceenseignants.model.Absence;
 import com.example.gestionabscenceenseignants.model.Claim;
 
 import java.util.List;
@@ -58,7 +60,37 @@ public class ClaimViewModel extends ViewModel {
         });
     }
 
+    public void deleteClaim(String documentId) {
+        isDeleting.setValue(true); // Début de l'opération de suppression
+        repository.deleteClaim(documentId, new ClaimRepository.AuthCallback() {
+            @Override
+            public void onSuccess(List<Claim> claimList) {
+                isDeleting.setValue(false); // Fin de la suppression
+                getClaimsForCurrentTeacher(); // Recharge la liste des absences
+                errorMessage.setValue("Absence supprimée avec succès.");
+            }
 
+            @Override
+            public void onFailure(String error) {
+                isDeleting.setValue(false); // Fin de la suppression en cas d'échec
+                errorMessage.setValue("Erreur lors de la suppression : " + error);
+            }
+        });
+    }
+    public void updateClaim(String documentId, Claim updatedClaim) {
+        repository.updateClaim(documentId, updatedClaim, new ClaimRepository.AuthCallback() {
+            @Override
+            public void onSuccess(List<Claim> claimList) {
+                claims.setValue(claimList); // Mise à jour des données après succès
+                errorMessage.setValue("Récalamtion mise à jour avec succès.");
+            }
+
+            @Override
+            public void onFailure(String error) {
+                errorMessage.setValue("Erreur lors de la mise à jour : " + error);
+            }
+        });
+    }
     // Réinitialiser le message d'erreur ou de succès
     public void resetErrorMessage() {
         errorMessage.setValue(null); // Réinitialise le message

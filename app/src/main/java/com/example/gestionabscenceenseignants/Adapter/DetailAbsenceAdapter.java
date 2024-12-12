@@ -41,7 +41,6 @@ public class DetailAbsenceAdapter extends RecyclerView.Adapter<DetailAbsenceAdap
         if (absence != null) {
 
 
-
             // Lier les données aux TextViews
             holder.salle.setText("Salle: "+absence.getSalle());
             holder.date.setText("Date: "+absence.getDate());

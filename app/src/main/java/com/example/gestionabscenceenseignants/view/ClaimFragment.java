@@ -15,20 +15,17 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.gestionabscenceenseignants.R;
-import com.example.gestionabscenceenseignants.Repository.ClaimRepository;
 import com.example.gestionabscenceenseignants.ViewModel.ClaimViewModel;
 import com.example.gestionabscenceenseignants.model.Claim;
 
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
-public class ClaimFragement extends Fragment {
-    private EditText editTextCin, editTextDate, editTextStartTime, editTextEndTime, editTextClaim, editTextClasse;
+public class ClaimFragment extends Fragment {
+    private EditText editTextDate, editTextStartTime, editTextEndTime, editTextClaim, editTextClasse,editTextclaimDate;
     private Button btnSubmitClaim;
     private ClaimViewModel claimViewModel;
-    private ClaimRepository claimRepository;
+
 
 
 
@@ -55,13 +52,14 @@ public class ClaimFragement extends Fragment {
     }
 
     private void initUIComponents(View view) {
-        editTextCin = view.findViewById(R.id.cin_enseignant);
         editTextDate = view.findViewById(R.id.date);
         editTextStartTime = view.findViewById(R.id.startTime);
         editTextEndTime = view.findViewById(R.id.endTime);
         editTextClaim = view.findViewById(R.id.claim);
         editTextClasse = view.findViewById(R.id.classe);
+        editTextclaimDate=view.findViewById((R.id.claimDate));
         btnSubmitClaim = view.findViewById(R.id.submitClaimButton);
+
 
 
     }
@@ -75,6 +73,7 @@ public class ClaimFragement extends Fragment {
         int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
         editTextDate.setText(String.format("%02d/%02d/%d", day, month + 1, year));
+        editTextclaimDate.setText(String.format("%02d/%02d/%d", day, month + 1, year));
 
         // Set current time
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
@@ -86,6 +85,7 @@ public class ClaimFragement extends Fragment {
 
     private void addDateAndTimePickers() {
         editTextDate.setOnClickListener(v -> showDatePicker());
+        editTextclaimDate.setOnClickListener(v -> showDatePicker());
         editTextStartTime.setOnClickListener(v -> showTimePicker(editTextStartTime));
         editTextEndTime.setOnClickListener(v -> showTimePicker(editTextEndTime));
     }
@@ -101,6 +101,7 @@ public class ClaimFragement extends Fragment {
                 (view1, selectedYear, selectedMonth, selectedDay) -> {
                     @SuppressLint("DefaultLocale") String selectedDate = String.format("%02d/%02d/%d", selectedDay, selectedMonth + 1, selectedYear);
                     editTextDate.setText(selectedDate);
+                    editTextclaimDate.setText(selectedDate);
                 },
                 year, month, day
         );
@@ -116,7 +117,8 @@ public class ClaimFragement extends Fragment {
                 requireContext(),
                 (view1, selectedHour, selectedMinute) -> {
                     @SuppressLint("DefaultLocale") String selectedTime = String.format("%02d:%02d", selectedHour, selectedMinute);
-                    editText.setText(selectedTime);
+                    editTextStartTime.setText(selectedTime);
+                    editTextEndTime.setText(selectedTime);
                 },
                 hour, minute, true
         );
@@ -131,12 +133,13 @@ public class ClaimFragement extends Fragment {
         }
 
         Claim claim = new Claim(
-                editTextCin.getText().toString().trim(),
                 editTextDate.getText().toString().trim(),
                 editTextStartTime.getText().toString().trim(),
                 editTextEndTime.getText().toString().trim(),
                 editTextClaim.getText().toString().trim(),
-                editTextClasse.getText().toString().trim()
+                editTextClasse.getText().toString().trim(),
+                editTextclaimDate.getText().toString().trim()
+
         );
 
         claimViewModel.addClaim(claim);
@@ -152,14 +155,14 @@ public class ClaimFragement extends Fragment {
     }
 
     private boolean validateInputs() {
-        String cin = editTextCin.getText().toString().trim();
+
         String date = editTextDate.getText().toString().trim();
         String startTime = editTextStartTime.getText().toString().trim();
         String endTime = editTextEndTime.getText().toString().trim();
         String claim = editTextClaim.getText().toString().trim();
         String classe = editTextClasse.getText().toString().trim();
 
-        if (cin.isEmpty() || date.isEmpty() || startTime.isEmpty() || endTime.isEmpty() || claim.isEmpty() || classe.isEmpty()) {
+        if (date.isEmpty() || startTime.isEmpty() || endTime.isEmpty() || claim.isEmpty() || classe.isEmpty()) {
             Toast.makeText(getActivity(), "Veuillez remplir tous les champs", Toast.LENGTH_SHORT).show();
             return false;
         }
