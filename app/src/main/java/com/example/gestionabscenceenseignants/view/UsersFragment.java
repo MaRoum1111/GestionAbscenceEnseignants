@@ -58,7 +58,7 @@ public class UsersFragment extends Fragment implements UsersAdapter.OnUserClickL
             @Override
             public void onClick(View v) {
                 // Ouvrir le fragment AddUserFragment
-                Fragment addUserFragment = new addUserFragment(); // Assure-toi que le nom du fragment est correct
+                Fragment addUserFragment = new AddUserFragment(); // Assure-toi que le nom du fragment est correct
 
                 // Remplacer le fragment actuel par le nouveau
                 getParentFragmentManager().beginTransaction()

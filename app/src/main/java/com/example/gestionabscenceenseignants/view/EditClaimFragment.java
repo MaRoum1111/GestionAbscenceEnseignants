@@ -17,7 +17,7 @@ import com.example.gestionabscenceenseignants.R;
 import com.example.gestionabscenceenseignants.ViewModel.ClaimViewModel;
 import com.example.gestionabscenceenseignants.model.Claim;
 
-public class editClaimFragment extends Fragment {
+public class EditClaimFragment extends Fragment {
 
     private EditText dateField, startTimeField, endTimeField, claimDateField, classeField, claimField;
     private ClaimViewModel claimViewModel;
@@ -33,21 +33,32 @@ public class editClaimFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Initialiser les champs
+        // Initialisation des champs
+        initializeFields(view);
+
+        // Initialisation du ViewModel
+        claimViewModel = new ViewModelProvider(this).get(ClaimViewModel.class);
+
+        // Charger les données transmises par le fragment précédent
+        loadDataFromArguments();
+
+        // Gérer le clic sur le bouton de validation
+        setupValidationButton(view);
+
+        // Gérer le clic sur le bouton d'annulation
+        setupCancelButton(view);
+    }
+
+    private void initializeFields(View view) {
         dateField = view.findViewById(R.id.date);
         startTimeField = view.findViewById(R.id.startTime);
         endTimeField = view.findViewById(R.id.endTime);
         claimDateField = view.findViewById(R.id.claimDate);
         classeField = view.findViewById(R.id.classe);
         claimField = view.findViewById(R.id.claim);
+    }
 
-        Button validateButton = view.findViewById(R.id.editButton);
-        Button cancelButton = view.findViewById(R.id.cancelButton);
-
-        // Initialiser le ViewModel
-        claimViewModel = new ViewModelProvider(this).get(ClaimViewModel.class);
-
-        // Charger les données transmises par le fragment précédent
+    private void loadDataFromArguments() {
         if (getArguments() != null) {
             idClaim = getArguments().getString("idClaim");
             dateField.setText(getArguments().getString("date"));
@@ -56,11 +67,11 @@ public class editClaimFragment extends Fragment {
             claimField.setText(getArguments().getString("claim"));
             classeField.setText(getArguments().getString("classe"));
             claimDateField.setText(getArguments().getString("claimDate"));
-
-
         }
+    }
 
-        // Gérer le clic sur le bouton de validation
+    private void setupValidationButton(View view) {
+        Button validateButton = view.findViewById(R.id.editButton);
         validateButton.setOnClickListener(v -> {
             if (validateFields()) {
                 Claim updatedClaim = new Claim(
@@ -82,8 +93,10 @@ public class editClaimFragment extends Fragment {
                 requireActivity().getSupportFragmentManager().popBackStack();
             }
         });
+    }
 
-        // Gérer le clic sur le bouton d'annulation
+    private void setupCancelButton(View view) {
+        Button cancelButton = view.findViewById(R.id.cancelButton);
         cancelButton.setOnClickListener(v -> {
             requireActivity().getSupportFragmentManager().popBackStack();
         });

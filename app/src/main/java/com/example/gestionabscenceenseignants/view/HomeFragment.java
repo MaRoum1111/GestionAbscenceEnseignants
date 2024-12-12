@@ -38,14 +38,7 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         // Initialisation des composants UI
-        calendarView = view.findViewById(R.id.calendarView);
-        tvAbsencesCount = view.findViewById(R.id.tv_absences_count);
-        rbFilterMonth = view.findViewById(R.id.rb_filter_month);
-        rbFilterYear = view.findViewById(R.id.rb_filter_year);
-        radioGroupFilters = view.findViewById(R.id.radioGroup);
-        Creport = view.findViewById(R.id.cardreport);
-        Cabsence = view.findViewById(R.id.cardabsence);
-        Cuser = view.findViewById(R.id.cardclaim);
+        initializeUIComponents(view);
 
         // Initialisation du ViewModel
         absenceViewModel = new ViewModelProvider(this).get(AbsenceViewModel.class);
@@ -61,83 +54,74 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Récupérer la date actuelle lorsque l'application est ouverte
-        long currentDate = calendarView.getDate();
-        @SuppressLint({"DefaultLocale", "SimpleDateFormat"})
-        String selectedDate = new SimpleDateFormat("dd/MM/yyyy").format(new Date(currentDate));
+        // Initialiser la date actuelle et charger les absences pour cette date
+        initializeDateAndLoadAbsences();
 
-        // Appel pour récupérer les absences pour la date actuelle
-        absenceViewModel.fetchAbsencesByDate(selectedDate);
-
-        // Écouteur pour le CalendarView
-        calendarView.setOnDateChangeListener((view1, year, month, dayOfMonth) -> {
-            @SuppressLint("DefaultLocale")
-            String selectedDateFormatted = String.format("%02d/%02d/%04d", dayOfMonth, month + 1, year);
-            Log.d("HomeFragment", "Selected date: " + selectedDateFormatted);
-            absenceViewModel.fetchAbsencesByDate(selectedDateFormatted);
-        });
-
-        // Écouteurs pour les boutons radio
-        rbFilterMonth.setOnClickListener(v -> filterByMonth());
-        rbFilterYear.setOnClickListener(v -> filterByYear());
-        Cuser.setOnClickListener(v -> openClaimManagement());
-        Creport.setOnClickListener(v -> openStatsPage());
-        Cabsence.setOnClickListener(v -> openAbsencesManagement());
+        // Gérer les événements de clic sur le calendrier et les boutons radio
+        setEventListeners();
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        // Le fragment est devenu visible et interactif
         Log.d("HomeFragment", "Fragment onStart");
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        // Le fragment est visible et l'utilisateur peut interagir avec lui
         Log.d("HomeFragment", "Fragment onResume");
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        // Le fragment n'est plus au premier plan mais peut encore être visible
         Log.d("HomeFragment", "Fragment onPause");
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        // Le fragment n'est plus visible, il est peut-être caché ou détruit
         Log.d("HomeFragment", "Fragment onStop");
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        // La vue du fragment est détruite, mais le fragment peut rester en mémoire
         Log.d("HomeFragment", "Fragment onDestroyView");
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        // Le fragment est détruit
         Log.d("HomeFragment", "Fragment onDestroy");
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        // Le fragment est détaché de son activité
         Log.d("HomeFragment", "Fragment onDetach");
     }
 
+    /**
+     * Initialiser les composants de l'interface utilisateur.
+     */
+    private void initializeUIComponents(View view) {
+        calendarView = view.findViewById(R.id.calendarView);
+        tvAbsencesCount = view.findViewById(R.id.tv_absences_count);
+        rbFilterMonth = view.findViewById(R.id.rb_filter_month);
+        rbFilterYear = view.findViewById(R.id.rb_filter_year);
+        radioGroupFilters = view.findViewById(R.id.radioGroup);
+        Creport = view.findViewById(R.id.cardreport);
+        Cabsence = view.findViewById(R.id.cardabsence);
+        Cuser = view.findViewById(R.id.cardclaim);
+    }
+
+    /**
+     * Observer les données du ViewModel.
+     */
     private void observeViewModel() {
-        // Observer les données des absences
         absenceViewModel.getAbsences().observe(getViewLifecycleOwner(), absences -> {
-            // Mettre à jour l'interface avec les données récupérées
             if (absences != null) {
                 tvAbsencesCount.setText("Nombre d'absences pour le jour sélectionné : " + absences.size());
             } else {
@@ -145,45 +129,89 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        // Observer les messages d'erreur ou de succès
         absenceViewModel.getErrorMessage().observe(getViewLifecycleOwner(), message -> {
             if (message != null) {
-                // Afficher un message à l'utilisateur si nécessaire (Toast, Snackbar, etc.)
+                // Afficher un message d'erreur ou de succès si nécessaire
             }
         });
     }
 
+    /**
+     * Initialiser la date actuelle et charger les absences pour cette date.
+     */
+    private void initializeDateAndLoadAbsences() {
+        long currentDate = calendarView.getDate();
+        @SuppressLint({"DefaultLocale", "SimpleDateFormat"})
+        String selectedDate = new SimpleDateFormat("dd/MM/yyyy").format(new Date(currentDate));
+        absenceViewModel.fetchAbsencesByDate(selectedDate);
+    }
+
+    /**
+     * Définir les écouteurs pour les événements du calendrier et des boutons radio.
+     */
+    private void setEventListeners() {
+        // Gérer les changements de date dans le calendrier
+        calendarView.setOnDateChangeListener((view1, year, month, dayOfMonth) -> {
+            @SuppressLint("DefaultLocale")
+            String selectedDateFormatted = String.format("%02d/%02d/%04d", dayOfMonth, month + 1, year);
+            Log.d("HomeFragment", "Selected date: " + selectedDateFormatted);
+            absenceViewModel.fetchAbsencesByDate(selectedDateFormatted);
+        });
+
+        // Gérer les clics sur les boutons radio pour filtrer par mois ou année
+        rbFilterMonth.setOnClickListener(v -> filterByMonth());
+        rbFilterYear.setOnClickListener(v -> filterByYear());
+
+        // Gérer les clics sur les cartes pour accéder aux différentes pages
+        Cuser.setOnClickListener(v -> openClaimManagement());
+        Creport.setOnClickListener(v -> openStatsPage());
+        Cabsence.setOnClickListener(v -> openAbsencesManagement());
+    }
+
+    /**
+     * Filtrer les données par mois.
+     */
     private void filterByMonth() {
-        // Logique pour filtrer les données par mois
         absenceViewModel.loadAbsenceCountsByProf(); // Exemple de méthode
     }
 
+    /**
+     * Filtrer les données par année.
+     */
     private void filterByYear() {
-        // Logique pour filtrer les données par année
         absenceViewModel.loadAbsenceCountsByProf(); // Exemple de méthode
     }
 
+    /**
+     * Ouvrir la page des statistiques.
+     */
     private void openStatsPage() {
-        Fragment reportFragment = new ReportFragment(); // Remplacez par le fragment approprié
+        Fragment reportFragment = new ReportFragment();
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.frame_layout, reportFragment);
-        transaction.addToBackStack(null); // Ajoute à la pile arrière
+        transaction.addToBackStack(null);
         transaction.commit();
     }
 
+    /**
+     * Ouvrir la gestion des réclamations.
+     */
     private void openClaimManagement() {
-        Fragment usersFragment = new UsersFragment(); // Remplacez par le fragment approprié
+        Fragment usersFragment = new UsersFragment();
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.frame_layout, usersFragment);
-        transaction.addToBackStack(null); // Ajoute à la pile arrière
+        transaction.addToBackStack(null);
         transaction.commit();
     }
 
+    /**
+     * Ouvrir la gestion des absences.
+     */
     private void openAbsencesManagement() {
-        Fragment absenceFragment = new AbsenceFragment(); // Remplacez par le fragment approprié
+        Fragment absenceFragment = new AbsenceFragment();
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.frame_layout, absenceFragment);
-        transaction.addToBackStack(null); // Ajoute à la pile arrière
+        transaction.addToBackStack(null);
         transaction.commit();
     }
 }

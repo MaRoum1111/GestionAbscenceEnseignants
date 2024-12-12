@@ -29,16 +29,8 @@ public class EditAbsenceFragment extends Fragment {
     private String absenceId, Cin;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Log.d("EditAbsenceFragment", "onCreate called");
-        // Initialisation ou récupération des données globales si nécessaire
-    }
-
-    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d("EditAbsenceFragment", "onCreateView called");
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_edit_absence, container, false);
     }
 
@@ -47,7 +39,18 @@ public class EditAbsenceFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         Log.d("EditAbsenceFragment", "onViewCreated called");
 
-        // Initialiser les champs
+        // Initialiser les vues
+        initializeViews(view);
+
+        // Charger les données transmises par le fragment précédent
+        loadArguments();
+
+        // Gérer les clics sur les boutons
+        handleButtonClicks();
+    }
+
+    // Initialisation des vues
+    private void initializeViews(View view) {
         profNameField = view.findViewById(R.id.profName);
         dateField = view.findViewById(R.id.date);
         startTimeField = view.findViewById(R.id.startTime);
@@ -61,8 +64,10 @@ public class EditAbsenceFragment extends Fragment {
 
         // Initialiser le ViewModel
         absenceViewModel = new ViewModelProvider(this).get(AbsenceViewModel.class);
+    }
 
-        // Charger les données transmises par le fragment précédent
+    // Charger les données des arguments passés
+    private void loadArguments() {
         if (getArguments() != null) {
             absenceId = getArguments().getString("idAbsence");
             Cin = getArguments().getString("cin");
@@ -73,17 +78,27 @@ public class EditAbsenceFragment extends Fragment {
             reasonField.setText(getArguments().getString("classe"));
             subjectField.setText(getArguments().getString("salle"));
             // Sélectionner le statut correspondant dans le Spinner
-            String status = getArguments().getString("status");
-            if (status != null) {
-                String[] statuses = getResources().getStringArray(R.array.statut_absence);
-                for (int i = 0; i < statuses.length; i++) {
-                    if (statuses[i].equals(status)) {
-                        statusSpinner.setSelection(i);
-                        break;
-                    }
+            setStatusSpinner(getArguments().getString("status"));
+        }
+    }
+
+    // Sélectionner le statut dans le Spinner
+    private void setStatusSpinner(String status) {
+        if (status != null) {
+            String[] statuses = getResources().getStringArray(R.array.statut_absence);
+            for (int i = 0; i < statuses.length; i++) {
+                if (statuses[i].equals(status)) {
+                    statusSpinner.setSelection(i);
+                    break;
                 }
             }
         }
+    }
+
+    // Gérer les clics sur les boutons
+    private void handleButtonClicks() {
+        Button validateButton = getView().findViewById(R.id.editButton);
+        Button cancelButton = getView().findViewById(R.id.cancelButton);
 
         // Gérer le clic sur le bouton de validation
         validateButton.setOnClickListener(v -> {
@@ -98,13 +113,9 @@ public class EditAbsenceFragment extends Fragment {
                         statusSpinner.getSelectedItem().toString(),
                         subjectField.getText().toString(), Cin
                 );
-
                 // Appeler la méthode de mise à jour dans le ViewModel
                 absenceViewModel.updateAbsence(absenceId, updatedAbsence);
-
                 Toast.makeText(getContext(), "Absence mise à jour avec succès", Toast.LENGTH_SHORT).show();
-
-                // Retourner au fragment précédent
                 requireActivity().getSupportFragmentManager().popBackStack();
             }
         });
@@ -113,6 +124,35 @@ public class EditAbsenceFragment extends Fragment {
         cancelButton.setOnClickListener(v -> {
             requireActivity().getSupportFragmentManager().popBackStack();
         });
+    }
+
+    // Méthode pour valider les champs
+    private boolean validateFields() {
+        if (profNameField.getText().toString().isEmpty()) {
+            profNameField.setError("Veuillez entrer le nom du professeur");
+            return false;
+        }
+        if (dateField.getText().toString().isEmpty()) {
+            dateField.setError("Veuillez entrer une date valide");
+            return false;
+        }
+        if (startTimeField.getText().toString().isEmpty()) {
+            startTimeField.setError("Veuillez entrer l'heure de début");
+            return false;
+        }
+        if (endTimeField.getText().toString().isEmpty()) {
+            endTimeField.setError("Veuillez entrer l'heure de fin");
+            return false;
+        }
+        if (reasonField.getText().toString().isEmpty()) {
+            reasonField.setError("Veuillez entrer une raison");
+            return false;
+        }
+        if (subjectField.getText().toString().isEmpty()) {
+            subjectField.setError("Veuillez entrer le nom de la matière");
+            return false;
+        }
+        return true;
     }
 
     @Override
@@ -149,34 +189,5 @@ public class EditAbsenceFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         Log.d("EditAbsenceFragment", "onDestroy called");
-    }
-
-    // Méthode pour valider les champs
-    private boolean validateFields() {
-        if (profNameField.getText().toString().isEmpty()) {
-            profNameField.setError("Veuillez entrer le nom du professeur");
-            return false;
-        }
-        if (dateField.getText().toString().isEmpty()) {
-            dateField.setError("Veuillez entrer une date valide");
-            return false;
-        }
-        if (startTimeField.getText().toString().isEmpty()) {
-            startTimeField.setError("Veuillez entrer l'heure de début");
-            return false;
-        }
-        if (endTimeField.getText().toString().isEmpty()) {
-            endTimeField.setError("Veuillez entrer l'heure de fin");
-            return false;
-        }
-        if (reasonField.getText().toString().isEmpty()) {
-            reasonField.setError("Veuillez entrer une raison");
-            return false;
-        }
-        if (subjectField.getText().toString().isEmpty()) {
-            subjectField.setError("Veuillez entrer le nom de la matière");
-            return false;
-        }
-        return true;
     }
 }
