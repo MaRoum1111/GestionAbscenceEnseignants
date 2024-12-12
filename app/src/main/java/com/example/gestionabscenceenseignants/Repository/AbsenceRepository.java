@@ -25,7 +25,6 @@ public class AbsenceRepository {
         Log.d("Firestore", "Firestore instance initialized");
         mAuth = FirebaseAuth.getInstance();
     }
-
     // Méthode pour récupérer le nombre d'absences par professeur
     public void getAbsencesCountByProf(AuthCallback callback) {
         db.collection("absences")
@@ -91,10 +90,8 @@ public class AbsenceRepository {
                 // Assurer que nous avons bien récupéré un CIN
                 if (absences != null && !absences.isEmpty()) {
                     String cin = absences.get(0).getIdAgent();  // Récupérer le CIN
-
                     // Assigner le CIN à l'objet Absence
                     absence.setIdAgent(cin);
-
                     // Ajouter l'absence à Firestore
                     db.collection("absences")
                             .add(absence)
@@ -205,7 +202,6 @@ public class AbsenceRepository {
             callback.onFailure("Utilisateur non connecté.");
             return;
         }
-
         db.collection("users")  // Utilise la collection "users" pour récupérer les informations de l'utilisateur
                 .whereEqualTo("email", currentUser.getEmail())  // Filtre par email de l'utilisateur connecté
                 .get()

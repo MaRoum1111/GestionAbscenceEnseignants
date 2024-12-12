@@ -18,7 +18,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.gestionabscenceenseignants.R;
 import com.example.gestionabscenceenseignants.ViewModel.EmploiViewModel;
 import com.example.gestionabscenceenseignants.Adapter.EmploiAdapter;
@@ -43,7 +42,11 @@ public class EmploisFragment extends Fragment {
                     Intent data = result.getData();
                     if (data != null && data.getData() != null) {
                         Uri fileUri = data.getData();
-                        handleFileImport(fileUri); // Handle the file import process
+                        if (isExcelFile(fileUri)) {
+                            handleFileImport(fileUri); // Handle the file import process
+                        } else {
+                            Toast.makeText(requireContext(), "Veuillez sélectionner un fichier Excel", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 } else {
                     Toast.makeText(requireContext(), "Aucun fichier sélectionné", Toast.LENGTH_SHORT).show();
@@ -78,11 +81,31 @@ public class EmploisFragment extends Fragment {
     }
 
     // Method to open the file picker for Excel files
+    // Méthode pour ouvrir le sélecteur de fichier
     private void openFilePicker() {
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
-        intent.setType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"); // MIME type for Excel files
-        filePickerLauncher.launch(intent); // Launch the file picker activity
+        // Ajouter plusieurs types MIME pour couvrir différents types de fichiers Excel
+        intent.setType("*/*"); // Accepter tous les types de fichiers (ex. *.xls, *.xlsx)
+        intent.putExtra(Intent.EXTRA_MIME_TYPES, new String[] {
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", // Pour .xlsx
+                "application/vnd.ms-excel" // Pour .xls
+        });
+        filePickerLauncher.launch(intent); // Lance l'activité de sélection de fichier
+    }
+    // Method to check if the selected file is an Excel file
+    private boolean isExcelFile(Uri fileUri) {
+        String fileExtension = getFileExtension(fileUri);
+        return "xlsx".equalsIgnoreCase(fileExtension); // Check if the file has .xlsx extension
+    }
+
+    // Method to get the file extension from Uri
+    private String getFileExtension(Uri uri) {
+        String fileName = uri.getLastPathSegment();
+        if (fileName != null && fileName.contains(".")) {
+            return fileName.substring(fileName.lastIndexOf(".") + 1);
+        }
+        return "";
     }
 
     // Method to handle file import and process the selected Excel file
@@ -107,54 +130,5 @@ public class EmploisFragment extends Fragment {
             Log.e("EmploisFragment", "Erreur lors de l'importation du fichier : ", e);
             Toast.makeText(requireContext(), "Erreur lors de l'importation du fichier", Toast.LENGTH_SHORT).show();
         }
-    }
-
-    // Lifecycle methods
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        Log.d("EmploisFragment", "onViewCreated: View created");
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        Log.d("EmploisFragment", "onStart: Fragment started");
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.d("EmploisFragment", "onResume: Fragment resumed");
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        Log.d("EmploisFragment", "onPause: Fragment paused");
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        Log.d("EmploisFragment", "onStop: Fragment stopped");
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        Log.d("EmploisFragment", "onDestroyView: View destroyed");
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.d("EmploisFragment", "onDestroy: Fragment destroyed");
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        Log.d("EmploisFragment", "onDetach: Fragment detached");
     }
 }

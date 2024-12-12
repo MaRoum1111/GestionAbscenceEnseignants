@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import com.example.gestionabscenceenseignants.R;
 import com.example.gestionabscenceenseignants.model.Absence;
+import com.example.gestionabscenceenseignants.model.Claim;
 import com.example.gestionabscenceenseignants.model.User;
 import com.example.gestionabscenceenseignants.ViewModel.AbsenceViewModel;
 import com.example.gestionabscenceenseignants.Repository.UserRepository;
@@ -59,7 +60,7 @@ public class AddAbsenceFragment extends Fragment {
         fetchTeachers();
 
         // Handle add absence logic
-        btnAddAbsence.setOnClickListener(v -> addAbsence());
+        setupValidationButton(view);
 
         // Cancel action
         btnCancel.setOnClickListener(v -> requireActivity().getOnBackPressedDispatcher().onBackPressed());
@@ -87,6 +88,30 @@ public class AddAbsenceFragment extends Fragment {
         statusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerStatus.setAdapter(statusAdapter);
     }
+
+    private void setupValidationButton(View view) {
+        Button validateButton = view.findViewById(R.id.addButton);
+        validateButton.setOnClickListener(v -> {
+            if (validateInputs()) {
+                Absence absence = new Absence(
+                        editTextProfName.getText().toString().trim(),
+                        editTextDate.getText().toString().trim(),
+                        editTextStartTime.getText().toString().trim(),
+                        editTextEndTime.getText().toString().trim(),
+                        editTextReason.getText().toString().trim(),
+                        spinnerStatus.getSelectedItem().toString(),
+                        editTextSubjectName.getText().toString().trim(),
+                        selectedCIN
+                );
+
+                absenceViewModel.addAbsence(absence);
+                // Observer pour les erreurs ou succès
+                absenceViewModel.getErrorMessage().observe(getViewLifecycleOwner(), message -> {
+                    Toast.makeText(getActivity(), "Absence ajoutée avec succès", Toast.LENGTH_SHORT).show();
+                    requireActivity().getSupportFragmentManager().popBackStack();
+
+                });
+            }});}
 
     @SuppressLint("DefaultLocale")
     private void setCurrentDateAndTime() {
@@ -199,19 +224,11 @@ public class AddAbsenceFragment extends Fragment {
         );
 
         absenceViewModel.addAbsence(absence);
-
         // Observer pour les erreurs ou succès
         absenceViewModel.getErrorMessage().observe(getViewLifecycleOwner(), message -> {
-            if (message != null) {
-                Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-                requireActivity().getOnBackPressedDispatcher().onBackPressed();
-                //absenceViewModel.loadAbsenceCountsByProf();
-            } else {
-                Toast.makeText(getActivity(), "Absence ajoutée avec succès", Toast.LENGTH_SHORT).show();
-                requireActivity().getOnBackPressedDispatcher().onBackPressed();
-                absenceViewModel.loadAbsenceCountsByProf();
+            Toast.makeText(getActivity(), "Absence ajoutée avec succès", Toast.LENGTH_SHORT).show();
+            requireActivity().getSupportFragmentManager().popBackStack();
 
-            }
         });
     }
 
@@ -235,4 +252,6 @@ public class AddAbsenceFragment extends Fragment {
 
         return true;
     }
-}
+
+
+        }
