@@ -1,7 +1,5 @@
 package com.example.gestionabscenceenseignants.view;
 
-import static android.content.ContentValues.TAG;
-
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
@@ -39,27 +37,53 @@ public class DetailAbsenceFragment extends Fragment implements DetailAbsenceAdap
         // Initialisation du RecyclerView
         recyclerView = rootView.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        // Initialisation des TextViews
         TextView name = rootView.findViewById(R.id.teacher_name);
         TextView cin = rootView.findViewById(R.id.teacher_cin);
         TextView nb = rootView.findViewById(R.id.total_absences);
 
         // Récupérer les arguments passés au fragment (le CIN du professeur)
-        if (getArguments() != null) {
-            profCin = getArguments().getString("cin");
-            profname = getArguments().getString("profName");
-            nbAbsence = String.valueOf(getArguments().getInt("absenceCount", 0)); // Utilisation de int avec une valeur par défaut de 0
-        }
-        name.setText(profname);
-        cin.setText(profCin);
-        nb.setText("Total des absences: " + nbAbsence);
+        getArgumentsData();
+
+        // Affichage des informations du professeur
+        displayTeacherInfo(name, cin, nb);
 
         // Initialisation du ViewModel pour récupérer les absences
         absenceViewModel = new ViewModelProvider(this).get(AbsenceViewModel.class);
 
         // Charger les absences de ce professeur spécifique
+        loadAbsencesForTeacher();
+
+        // Observer les absences et mettre à jour l'adaptateur
+        observeAbsences();
+
+        return rootView;
+    }
+
+    private void getArgumentsData() {
+        // Récupérer les arguments passés au fragment
+        if (getArguments() != null) {
+            profCin = getArguments().getString("cin");
+            profname = getArguments().getString("profName");
+            nbAbsence = String.valueOf(getArguments().getInt("absenceCount", 0)); // Utilisation de int avec une valeur par défaut de 0
+        }
+    }
+
+    private void displayTeacherInfo(TextView name, TextView cin, TextView nb) {
+        // Afficher les informations du professeur dans les TextViews
+        name.setText(profname);
+        cin.setText(profCin);
+        nb.setText("Total des absences: " + nbAbsence);
+    }
+
+    private void loadAbsencesForTeacher() {
+        // Charger les absences pour le professeur spécifique
         Log.d("DetailAbsenceFragment", "Chargement des absences pour le professeur : " + profCin);
         absenceViewModel.loadAbsencesByProf(profCin);
+    }
 
+    private void observeAbsences() {
         // Observer les absences et mettre à jour l'adaptateur
         absenceViewModel.getAbsences().observe(getViewLifecycleOwner(), absences -> {
             Log.d("DetailAbsenceFragment", "Absences reçues : " + (absences != null ? absences.size() : "null"));
@@ -76,8 +100,6 @@ public class DetailAbsenceFragment extends Fragment implements DetailAbsenceAdap
                 recyclerView.setAdapter(null); // Optionnellement, vous pouvez mettre un adaptateur vide ou un message
             }
         });
-
-        return rootView;
     }
 
     @Override
@@ -151,5 +173,4 @@ public class DetailAbsenceFragment extends Fragment implements DetailAbsenceAdap
                 .addToBackStack(null) // Ajouter à la pile pour permettre un retour en arrière
                 .commit();
     }
-        // Logic for editing (e.g., navigate to a new screen or show a dialog)
 }
