@@ -4,12 +4,12 @@ import static android.content.ContentValues.TAG;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.util.Log; // Importer la classe Log
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast; // Pour afficher des notifications
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -80,6 +80,36 @@ public class DetailAbsenceFragment extends Fragment implements DetailAbsenceAdap
         return rootView;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d("DetailAbsenceFragment", "onStart called");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d("DetailAbsenceFragment", "onResume called");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d("DetailAbsenceFragment", "onPause called");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d("DetailAbsenceFragment", "onStop called");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d("DetailAbsenceFragment", "onDestroy called");
+    }
+
     @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onDelete(Absence absence) {
@@ -94,14 +124,13 @@ public class DetailAbsenceFragment extends Fragment implements DetailAbsenceAdap
             Toast.makeText(getContext(), "Absence supprimée avec succès", Toast.LENGTH_SHORT).show();
         }
     }
+
     @Override
     public void onEdit(Absence absence) {
         // Gestion de l'édition de l'absence
         Log.d("DetailAbsenceFragment", "Modification de l'absence : " + absence.toString());
-
         // Créer un nouveau fragment EditAbsenceFragment
         EditAbsenceFragment editFragment = new EditAbsenceFragment();
-
         // Passer les données de l'absence sélectionnée en tant qu'arguments
         Bundle args = new Bundle();
         args.putString("idAbsence", absence.getIdAbsence());
@@ -122,4 +151,5 @@ public class DetailAbsenceFragment extends Fragment implements DetailAbsenceAdap
                 .addToBackStack(null) // Ajouter à la pile pour permettre un retour en arrière
                 .commit();
     }
+        // Logic for editing (e.g., navigate to a new screen or show a dialog)
 }

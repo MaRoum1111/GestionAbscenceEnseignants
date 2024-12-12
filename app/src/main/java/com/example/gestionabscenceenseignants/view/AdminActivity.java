@@ -104,6 +104,36 @@ public class AdminActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d("AdminActivity", "L'activité est démarrée");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d("AdminActivity", "L'activité est en cours");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d("AdminActivity", "L'activité est en pause");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d("AdminActivity", "L'activité est arrêtée");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d("AdminActivity", "L'activité est détruite");
+    }
+
     // Fonction pour charger un fragment
     private void loadFragment(Fragment fragment) {
         getSupportFragmentManager().beginTransaction()
@@ -130,7 +160,6 @@ public class AdminActivity extends AppCompatActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
-
 
     // Fonction pour partager l'application
     private void shareApp() {

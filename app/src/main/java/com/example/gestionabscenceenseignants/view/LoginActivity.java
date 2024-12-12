@@ -57,6 +57,48 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        // Cette méthode est appelée lorsque l'activité devient visible pour l'utilisateur
+        // Idéal pour effectuer des tâches nécessaires dès que l'activité est visible, comme préparer des ressources
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Cette méthode est appelée lorsque l'activité commence à interagir avec l'utilisateur
+        // Utile pour rafraîchir des données ou interagir avec l'utilisateur
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // Cette méthode est appelée lorsque l'activité est mise en pause (l'utilisateur la quitte temporairement)
+        // Elle peut être utilisée pour sauvegarder des données ou annuler des tâches en cours
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        // Cette méthode est appelée lorsque l'activité est plus visible pour l'utilisateur
+        // Elle peut être utilisée pour libérer des ressources importantes ou mettre en pause certaines fonctionnalités
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Cette méthode est appelée lorsque l'activité est détruite
+        // Elle permet de libérer toutes les ressources et références utilisées par l'activité
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        // Cette méthode est appelée lorsque l'activité revient de l'état "Arrêtée" (l'utilisateur revient dans l'activité)
+        // Elle peut être utilisée pour effectuer une réinitialisation avant que l'activité soit à nouveau visible
+    }
+
     // Rediriger vers le tableau de bord en fonction du rôle
     private void navigateToDashboard(String role) {
         Intent intent;

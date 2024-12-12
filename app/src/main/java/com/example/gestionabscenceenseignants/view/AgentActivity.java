@@ -31,7 +31,7 @@ public class AgentActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_admin);
+        setContentView(R.layout.activity_agent);
 
         // Initialiser les vues
         drawerLayout = findViewById(R.id.drawer_layout);
@@ -126,7 +126,6 @@ public class AgentActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-
     // Fonction pour partager l'application
     private void shareApp() {
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
@@ -134,5 +133,49 @@ public class AgentActivity extends AppCompatActivity {
         shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Gestion Absences");
         shareIntent.putExtra(Intent.EXTRA_TEXT, "Découvrez cette application : Gestion Absences");
         startActivity(Intent.createChooser(shareIntent, "Partager via"));
+    }
+
+    // Méthodes de cycle de vie
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d("AgentActivity", "onStart: Activité démarrée");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d("AgentActivity", "onResume: Activité en pause reprise");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d("AgentActivity", "onPause: Activité en pause");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d("AgentActivity", "onStop: Activité arrêtée");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d("AgentActivity", "onDestroy: Activité détruite");
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.d("AgentActivity", "onRestart: Activité redémarrée");
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.d("AgentActivity", "onSaveInstanceState: Sauvegarde de l'état de l'activité");
     }
 }

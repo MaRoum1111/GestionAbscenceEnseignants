@@ -36,12 +36,15 @@ public class AddAbsenceFragment extends Fragment {
     private String selectedCIN = "";
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_add_absence, container, false);
-
-        // Initialize ViewModel and UserRepository
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         absenceViewModel = new ViewModelProvider(this).get(AbsenceViewModel.class);
         userRepository = new UserRepository();
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_add_absence, container, false);
 
         // Initialize UI components
         initUIComponents(view);
@@ -88,19 +91,16 @@ public class AddAbsenceFragment extends Fragment {
     @SuppressLint("DefaultLocale")
     private void setCurrentDateAndTime() {
         Calendar calendar = Calendar.getInstance();
-
-        // Set current date
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
         editTextDate.setText(String.format("%02d/%02d/%d", day, month + 1, year));
 
-        // Set current time
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int minute = calendar.get(Calendar.MINUTE);
         String currentTime = String.format("%02d:%02d", hour, minute);
         editTextStartTime.setText(currentTime);
-        editTextEndTime.setText(currentTime); // Default: same time for start and end
+        editTextEndTime.setText(currentTime);
     }
 
     private void addDateAndTimePickers() {
@@ -146,7 +146,7 @@ public class AddAbsenceFragment extends Fragment {
         userRepository.getTeacherNamesAndCIN(new UserRepository.UserCallback() {
             @Override
             public void onSuccessMessage(String message) {
-                // Implémente la logique de gestion du message si nécessaire
+                // Handle success message
             }
 
             @Override
@@ -172,17 +172,15 @@ public class AddAbsenceFragment extends Fragment {
 
             @Override
             public void onFailure(String errorMessage) {
-                // Implémente la gestion des erreurs
                 Toast.makeText(getActivity(), "Erreur: " + errorMessage, Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onSuccessUser(User user) {
-                // Implémente ou laisse vide si tu n'en as pas besoin
+                // Handle success user if necessary
             }
         });
     }
-
 
     private void addAbsence() {
         if (!validateInputs()) {
@@ -201,14 +199,18 @@ public class AddAbsenceFragment extends Fragment {
         );
 
         absenceViewModel.addAbsence(absence);
+
+        // Observer pour les erreurs ou succès
         absenceViewModel.getErrorMessage().observe(getViewLifecycleOwner(), message -> {
             if (message != null) {
                 Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-                if (message.equals("Absence ajoutée avec succès")) {
-                    // Afficher le toast de succès
-                    Toast.makeText(getActivity(), "Ajouté avec succès", Toast.LENGTH_SHORT).show();
-                    navigateToFragmentAbsences();
-                }
+                requireActivity().getOnBackPressedDispatcher().onBackPressed();
+                //absenceViewModel.loadAbsenceCountsByProf();
+            } else {
+                Toast.makeText(getActivity(), "Absence ajoutée avec succès", Toast.LENGTH_SHORT).show();
+                requireActivity().getOnBackPressedDispatcher().onBackPressed();
+                absenceViewModel.loadAbsenceCountsByProf();
+
             }
         });
     }
@@ -232,15 +234,5 @@ public class AddAbsenceFragment extends Fragment {
         }
 
         return true;
-    }
-
-    // Méthode pour naviguer vers le fragment des absences
-    private void navigateToFragmentAbsences() {
-        AbsenceFragment fragmentAbsences = new AbsenceFragment();
-        requireActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.frame_layout, fragmentAbsences) // Remplacez `fragment_container` par l'ID de votre conteneur de fragments
-                .addToBackStack(null) // Ajout à la pile pour permettre de revenir en arrière
-                .commit();
     }
 }

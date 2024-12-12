@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -28,11 +27,18 @@ public class addUserFragment extends Fragment {
     private EditText editTextCIN, editTextName, editTextEmail, editTextPassword;
     private Spinner spinnerRole;
     private Button btnSubmit, btnCancel;
-    private Uri profilePhotoUri; // URI pour stocker l'image du profil
     private UserViewModel userViewModel;
 
     // Déclaration du ActivityResultLauncher pour la sélection de photo
     private ActivityResultLauncher<String> getContentLauncher;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // Cette méthode est appelée quand le fragment est créé (avant onCreateView)
+        // C'est ici qu'on pourrait initialiser des ressources ou des données nécessaires pour l'activité
+        // Si vous avez des données à récupérer d'une activité ou d'un autre fragment, faites-le ici
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -47,9 +53,9 @@ public class addUserFragment extends Fragment {
         spinnerRole = view.findViewById(R.id.spinnerRole);
         btnSubmit = view.findViewById(R.id.btnSubmit);
         btnCancel = view.findViewById(R.id.btnCancel);
+
         // Initialisation du ViewModel
         userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
-
 
         // Gestion du clic sur le bouton "Submit"
         btnSubmit.setOnClickListener(v -> {
@@ -83,6 +89,7 @@ public class addUserFragment extends Fragment {
                 editTextPassword.requestFocus();
                 return;
             }
+
             // Création d'un nouvel utilisateur
             User newUser = new User(cin, name, email, password, role);
 
@@ -100,6 +107,27 @@ public class addUserFragment extends Fragment {
         btnCancel.setOnClickListener(v -> clearForm());
 
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Cette méthode est appelée quand le fragment devient visible pour l'utilisateur
+        // C'est ici qu'on peut mettre en place les observateurs pour les LiveData ou effectuer des tâches qui nécessitent que le fragment soit visible
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        // Cette méthode est appelée quand le fragment n'est plus visible
+        // C'est ici qu'on peut libérer les ressources, annuler des appels réseau, ou sauvegarder l'état si nécessaire
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        // Cette méthode est appelée quand la vue du fragment est détruite (avant onDestroy)
+        // C'est ici qu'on peut libérer les ressources liées à la vue si nécessaire
     }
 
     private void clearForm() {
