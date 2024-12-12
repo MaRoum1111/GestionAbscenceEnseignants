@@ -64,7 +64,7 @@ public class TeacherActivity extends AppCompatActivity {
             Log.d("TeacherActivity", "Item sélectionné : " + id); // Debugging
 
             if (id == R.id.nav_home) {
-                loadFragment(new HomeFragment());
+                loadFragment(new HomeTeacherFragment());
             } else if (id == R.id.nav_settings) {
                 Toast.makeText(this, "Ouvrir les paramètres", Toast.LENGTH_SHORT).show();
             } else if (id == R.id.nav_share) {
@@ -85,7 +85,7 @@ public class TeacherActivity extends AppCompatActivity {
             Log.d("TeacherActivity", "Item sélectionné dans BottomNavigation : " + id); // Debugging
 
             if (id == R.id.nav_home) {
-                loadFragment(new HomeFragment());
+                loadFragment(new HomeTeacherFragment());
             } else if (id == R.id.nav_absences) {
                 loadFragment(new AbsenceTeacherFragment());
             } else if (id == R.id.nav_emplois){
@@ -96,7 +96,7 @@ public class TeacherActivity extends AppCompatActivity {
 
         // Afficher le HomeFragment par défaut lorsque l’activité démarre
         if (savedInstanceState == null) {
-            loadFragment(new HomeFragment());
+            loadFragment(new HomeTeacherFragment());
         }
     }
 

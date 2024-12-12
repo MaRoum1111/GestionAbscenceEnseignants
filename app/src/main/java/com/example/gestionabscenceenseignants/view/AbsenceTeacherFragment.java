@@ -16,15 +16,16 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.gestionabscenceenseignants.Adapter.TeacherAbsenceAdapter;
 import com.example.gestionabscenceenseignants.R;
-import com.example.gestionabscenceenseignants.Adapter.DetailAbsenceAdapter;
 import com.example.gestionabscenceenseignants.model.Absence;
 import com.example.gestionabscenceenseignants.ViewModel.AbsenceViewModel;
 import java.util.List;
 
-public class AbsenceTeacherFragment extends Fragment implements DetailAbsenceAdapter.OnAbsenceActionListener {
+public class AbsenceTeacherFragment extends Fragment {
     private RecyclerView recyclerView; // RecyclerView pour afficher la liste des absences
-    private DetailAbsenceAdapter adapter; // Adaptateur pour le RecyclerView
+    private TeacherAbsenceAdapter adapter; // Adaptateur pour le RecyclerView
     private AbsenceViewModel absenceViewModel; // ViewModel pour gérer les absences
     private List<Absence> absenceList; // Liste des absences
 
@@ -41,7 +42,7 @@ public class AbsenceTeacherFragment extends Fragment implements DetailAbsenceAda
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView: Création de la vue pour AbsenceTeacherFragment");
-        View rootView = inflater.inflate(R.layout.fragment_detail_absence, container, false);
+        View rootView = inflater.inflate(R.layout.fragement_absence_teacher, container, false);
 
         // Initialisation des vues principales
         initializeViews(rootView);
@@ -76,6 +77,7 @@ public class AbsenceTeacherFragment extends Fragment implements DetailAbsenceAda
     }
 
     // Fonction pour mettre à jour les informations du professeur avec les données des absences
+    @SuppressLint("SetTextI18n")
     private void updateTeacherInfo(List<Absence> absences, TextView name, TextView cin, TextView nb) {
         absenceList = absences;
         Absence firstAbsence = absences.get(0);
@@ -85,6 +87,7 @@ public class AbsenceTeacherFragment extends Fragment implements DetailAbsenceAda
     }
 
     // Fonction pour afficher un message si aucune absence n'est trouvée
+    @SuppressLint("SetTextI18n")
     private void displayNoAbsenceMessage(TextView name, TextView cin, TextView nb) {
         name.setText("Nom indisponible");
         cin.setText("CIN indisponible");
@@ -106,11 +109,12 @@ public class AbsenceTeacherFragment extends Fragment implements DetailAbsenceAda
     }
 
     // Fonction pour mettre à jour le RecyclerView avec la liste des absences
+    @SuppressLint("NotifyDataSetChanged")
     private void updateRecyclerView(List<Absence> absences) {
         absenceList = absences;
         if (adapter == null) {
             // Si l'adaptateur est nul, créer un nouvel adaptateur et l'affecter au RecyclerView
-            adapter = new DetailAbsenceAdapter(absenceList, this);
+            adapter = new TeacherAbsenceAdapter(absenceList);
             recyclerView.setAdapter(adapter);
         } else {
             // Si l'adaptateur existe déjà, notifier qu'il y a eu un changement
@@ -119,7 +123,8 @@ public class AbsenceTeacherFragment extends Fragment implements DetailAbsenceAda
     }
 
     // Fonction appelée pour supprimer une absence
-    @Override
+    @SuppressLint("NotifyDataSetChanged")
+
     public void onDelete(Absence absence) {
         if (absenceList != null) {
             absenceList.remove(absence); // Retirer l'absence de la liste
@@ -130,41 +135,8 @@ public class AbsenceTeacherFragment extends Fragment implements DetailAbsenceAda
         }
     }
 
-    // Fonction appelée pour modifier une absence
-    @Override
-    public void onEdit(Absence absence) {
-        Log.d(TAG, "Modification de l'absence : " + absence);
-        openEditAbsenceFragment(absence); // Ouvrir le fragment de modification de l'absence
-    }
 
-    // Fonction pour ouvrir le fragment de modification d'absence
-    private void openEditAbsenceFragment(Absence absence) {
-        EditAbsenceFragment editFragment = new EditAbsenceFragment();
-        Bundle args = createAbsenceBundle(absence); // Créer un bundle avec les données de l'absence
-        editFragment.setArguments(args); // Passer les données au fragment
 
-        // Lancer le fragment de modification d'absence
-        requireActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.frame_layout, editFragment) // Remplacer l'écran actuel par le fragment d'édition
-                .addToBackStack(null) // Ajouter à la pile arrière pour pouvoir revenir en arrière
-                .commit();
-    }
-
-    // Fonction pour créer un bundle avec les informations d'une absence
-    private Bundle createAbsenceBundle(Absence absence) {
-        Bundle args = new Bundle();
-        args.putString("idAbsence", absence.getIdAbsence());
-        args.putString("profName", absence.getProfName());
-        args.putString("cin", absence.getCin());
-        args.putString("salle", absence.getSalle());
-        args.putString("date", absence.getDate());
-        args.putString("startTime", absence.getStartTime());
-        args.putString("endTime", absence.getEndTime());
-        args.putString("classe", absence.getClasse());
-        args.putString("status", absence.getStatus());
-        return args; // Retourner le bundle créé
-    }
 
     // Cycle de vie du fragment, méthodes appelées lors de différentes phases du cycle de vie
     @Override

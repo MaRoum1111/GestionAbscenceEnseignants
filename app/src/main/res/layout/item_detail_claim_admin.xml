@@ -1,0 +1,114 @@
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="8dp"
+    android:elevation="6dp"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="18dp"
+    app:cardElevation="15dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        app:cardBackgroundColor="@color/white">
+
+        <!-- Nom de la matière et Date (en gras) -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <TextView
+                android:id="@+id/classe"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Classe:"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:layout_weight="1"
+                android:layout_marginEnd="8dp" />
+
+            <TextView
+                android:id="@+id/claimDate"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Date:"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/blue"
+                android:layout_weight="1" />
+        </LinearLayout>
+        <!-- Raison de l'absence -->
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Date de la seance:"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:layout_marginTop="8dp" />
+        <!-- Heure de début et Heure de fin -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp">
+
+            <TextView
+                android:id="@+id/startTime"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Heure de début"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:layout_weight="1"
+                android:layout_marginEnd="8dp" />
+
+            <TextView
+                android:id="@+id/endTime"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Heure de fin"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+
+        <!-- Icônes de suppression et édition -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp"
+            android:gravity="end">
+
+            <ImageView
+                android:id="@+id/accept"
+                android:layout_width="35dp"
+                android:layout_height="28dp"
+                android:layout_marginEnd="16dp"
+                android:clickable="true"
+                android:contentDescription="Supprimer"
+                android:focusable="true"
+                android:src="@drawable/ic_accept"/>
+
+            <ImageView
+                android:id="@+id/reject"
+                android:layout_width="35dp"
+                android:layout_height="30dp"
+                android:clickable="true"
+                android:contentDescription="Editer"
+                android:focusable="true"
+                android:src="@drawable/ic_reject"
+                android:visibility="visible"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

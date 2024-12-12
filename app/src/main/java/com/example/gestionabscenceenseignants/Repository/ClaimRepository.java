@@ -168,7 +168,25 @@ public class ClaimRepository {
                     }
                 });
     }
-
+    // Méthode pour récupérer les absences d'un professeur en fonction de son CIN
+    public void getClaims(ClaimRepository.AuthCallback callback) {
+        db.collection("reclamations")
+                .orderBy("date", Query.Direction.DESCENDING)  // Tri par date décroissante
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null && !task.getResult().isEmpty()) {
+                        List<Claim> claims = new ArrayList<>();
+                        // Parcours des résultats et conversion en objets Absence
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Claim claim = document.toObject(Claim.class);
+                            claims.add(claim);
+                        }
+                        callback.onSuccess(claims);  // Appel du callback avec la liste des absences
+                    } else {
+                        callback.onFailure("Erreur lors de la récupération des absences.");
+                    }
+                });
+    }
     // Interface pour gérer les retours des méthodes
     public interface AuthCallback {
         void onSuccess(List<Claim> claim);

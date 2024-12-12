@@ -1,0 +1,35 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/txtTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Liste des Réclamations"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:paddingBottom="16dp"/>
+
+        <!-- RecyclerView pour afficher les absences -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewAdminClaim"
+            android:layout_width="match_parent"
+            android:layout_height="421dp"
+            android:layout_weight="1"
+            tools:listitem="@layout/item_claim_admin"/>
+
+    </LinearLayout>
+
+    <!-- Bouton flottant -->
+</FrameLayout>
