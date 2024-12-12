@@ -43,7 +43,7 @@ public class EmploisFragment extends Fragment {
                     Intent data = result.getData();
                     if (data != null && data.getData() != null) {
                         Uri fileUri = data.getData();
-                        handleFileImport(fileUri);
+                        handleFileImport(fileUri); // Handle the file import process
                     }
                 } else {
                     Toast.makeText(requireContext(), "Aucun fichier sélectionné", Toast.LENGTH_SHORT).show();
@@ -54,25 +54,62 @@ public class EmploisFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Log.d("EmploisFragment", "onCreateView: Fragment created");
         View view = inflater.inflate(R.layout.fragment_emplois, container, false);
 
-        // Initialize ViewModel
-        emploiViewModel = new ViewModelProvider(this).get(EmploiViewModel.class);
+        // Initialize the ViewModel and RecyclerView
+        initializeViewModelAndRecyclerView(view);
 
-        // Setup RecyclerView
-        recyclerView = view.findViewById(R.id.rv_emplois);
-        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-        emploiAdapter = new EmploiAdapter();
-        recyclerView.setAdapter(emploiAdapter);
-
-        // Setup FloatingActionButton
+        // Set up the FloatingActionButton to open file picker
         fabImportFile = view.findViewById(R.id.fab_import_file);
         fabImportFile.setOnClickListener(v -> openFilePicker());
 
         return view;
     }
 
+    private void initializeViewModelAndRecyclerView(View view) {
+        // Initialize the ViewModel
+        emploiViewModel = new ViewModelProvider(this).get(EmploiViewModel.class);
+
+        // Set up the RecyclerView
+        recyclerView = view.findViewById(R.id.rv_emplois);
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+        emploiAdapter = new EmploiAdapter();
+        recyclerView.setAdapter(emploiAdapter);
+    }
+
+    // Method to open the file picker for Excel files
+    private void openFilePicker() {
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"); // MIME type for Excel files
+        filePickerLauncher.launch(intent); // Launch the file picker activity
+    }
+
+    // Method to handle file import and process the selected Excel file
+    private void handleFileImport(Uri fileUri) {
+        try {
+            InputStream inputStream = requireContext().getContentResolver().openInputStream(fileUri);
+            List<Emploi> emplois = emploiViewModel.traiterFichierExcel(inputStream); // Process the file using ViewModel
+
+            if (emplois != null && !emplois.isEmpty()) {
+                // Update RecyclerView with new data
+                emploiAdapter.submitList(emplois);
+
+                // Save imported emplois to Firestore
+                emploiViewModel.enregistrerEmplois(emplois);
+
+                Toast.makeText(requireContext(), "Fichier importé avec succès", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(requireContext(), "Fichier vide ou invalide", Toast.LENGTH_SHORT).show();
+            }
+
+        } catch (Exception e) {
+            Log.e("EmploisFragment", "Erreur lors de l'importation du fichier : ", e);
+            Toast.makeText(requireContext(), "Erreur lors de l'importation du fichier", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    // Lifecycle methods
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -119,37 +156,5 @@ public class EmploisFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         Log.d("EmploisFragment", "onDetach: Fragment detached");
-    }
-
-    private void openFilePicker() {
-        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-        intent.setType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"); // MIME type for Excel files
-        filePickerLauncher.launch(intent);
-    }
-
-    private void handleFileImport(Uri fileUri) {
-        try {
-            InputStream inputStream = requireContext().getContentResolver().openInputStream(fileUri);
-
-            // Use ViewModel to process the file
-            List<Emploi> emplois = emploiViewModel.traiterFichierExcel(inputStream);
-
-            if (emplois != null && !emplois.isEmpty()) {
-                // Update RecyclerView with new data
-                emploiAdapter.submitList(emplois);
-
-                // Save to Firestore
-                emploiViewModel.enregistrerEmplois(emplois);
-
-                Toast.makeText(requireContext(), "Fichier importé avec succès", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(requireContext(), "Fichier vide ou invalide", Toast.LENGTH_SHORT).show();
-            }
-
-        } catch (Exception e) {
-            Log.e("EmploisFragment", "Erreur lors de l'importation du fichier : ", e);
-            Toast.makeText(requireContext(), "Erreur lors de l'importation du fichier", Toast.LENGTH_SHORT).show();
-        }
     }
 }
