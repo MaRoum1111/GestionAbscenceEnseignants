@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -205,9 +204,13 @@ public class AddAbsenceFragment extends Fragment {
         absenceViewModel.getErrorMessage().observe(getViewLifecycleOwner(), message -> {
             if (message != null) {
                 Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+                requireActivity().getOnBackPressedDispatcher().onBackPressed();
+                //absenceViewModel.loadAbsenceCountsByProf();
             } else {
                 Toast.makeText(getActivity(), "Absence ajoutée avec succès", Toast.LENGTH_SHORT).show();
                 requireActivity().getOnBackPressedDispatcher().onBackPressed();
+                absenceViewModel.loadAbsenceCountsByProf();
+
             }
         });
     }

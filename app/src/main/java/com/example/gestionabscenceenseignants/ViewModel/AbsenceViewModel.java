@@ -25,7 +25,9 @@ public class AbsenceViewModel extends ViewModel {
         isDeleting = new MutableLiveData<>(false); // Pas de suppression en cours
     }
 
-    // Charger les absences totales par professeur
+    /**
+     * Charger les absences totales par professeur.
+     */
     public void loadAbsenceCountsByProf() {
         repository.getAbsencesCountByProf(new AbsenceRepository.AuthCallback() {
             @Override
@@ -40,7 +42,10 @@ public class AbsenceViewModel extends ViewModel {
         });
     }
 
-    // Charger les absences par CIN du professeur
+    /**
+     * Charger les absences par CIN du professeur.
+     * @param profCin Le CIN du professeur.
+     */
     public void loadAbsencesByProf(String profCin) {
         repository.getAbsencesByProf(profCin, new AbsenceRepository.AuthCallback() {
             @Override
@@ -55,7 +60,9 @@ public class AbsenceViewModel extends ViewModel {
         });
     }
 
-    // Récupérer les absences du professeur actuellement connecté
+    /**
+     * Récupérer les absences du professeur actuellement connecté.
+     */
     public void getAbsencesForCurrentTeacher() {
         repository.getAbsencesForCurrentTeacher(new AbsenceRepository.AuthCallback() {
             @Override
@@ -70,7 +77,10 @@ public class AbsenceViewModel extends ViewModel {
         });
     }
 
-    // Ajouter une absence
+    /**
+     * Ajouter une absence.
+     * @param absence L'absence à ajouter.
+     */
     public void addAbsence(Absence absence) {
         isAdding.setValue(true); // Début de l'opération d'ajout
         repository.addAbsence(absence, new AbsenceRepository.AuthCallback() {
@@ -79,6 +89,7 @@ public class AbsenceViewModel extends ViewModel {
                 isAdding.setValue(false); // Fin de l'ajout
                 absences.setValue(absencesList); // Met à jour la liste des absences
                 errorMessage.setValue("Absence ajoutée avec succès.");
+                loadAbsenceCountsByProf(); // Recharge les absences
             }
 
             @Override
@@ -89,7 +100,11 @@ public class AbsenceViewModel extends ViewModel {
         });
     }
 
-    // Supprimer une absence
+    /**
+     * Supprimer une absence.
+     * @param documentId L'ID du document à supprimer.
+     * @param profCin Le CIN du professeur associé.
+     */
     public void deleteAbsence(String documentId, String profCin) {
         isDeleting.setValue(true); // Début de l'opération de suppression
         repository.deleteAbsence(documentId, new AbsenceRepository.AuthCallback() {
@@ -108,7 +123,11 @@ public class AbsenceViewModel extends ViewModel {
         });
     }
 
-    // Mettre à jour une absence
+    /**
+     * Mettre à jour une absence.
+     * @param documentId L'ID du document à mettre à jour.
+     * @param updatedAbsence L'absence mise à jour.
+     */
     public void updateAbsence(String documentId, Absence updatedAbsence) {
         repository.updateAbsence(documentId, updatedAbsence, new AbsenceRepository.AuthCallback() {
             @Override
@@ -124,7 +143,10 @@ public class AbsenceViewModel extends ViewModel {
         });
     }
 
-    // Charger les absences par date
+    /**
+     * Charger les absences par date.
+     * @param selectedDate La date sélectionnée.
+     */
     public void fetchAbsencesByDate(String selectedDate) {
         repository.getAbsencesByDate(selectedDate, new AbsenceRepository.AuthCallback() {
             @Override
@@ -139,14 +161,35 @@ public class AbsenceViewModel extends ViewModel {
         });
     }
 
-    // Getters : liste des absences
+    /**
+     * Obtenir les absences (Observable).
+     * @return Liste observable des absences.
+     */
     public LiveData<List<Absence>> getAbsences() {
         return absences;
     }
 
-    // Getter : message d'erreur ou de succès
+    /**
+     * Obtenir le message d'erreur ou de succès.
+     * @return Message observable.
+     */
     public LiveData<String> getErrorMessage() {
         return errorMessage;
     }
 
+    /**
+     * Obtenir l'état d'ajout d'une absence.
+     * @return État observable (en cours ou non).
+     */
+    public LiveData<Boolean> isAdding() {
+        return isAdding;
+    }
+
+    /**
+     * Obtenir l'état de suppression d'une absence.
+     * @return État observable (en cours ou non).
+     */
+    public LiveData<Boolean> isDeleting() {
+        return isDeleting;
+    }
 }

@@ -142,6 +142,11 @@ public class AbsenceTeacherFragment extends Fragment implements DetailAbsenceAda
         Log.d(TAG, "Modification de l'absence : " + absence);
         EditAbsenceFragment editFragment = new EditAbsenceFragment();
 
+
+
+
+
+        
         Bundle args = new Bundle();
         args.putString("idAbsence", absence.getIdAbsence());
         args.putString("profName", absence.getProfName());

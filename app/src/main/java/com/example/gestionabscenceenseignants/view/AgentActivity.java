@@ -31,7 +31,7 @@ public class AgentActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_admin);
+        setContentView(R.layout.activity_agent);
 
         // Initialiser les vues
         drawerLayout = findViewById(R.id.drawer_layout);
@@ -174,7 +174,7 @@ public class AgentActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         Log.d("AgentActivity", "onSaveInstanceState: Sauvegarde de l'état de l'activité");
     }
