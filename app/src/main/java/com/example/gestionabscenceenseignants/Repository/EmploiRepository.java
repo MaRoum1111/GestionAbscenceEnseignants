@@ -1,8 +1,7 @@
 package com.example.gestionabscenceenseignants.Repository;
 
-import android.net.Uri;
-import android.util.Log;
 
+import android.util.Log;
 import com.example.gestionabscenceenseignants.model.Emploi;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.WriteBatch;
@@ -20,7 +19,6 @@ public class EmploiRepository {
     public EmploiRepository() {
         this.firestore = FirebaseFirestore.getInstance();
     }
-
     public List<Emploi> readExcelFile(InputStream inputStream) {
         List<Emploi> emploisList = new ArrayList<>();
         try {
