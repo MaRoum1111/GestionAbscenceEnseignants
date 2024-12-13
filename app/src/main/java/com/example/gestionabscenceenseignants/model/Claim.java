@@ -10,6 +10,7 @@ public class Claim {
     private String claim;        // Réclamation
     private String classe;        // Classe
     private String claimDate;
+    private String status;
     // No-argument constructor
     public Claim() {
         // Firebase requires this constructor
@@ -22,17 +23,7 @@ public class Claim {
         this.classe = classe;
         this.claimDate = claimDate;
     }
-    public Claim(String idClaim, String cin,String profName, String date, String startTime, String endTime, String claim, String classe) {
-        this.idClaim = idClaim;
-        this.cin = cin;
-        this.profName =profName;
-        this.date = date;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.claim = claim;
-        this.classe = classe;
 
-    }
     public Claim(String idClaim,String date, String startTime, String endTime, String claim, String classe,String claimDate) {
         this.idClaim = idClaim;
         this.date = date;
@@ -115,5 +106,13 @@ public class Claim {
 
     public void setIdClaim(String idClaim) {
         this.idClaim = idClaim;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

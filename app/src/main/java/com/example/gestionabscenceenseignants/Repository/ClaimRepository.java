@@ -4,8 +4,10 @@ import android.util.Log;
 
 import com.example.gestionabscenceenseignants.model.Absence;
 import com.example.gestionabscenceenseignants.model.Claim;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -49,6 +51,7 @@ public class ClaimRepository {
                             // Créer un objet Claim avec le CIN et profName
                             claim.setCin(cin);
                             claim.setProfName(profName);
+                            claim.setStatus("En cours");
                             // Ajouter l'absence à Firestore
                             db.collection("reclamations")
                                     .add(claim)
@@ -171,6 +174,7 @@ public class ClaimRepository {
     // Méthode pour récupérer les absences d'un professeur en fonction de son CIN
     public void getClaims(ClaimRepository.AuthCallback callback) {
         db.collection("reclamations")
+                .whereEqualTo("status", "En cours")
                 .orderBy("date", Query.Direction.DESCENDING)  // Tri par date décroissante
                 .get()
                 .addOnCompleteListener(task -> {
@@ -187,7 +191,50 @@ public class ClaimRepository {
                     }
                 });
     }
-    // Interface pour gérer les retours des méthodes
+    // Méthode pour récupérer les absences d'un professeur en fonction de son CIN
+    public void getClaimByProf(String profCin, AuthCallback callback) {
+        db.collection("reclamations")
+                .whereEqualTo("cin", profCin )
+                .whereEqualTo("status", "En cours")// Filtre par CIN du professeur
+                .orderBy("date", Query.Direction.DESCENDING)  // Tri par date décroissante
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null && !task.getResult().isEmpty()) {
+                        List<Claim> claims = new ArrayList<>();
+                        // Parcours des résultats et conversion en objets Absence
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Claim claim = document.toObject(Claim.class);
+                            claims.add(claim);
+                        }
+                        callback.onSuccess(claims);  // Appel du callback avec la liste des absences
+                    } else {
+                        callback.onFailure("Erreur lors de la récupération des absences.");
+                    }
+                });
+    }
+    // Fonction pour approuver une réclamation
+    public void approuverReclamation(String reclamationId, AuthCallback callback) {
+        DocumentReference docRef = db.collection("reclamations").document(reclamationId);
+        docRef.update("status", "Approuvé")
+                .addOnSuccessListener(aVoid -> {
+                    callback.onSuccess(null);
+                })
+                .addOnFailureListener(e -> {
+                    callback.onFailure("Erreur lors de l'accpetation de la réclamation : " + e.getMessage());
+                });
+    }
+
+    // Fonction pour rejeter une réclamation
+    public void rejeterReclamation(String reclamationId, AuthCallback callback) {
+        DocumentReference docRef = db.collection("reclamations").document(reclamationId);
+        docRef.update("status", "Rejeté")
+                .addOnSuccessListener(aVoid -> {
+                    callback.onSuccess(null);
+                })
+                .addOnFailureListener(e -> {
+                    callback.onFailure("Erreur lors de le rejet de la réclamation : " + e.getMessage());
+                });
+    }    // Interface pour gérer les retours des méthodes
     public interface AuthCallback {
         void onSuccess(List<Claim> claim);
         void onFailure(String errorMessage);

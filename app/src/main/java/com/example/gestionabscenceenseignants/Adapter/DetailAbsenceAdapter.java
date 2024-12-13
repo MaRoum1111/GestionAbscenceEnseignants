@@ -6,8 +6,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.gestionabscenceenseignants.R;
 import com.example.gestionabscenceenseignants.model.Absence;
 
@@ -40,14 +42,13 @@ public class DetailAbsenceAdapter extends RecyclerView.Adapter<DetailAbsenceAdap
 
         if (absence != null) {
 
-
             // Lier les données aux TextViews
-            holder.salle.setText("Salle: "+absence.getSalle());
-            holder.date.setText("Date: "+absence.getDate());
-            holder.startTime.setText("Heure de début: "+absence.getStartTime());
-            holder.endTime.setText("Heure de fin: "+absence.getEndTime());
-            holder.classe.setText("Classe: "+absence.getClasse());
-            holder.status.setText("Statut: "+absence.getStatus());
+            holder.salle.setText("Salle: " + absence.getSalle());
+            holder.date.setText("Date: " + absence.getDate());
+            holder.startTime.setText("Heure de début: " + absence.getStartTime());
+            holder.endTime.setText("Heure de fin: " + absence.getEndTime());
+            holder.classe.setText("Classe: " + absence.getClasse());
+            holder.status.setText("Statut: " + absence.getStatus());
 
             // Définir la couleur du statut selon sa valeur
             if ("Justifiée".equalsIgnoreCase(absence.getStatus())) {

@@ -26,6 +26,7 @@ public class ClaimFragment extends Fragment {
     private Button btnSubmitClaim;
     private ClaimViewModel claimViewModel;
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_claim, container, false);
@@ -56,8 +57,7 @@ public class ClaimFragment extends Fragment {
         editTextClasse = view.findViewById(R.id.classe);
         editTextclaimDate=view.findViewById((R.id.claimDate));
         btnSubmitClaim = view.findViewById(R.id.submitClaimButton);
-
-
+        
 
     }
 
@@ -127,6 +127,7 @@ public class ClaimFragment extends Fragment {
                 editTextClaim.getText().toString().trim(),
                 editTextClasse.getText().toString().trim(),
                 editTextclaimDate.getText().toString().trim()
+
 
         );
 
