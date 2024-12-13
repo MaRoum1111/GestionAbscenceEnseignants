@@ -132,12 +132,8 @@ public class ClaimFragment extends Fragment {
 
         claimViewModel.addClaim(claim);
         claimViewModel.getErrorMessage().observe(getViewLifecycleOwner(), message -> {
-            if (message != null) {
-                Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-                if (message.equals("Récalamation ajoutée avec succès")) {
-                    Toast.makeText(getActivity(), "Ajouté avec succès", Toast.LENGTH_SHORT).show();
-                }
-            }
+            Toast.makeText(getActivity(), "Réclamation Ajouté avec succès", Toast.LENGTH_SHORT).show();
+            requireActivity().getSupportFragmentManager().popBackStack();
         });
 
     }

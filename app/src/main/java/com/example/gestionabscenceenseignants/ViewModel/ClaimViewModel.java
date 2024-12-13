@@ -27,7 +27,19 @@ public class ClaimViewModel extends ViewModel {
         isAdding = new MutableLiveData<>(false); // Pas d'ajout en cours
         isDeleting = new MutableLiveData<>(false); // Pas de suppression en cours
     }
+    public void getClaims() {
+        repository.getClaims(new ClaimRepository.AuthCallback() {
+            @Override
+            public void onSuccess(List<Claim> claimList) {
+                claims.setValue(claimList); // Met à jour la liste des absences
+            }
 
+            @Override
+            public void onFailure(String error) {
+                errorMessage.setValue("Erreur lors du chargement : " + error);
+            }
+        });
+    }
     public void addClaim(Claim claim) {
         isAdding.setValue(true); // Début de l'opération d'ajout
         repository.addClaim(claim, new ClaimRepository.AuthCallback() {

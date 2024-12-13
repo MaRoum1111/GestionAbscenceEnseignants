@@ -42,10 +42,7 @@ public class AbsenceViewModel extends ViewModel {
         });
     }
 
-    /**
-     * Charger les absences par CIN du professeur.
-     * @param profCin Le CIN du professeur.
-     */
+
     public void loadAbsencesByProf(String profCin) {
         repository.getAbsencesByProf(profCin, new AbsenceRepository.AuthCallback() {
             @Override

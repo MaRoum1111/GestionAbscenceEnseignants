@@ -82,5 +82,8 @@ public class ClaimAdapter extends RecyclerView.Adapter<ClaimAdapter.ClaimViewHol
     public interface OnClaimClickListener {
         void onDelete(Claim claim);
         void onEdit(Claim claim);
+
     }
+
+
 }
