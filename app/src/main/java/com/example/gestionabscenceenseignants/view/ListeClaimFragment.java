@@ -14,8 +14,9 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.gestionabscenceenseignants.R;
 import com.example.gestionabscenceenseignants.Adapter.ClaimAdapter;
+import com.example.gestionabscenceenseignants.R;
+import com.example.gestionabscenceenseignants.Adapter.ClaimAdminDetailAdapter;
 import com.example.gestionabscenceenseignants.ViewModel.ClaimViewModel;
 import com.example.gestionabscenceenseignants.model.Claim;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -138,6 +139,7 @@ public class ListeClaimFragment extends Fragment implements ClaimAdapter.OnClaim
         args.putString("claim", claim.getClaim());
         args.putString("classe", claim.getClasse());
         args.putString("claimDate", claim.getClaimDate());
+        args.putString("status",claim.getStatus());
         editClaimFragment.setArguments(args);
 
         requireActivity().getSupportFragmentManager()

@@ -78,7 +78,25 @@
                 android:textColor="@color/black"
                 android:layout_weight="1" />
         </LinearLayout>
-
+        <!-- Statut de le réclamation -->
+        <TextView
+            android:id="@+id/status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Statut"
+            android:textSize="16sp"
+            android:textColor="@android:color/holo_green_dark"
+            android:layout_marginTop="4dp" />
+        <TextView
+            android:id="@+id/claim"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Réclamation :"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:layout_weight="1"
+            android:layout_marginEnd="8dp" />
 
         <!-- Icônes de suppression et édition -->
         <LinearLayout

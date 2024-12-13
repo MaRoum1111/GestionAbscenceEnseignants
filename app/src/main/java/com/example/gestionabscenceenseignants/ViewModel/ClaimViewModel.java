@@ -40,6 +40,19 @@ public class ClaimViewModel extends ViewModel {
             }
         });
     }
+    public void getClaimByProf(String profCin) {
+        repository.getClaimByProf(profCin, new ClaimRepository.AuthCallback() {
+            @Override
+            public void onSuccess(List<Claim> claimList) {
+                claims.setValue(claimList); // Met à jour la liste des absences
+            }
+
+            @Override
+            public void onFailure(String error) {
+                errorMessage.setValue("Erreur lors du chargement : " + error);
+            }
+        });
+    }
     public void addClaim(Claim claim) {
         isAdding.setValue(true); // Début de l'opération d'ajout
         repository.addClaim(claim, new ClaimRepository.AuthCallback() {
@@ -89,6 +102,40 @@ public class ClaimViewModel extends ViewModel {
             }
         });
     }
+    public void onAccept(String documentId) {
+        isDeleting.setValue(true); // Début de l'opération de suppression
+        repository.approuverReclamation(documentId, new ClaimRepository.AuthCallback() {
+            @Override
+            public void onSuccess(List<Claim> claimList) {
+                isDeleting.setValue(false); // Fin de la suppression
+                getClaimsForCurrentTeacher(); // Recharge la liste des absences
+                errorMessage.setValue("Absence supprimée avec succès.");
+            }
+
+            @Override
+            public void onFailure(String error) {
+                isDeleting.setValue(false); // Fin de la suppression en cas d'échec
+                errorMessage.setValue("Erreur lors de la suppression : " + error);
+            }
+        });
+    }
+    public void onReject(String documentId) {
+        isDeleting.setValue(true); // Début de l'opération de suppression
+        repository.rejeterReclamation(documentId, new ClaimRepository.AuthCallback() {
+            @Override
+            public void onSuccess(List<Claim> claimList) {
+                isDeleting.setValue(false); // Fin de la suppression
+                getClaimsForCurrentTeacher(); // Recharge la liste des absences
+                errorMessage.setValue("Absence supprimée avec succès.");
+            }
+
+            @Override
+            public void onFailure(String error) {
+                isDeleting.setValue(false); // Fin de la suppression en cas d'échec
+                errorMessage.setValue("Erreur lors de la suppression : " + error);
+            }
+        });
+    }
     public void updateClaim(String documentId, Claim updatedClaim) {
         repository.updateClaim(documentId, updatedClaim, new ClaimRepository.AuthCallback() {
             @Override
@@ -103,6 +150,7 @@ public class ClaimViewModel extends ViewModel {
             }
         });
     }
+
     // Réinitialiser le message d'erreur ou de succès
     public void resetErrorMessage() {
         errorMessage.setValue(null); // Réinitialise le message
