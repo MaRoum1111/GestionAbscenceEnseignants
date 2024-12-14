@@ -14,40 +14,13 @@
         android:paddingBottom="16dp">
 
         <!-- Icône de l'enseignant -->
-        <ImageView
-            android:id="@+id/teacher_image"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:src="@drawable/ic_teacher"
-            android:contentDescription="@string/image_de_l_enseignant"
-            android:layout_marginEnd="16dp"
-            android:layout_gravity="center_vertical"/>
 
         <!-- Informations sur l'enseignant (Nom, Email) -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_weight="1">
-
-            <TextView
-                android:id="@+id/teacher_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/nom_de_l_enseignant"
-                android:textSize="18sp"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/teacher_cin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/_88888888"
-                android:textSize="16sp"
-                android:textColor="@color/design_default_color_error"
-                android:paddingTop="8dp" />
-        </LinearLayout>
+            android:layout_weight="1"/>
     </LinearLayout>
 
     <!-- En-tête pour le nombre d'absences, en haut de la partie 2 -->
@@ -55,30 +28,41 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="end"
+        android:gravity="center"
         android:paddingTop="16dp">
-
-        <!-- Nombre d'absences -->
+        <!-- Titre "Mes absences" -->
         <TextView
-            android:id="@+id/total_absences"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/total_des_absences"
-            android:textSize="16sp"
-            android:textColor="@color/blue"
-            android:textStyle="bold"
-            android:layout_gravity="end"
-            android:paddingEnd="16dp"
-            android:paddingTop="8dp"
-            tools:ignore="RtlSymmetry" />
+            android:id="@+id/title"
+            android:layout_width="299dp"
+            android:layout_height="49dp"
+            android:layout_marginBottom="16dp"
+            android:background="@color/blue_dark"
+            android:gravity="center"
+            android:text="Mes absences"
+            android:textColor="@color/white"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+        <!-- Nombre d'absences -->
     </LinearLayout>
 
     <!-- RecyclerView pour afficher les absences -->
+    <TextView
+        android:id="@+id/total_absences"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:paddingTop="8dp"
+        android:paddingEnd="16dp"
+        android:text="Total des absences: "
+        android:textColor="@color/blue"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:paddingTop="16dp"
-        tools:listitem="@layout/item_detail_absence"/>
+        tools:listitem="@layout/item_absence_teacher"/>
 </LinearLayout>

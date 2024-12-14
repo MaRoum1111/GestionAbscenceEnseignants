@@ -1,74 +1,93 @@
 package com.example.gestionabscenceenseignants.view;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.Toast;
-
+import android.widget.CalendarView;
+import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import com.example.gestionabscenceenseignants.R;
+import com.example.gestionabscenceenseignants.ViewModel.AbsenceViewModel;
 import com.example.gestionabscenceenseignants.ViewModel.UserViewModel;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link AccueilAgentFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class AccueilAgentFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private TextView message;
+    private UserViewModel userViewModel;
+    private AbsenceViewModel absenceViewModel;
+    private TextView tvAbsencesCount;
+    private CalendarView calendarView;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public AccueilAgentFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment AccueilAgentFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static AccueilAgentFragment newInstance(String param1, String param2) {
-        AccueilAgentFragment fragment = new AccueilAgentFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
+    @SuppressLint("SetTextI18n")
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_accueil_agent, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_accueil_agent, container, false);
+
+        // Initialize the ViewModels
+        absenceViewModel = new ViewModelProvider(this).get(AbsenceViewModel.class);
+        userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
+
+        // Initialize TextViews
+        message = rootView.findViewById(R.id.bonjourTextView);
+        tvAbsencesCount = rootView.findViewById(R.id.tv_absences_count); // Ensure you have this TextView in your layout
+        calendarView = rootView.findViewById(R.id.calendarView);  // Initialize CalendarView
+
+        // Observer for user name
+        userViewModel.getUserName().observe(getViewLifecycleOwner(), userName -> {
+            if (userName != null) {
+                message.setText(userName);  // Afficher le nom de l'utilisateur
+            }
+        });
+
+        // Observe absences count
+        observeViewModel();
+        initializeDateAndLoadAbsences();
+        // Gérer les événements de clic sur le calendrier et les boutons radio
+        setEventListeners();
+
+        return rootView;
+    }
+
+    // Method to observe the AbsenceViewModel
+    private void observeViewModel() {
+        absenceViewModel.getAbsences().observe(getViewLifecycleOwner(), absences -> {
+            if (absences != null) {
+                tvAbsencesCount.setText("Nombre d'absences pour le jour sélectionné : " + absences.size());
+            } else {
+                tvAbsencesCount.setText("Aucune absence pour le jour sélectionné");
+            }
+        });
+
+        absenceViewModel.getErrorMessage().observe(getViewLifecycleOwner(), message -> {
+            if (message != null) {
+                Log.e("AccueilAgentFragment", message);
+                // Optionally display an error message
+            }
+        });
+    }
+    private void initializeDateAndLoadAbsences() {
+        long currentDate = calendarView.getDate();
+        @SuppressLint({"DefaultLocale", "SimpleDateFormat"})
+        String selectedDate = new SimpleDateFormat("dd/MM/yyyy").format(new Date(currentDate));
+        absenceViewModel.fetchAbsencesByDate(selectedDate);
+    }
+    private void setEventListeners() {
+        // Gérer les changements de date dans le calendrier
+        calendarView.setOnDateChangeListener((view1, year, month, dayOfMonth) -> {
+            @SuppressLint("DefaultLocale")
+            String selectedDateFormatted = String.format("%02d/%02d/%04d", dayOfMonth, month + 1, year);
+            Log.d("HomeFragment", "Selected date: " + selectedDateFormatted);
+            absenceViewModel.fetchAbsencesByDate(selectedDateFormatted);
+        });
     }
 }

@@ -11,7 +11,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         android:padding="16dp"
         app:cardBackgroundColor="@color/white">
@@ -29,66 +29,66 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:orientation="horizontal"
-            android:weightSum="2"
-            android:layout_marginTop="8dp">
+            android:weightSum="2">
 
             <TextView
                 android:id="@+id/startTime"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/heure_de_d_but"
-                android:textSize="16sp"
-                android:textColor="@color/black"
+                android:layout_marginEnd="8dp"
                 android:layout_weight="1"
-                android:layout_marginEnd="8dp" />
+                android:text="Heure de début"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/endTime"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/heure_de_fin"
-                android:textSize="16sp"
+                android:layout_weight="1"
+                android:text="Heure de fin"
                 android:textColor="@color/black"
-                android:layout_weight="1" />
+                android:textSize="16sp" />
         </LinearLayout>
 
         <!-- Raison de l'absence sur la même ligne -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:orientation="horizontal"
-            android:weightSum="2"
-            android:layout_marginTop="8dp">
+            android:weightSum="2">
 
             <TextView
                 android:id="@+id/classe"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/classe"
-                android:textSize="16sp"
-                android:textColor="@color/black"
+                android:layout_marginEnd="8dp"
                 android:layout_weight="1"
-                android:layout_marginEnd="8dp" />
+                android:text="Classe :"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/status"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/statut"
-                android:textSize="16sp"
+                android:layout_weight="1"
+                android:text="Statut"
                 android:textColor="@android:color/holo_green_dark"
-                android:layout_weight="1" />
+                android:textSize="16sp" />
         </LinearLayout>
 
         <!-- Bouton de réclamation en bas -->
         <Button
             android:id="@+id/reclamationButton"
-            android:layout_width="361dp"
+            android:layout_width="311dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="end"
+            android:layout_gravity="center"
             android:layout_marginTop="16dp"
-            android:text="@string/passer_une_r_clamation"
+            android:text="Passer une réclamation"
             android:textColor="@color/white" />
 
     </LinearLayout>

@@ -86,7 +86,7 @@ public class AbsenceViewModel extends ViewModel {
 
             @Override
             public void onFailure(String error) {
-                errorMessage.setValue("Erreur lors de la récupération des absences pour le jour actuel : " + error); // Message d'erreur
+                errorMessage.setValue( error); // Message d'erreur
             }
         });
     }
