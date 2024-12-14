@@ -86,8 +86,6 @@ public class AgentActivity extends AppCompatActivity {
                 loadFragment(new AccueilAgentFragment());
             } else if (id == R.id.nav_absences) {
                 loadFragment(new AbsenceFragment());
-            } else if (id == R.id.nav_emplois) {
-                loadFragment(new EmploisFragment());
             }
 
             return true; // Indique que l'item a été sélectionné et l'action a été effectuée

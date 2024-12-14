@@ -126,6 +126,45 @@ public class AbsenceRepository {
             }
         });
     }
+    public void searchAbsencesByTeacher(String searchQuery, AuthCallback callback) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("absences")
+                .whereGreaterThanOrEqualTo("cin", searchQuery) // Préfixe pour rechercher le CIN
+                .whereLessThanOrEqualTo("cin", searchQuery + '\uf8ff') // Match partiel
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null) {
+                        // Map pour regrouper les absences par CIN et calculer le total
+                        Map<String, Map<String, Integer>> absenceCounts = new HashMap<>();
+
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Absence absence = document.toObject(Absence.class);
+                            String profCin = absence.getCin();
+                            absenceCounts.putIfAbsent(profCin, new HashMap<>());
+                            String profName = absence.getProfName();
+                            absenceCounts.get(profCin).put(profName,
+                                    absenceCounts.get(profCin).getOrDefault(profName, 0) + 1);
+                        }
+
+                        List<Absence> absenceSummary = new ArrayList<>();
+                        for (Map.Entry<String, Map<String, Integer>> entry : absenceCounts.entrySet()) {
+                            String profCin = entry.getKey();
+                            for (Map.Entry<String, Integer> nameEntry : entry.getValue().entrySet()) {
+                                Absence summary = new Absence();
+                                summary.setCin(profCin); // Ajouter le CIN
+                                summary.setProfName(nameEntry.getKey()); // Ajouter le nom
+                                summary.setAbsenceCount(nameEntry.getValue()); // Ajouter le total d'absences
+                                absenceSummary.add(summary);
+                            }
+                        }
+
+                        callback.onSuccess(absenceSummary); // Retourner les résultats agrégés
+                    } else {
+                        callback.onFailure("Erreur lors de la recherche des absences.");
+                    }
+                });
+    }
+
 
     // Méthode pour supprimer une absence
     public void deleteAbsence(String documentId, AuthCallback callback) {

@@ -18,7 +18,7 @@
         android:id="@+id/nav_header_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Nom de l'utilisateur"
+        android:text="@string/nom_de_l_utilisateur"
         android:textColor="@color/white"
         android:textStyle="bold"
         android:layout_marginTop="8dp"/>
@@ -27,7 +27,7 @@
         android:id="@+id/nav_header_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="email@exemple.com"
+        android:text="@string/email_exemple_com"
         android:textColor="@color/white"
         android:textSize="14sp"
         android:layout_marginTop="4dp"

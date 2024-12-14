@@ -10,19 +10,19 @@
         <item
             android:id="@+id/nav_home"
             android:icon="@drawable/icc_home"
-            android:title="Home" />
+            android:title="@string/accueil" />
         <item
             android:id="@+id/nav_settings"
             android:icon="@drawable/icc_settings"
-            android:title="Settings" />
+            android:title="@string/param_tres" />
         <item
             android:id="@+id/nav_share"
             android:icon="@drawable/icc_share"
-            android:title="Share" />
+            android:title="@string/partager" />
         <item
             android:id="@+id/nav_about"
             android:icon="@drawable/icc_info"
-            android:title="About Us" />
+            android:title="@string/a_propos_de_nous" />
 
     </group>
     <item
@@ -31,7 +31,7 @@
             <item
                 android:id="@+id/nav_logout"
                 android:icon="@drawable/icc_logout"
-                android:title="Logout" />
+                android:title="@string/deconnexion" />
         </menu>
     </item>
 

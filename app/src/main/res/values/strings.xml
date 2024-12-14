@@ -87,5 +87,28 @@
     <string name="nombre_d_absences">Nombre d\'absences</string>
     <string name="statut">Statut</string>
     <string name="passer_une_r_clamation">Passer une réclamation</string>
+    <string name="date">Date:</string>
+    <string name="date_de_la_seance">Date de la seance:</string>
+    <string name="supprimer">Supprimer</string>
+    <string name="editer">Editer</string>
+    <string name="r_clamation">Réclamation :</string>
+    <string name="approuver">approuver</string>
+    <string name="rejeter">rejeter</string>
+    <string name="ic_ne_fichier">Icône fichier</string>
+    <string name="nom_du_fichier">Nom du fichier</string>
+    <string name="heure">Heure</string>
+    <string name="email">Email</string>
+    <string name="role">Role</string>
+    <string name="nom_de_l_utilisateur">Nom de l\'utilisateur</string>
+    <string name="email_exemple_com">email@exemple.com</string>
+    <string name="accueil">Accueil</string>
+    <string name="r_clamations">Réclamations</string>
+    <string name="utilisateurs">Utilisateurs</string>
+    <string name="rapport">rapport</string>
+    <string name="param_tres">Paramètres</string>
+    <string name="partager">Partager</string>
+    <string name="a_propos_de_nous">A propos de nous</string>
+    <string name="deconnexion">Deconnexion</string>
+    <string name="voir_emplois">Voir Emplois</string>
 </resources>
 

@@ -96,8 +96,8 @@ public class AdminActivity extends AppCompatActivity {
                 loadFragment(new UsersFragment());
             } else if (id == R.id.nav_statistics) {
                 loadFragment(new ReportFragment());
-            } else if (id == R.id.nav_emplois) {
-                loadFragment(new EmploisFragment());
+            } else if (id == R.id.nav_claim) {
+                loadFragment(new AdminClaimFragment());
             }
             return true; // Indique que l'item a été sélectionné
         });

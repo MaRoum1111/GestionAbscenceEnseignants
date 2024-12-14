@@ -62,18 +62,18 @@
 
 
             <ImageView
-                android:id="@+id/cardclaim"
+                android:id="@+id/cardSchedule"
                 android:layout_width="86dp"
                 android:layout_height="71dp"
                 android:layout_gravity="center"
-                android:src="@drawable/icc_claim" />
+                android:src="@drawable/ic_emploi" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:gravity="center"
-                android:text="@string/voir_r_clamations"
+                android:text="@string/voir_emplois"
                 android:textColor="#000"
                 android:textSize="14sp"
                 android:textStyle="bold" />

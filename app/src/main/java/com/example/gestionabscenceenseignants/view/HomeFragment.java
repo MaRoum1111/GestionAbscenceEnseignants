@@ -26,7 +26,7 @@ public class HomeFragment extends Fragment {
     private AbsenceViewModel absenceViewModel;
     private CalendarView calendarView;
     private TextView tvAbsencesCount;
-    private ImageView Creport, Cclaim, Cabsence;
+    private ImageView Creport, CSchedule, Cabsence;
 
     @SuppressLint("MissingInflatedId")
     @Nullable
@@ -109,7 +109,7 @@ public class HomeFragment extends Fragment {
         tvAbsencesCount = view.findViewById(R.id.tv_absences_count);
         Creport = view.findViewById(R.id.cardreport);
         Cabsence = view.findViewById(R.id.cardabsence);
-        Cclaim = view.findViewById(R.id.cardclaim);
+        CSchedule = view.findViewById(R.id.cardSchedule);
     }
 
     /**
@@ -153,8 +153,7 @@ public class HomeFragment extends Fragment {
             absenceViewModel.fetchAbsencesByDate(selectedDateFormatted);
         });
 
-        // Gérer les clics sur les cartes pour accéder aux différentes pages
-        Cclaim.setOnClickListener(v -> openClaimManagement());
+
         Creport.setOnClickListener(v -> openStatsPage());
         Cabsence.setOnClickListener(v -> openAbsencesManagement());
     }
