@@ -1,143 +1,169 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:padding="16dp"
-    android:background="@color/backgroundColor">
+    android:background="@color/white">
 
     <!-- Bonjour message avec nom de l'enseignant et icône -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="62dp"
         android:layout_marginTop="20dp"
-        android:background="@color/white"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/bonjourTextView"
-            android:layout_width="282dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:paddingEnd="8dp"
-            android:text=""
-            android:textColor="@color/black"
-            android:textSize="22sp"
-            android:textStyle="italic" />
-
-        <!-- Icône à droite du texte -->
+        <!-- Icône à gauche -->
         <ImageView
-            android:layout_width="99dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="end"
-            android:contentDescription="Icone"
-            android:src="@drawable/icc_hello" />
-    </LinearLayout>
+            android:id="@+id/profileImage"
+            android:layout_width="64dp"
+            android:layout_height="62dp"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/icc_profile" />
 
-    <!-- Texte "Mes absences Aujourd'hui" -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/aaujourdhuiTextView"
+        <!-- Texte "Bonjour" et nom -->
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:padding="8dp"
-            android:text="Mes absences Aujourd'hui :"
-            android:textColor="@color/blue"
-            android:textSize="25sp"
-            android:textStyle="bold" />
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bonjour 👋"
+                android:textSize="18sp"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/bonjourTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Salwa Youssef"
+                android:textSize="16sp"
+                android:textColor="@color/textColor" />
+        </LinearLayout>
     </LinearLayout>
 
-    <!-- RecyclerView pour afficher les absences -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/absenceRecyclerView"
+    <!-- Mes absences aujourd'hui -->
+    <TextView
+        android:id="@+id/aaujourdhuiTextView"
         android:layout_width="match_parent"
-        android:layout_height="330dp"
-        android:scrollbars="vertical"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:scrollbarThumbVertical="@drawable/scrollbar_thumb"
-        android:scrollbarTrackVertical="@drawable/scrollbar_track"
-        tools:listitem="@layout/item_absence_teacher"/>
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@color/blue_dark"
+        android:padding="8dp"
+        android:gravity="center"
+        android:text="Mes absences Aujourd'hui"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
+    <!-- Message d'absence vide -->
     <TextView
         android:id="@+id/emptyView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Aucune absence a afficher "
+        android:textSize="18sp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="260dp"
+        android:layout_gravity="center_horizontal"
+        android:text="Aucune absence à afficher"
         android:visibility="gone" />
 
+    <!-- RecyclerView pour les absences -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/absenceRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="338dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:scrollbarThumbVertical="@drawable/scrollbar_thumb"
+        android:scrollbarTrackVertical="@drawable/scrollbar_track"
+        android:layout_gravity="center"
+        android:scrollbars="vertical"
+
+        tools:listitem="@layout/item_absence_teacher" />
+
+    <!-- Section avec les CardViews fixées en bas -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="129dp"
-        android:layout_marginBottom="16dp"
-        android:background="@color/white"
-        android:gravity="center_horizontal"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:weightSum="3">
+        android:layout_marginBottom="16dp"
+        android:gravity="bottom">
+
+        <!-- CardView 1 -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="4dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="86dp"
+                    android:layout_height="71dp"
+                    android:src="@drawable/icc_claim"
+                    android:contentDescription="Voir mes réclamations" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center"
+                    android:text="Mes Réclamations"
+                    android:textColor="#000"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
         <!-- CardView 2 -->
-        <LinearLayout
-            android:layout_width="23dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@color/white"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
-
-            <ImageView
-                android:id="@+id/cardclaim"
-                android:layout_width="86dp"
-                android:layout_height="71dp"
-                android:layout_gravity="center"
-                android:src="@drawable/icc_claim" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_marginTop="8dp"
-                android:gravity="center"
-                android:text="Voir mes Réclamations"
-                android:textColor="#000"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-        <!-- CardView 3 -->
-        <LinearLayout
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView2"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@color/white"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:gravity="center"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="4dp">
 
-            <ImageView
-                android:id="@+id/cardabsence"
-                android:layout_width="80dp"
-                android:layout_height="66dp"
-                android:layout_gravity="center"
-                android:src="@drawable/icc_users1" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="53dp"
-                android:layout_marginTop="8dp"
-                android:gravity="center"
-                android:text="Voir mes Absences"
-                android:textColor="#000"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-        </LinearLayout>
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="66dp"
+                    android:src="@drawable/icc_users1"
+                    android:contentDescription="Voir mes absences" />
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center"
+                    android:text="Mes Absences"
+                    android:textColor="#000"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
     </LinearLayout>
 
 </LinearLayout>

@@ -4,27 +4,63 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="16dp"
-    android:background="#F5F5F5">
+    android:background="@color/white">
 
-    <!-- Partie 1 : Total Enseignants et Salles -->
+    <!-- Bonjour message avec nom de l'enseignant et icône -->
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="62dp"
+        android:layout_marginTop="20dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <!-- Icône à gauche -->
+        <ImageView
+            android:id="@+id/profileImage"
+            android:layout_width="64dp"
+            android:layout_height="62dp"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/icc_profile" />
+
+        <!-- Texte "Bonjour" et nom -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bonjour 👋"
+                android:textSize="18sp"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/bonjourTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Salwa Youssef"
+                android:textSize="16sp"
+                android:textColor="@color/textColor" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:background="#F5F5F5"
+        android:background="@color/white"
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- Partie 2 : Labels avec icônes et actions -->
-
         <LinearLayout
-            android:layout_width="357dp"
-            android:layout_height="122dp"
+            android:layout_width="match_parent"
+            android:layout_height="131dp"
             android:layout_marginBottom="16dp"
             android:background="@drawable/rounded_edittext"
             android:gravity="center"
             android:orientation="horizontal">
-
             <!-- CardView pour Total Enseignants -->
             <androidx.cardview.widget.CardView
                 android:layout_width="0dp"
@@ -53,7 +89,7 @@
                         android:layout_height="96dp"
                         android:layout_marginStart="0dp"
                         android:padding="19dp"
-                        android:text="@string/total_enseignants"
+                        android:text="Total            Enseignants"
                         android:textColor="@color/blueblue"
                         android:textSize="11dp"
                         android:textStyle="bold" />
@@ -88,7 +124,7 @@
                         android:layout_height="89dp"
                         android:layout_marginStart="16dp"
                         android:padding="16dp"
-                        android:text="@string/total_salles"
+                        android:text="Total Salles :   70"
                         android:textColor="@color/blueblue"
                         android:textSize="10dp"
                         android:textStyle="bold" />
@@ -96,70 +132,6 @@
             </androidx.cardview.widget.CardView>
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="364dp"
-            android:layout_height="123dp"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/rounded_edittext"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:weightSum="3">
-
-            <LinearLayout
-                android:layout_width="158dp"
-                android:layout_height="77dp"
-                android:layout_margin="8dp"
-                android:layout_weight="1"
-                android:background="@drawable/rounded_edittext"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/icc_chart"
-                    app:tint="@color/blue" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:paddingTop="8dp"
-                    android:text="@string/absence"
-                    android:textColor="@color/blueblue"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="156dp"
-                android:layout_height="79dp"
-                android:layout_margin="8dp"
-                android:layout_weight="1"
-                android:background="@drawable/rounded_edittext"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/icc_absence"
-                    app:tint="@color/blue" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:paddingTop="8dp"
-                    android:text="@string/emplois"
-                    android:textColor="@color/blueblue"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <!-- Partie 3 : Calendrier -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -172,9 +144,19 @@
 
         <CalendarView
             android:id="@+id/calendarView"
-            android:layout_width="350dp"
-            android:layout_height="320dp"
-            android:layout_marginBottom="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="273dp"
             android:background="@color/white" />
+
+        <TextView
+            android:id="@+id/tv_absences_count"
+            android:layout_width="345dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Nombre d'absences pour le jour sélectionné : 0"
+            android:layout_marginLeft="10dp"
+            android:textColor="#000"
+            android:textStyle="bold"
+            android:textSize="15sp" />
     </LinearLayout>
 </LinearLayout>
