@@ -6,167 +6,106 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CalendarView;
-import android.widget.ImageView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.gestionabscenceenseignants.Adapter.AbsensesAdapter;
 import com.example.gestionabscenceenseignants.R;
+import com.example.gestionabscenceenseignants.ViewModel.UserViewModel;
+import com.example.gestionabscenceenseignants.model.Absence;
 import com.example.gestionabscenceenseignants.ViewModel.AbsenceViewModel;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
-public class HomeTeacherFragment extends Fragment {
+import java.util.List;
 
+public class HomeTeacherFragment extends Fragment implements AbsensesAdapter.OnAbsenceClickListener {
+    private RecyclerView recyclerView;
+    private AbsensesAdapter adapter;
     private AbsenceViewModel absenceViewModel;
-    private CalendarView calendarView;
-    private TextView tvAbsencesCount;
-    private ImageView Cclaim, Cabsence;
+    private UserViewModel userViewModel;
+    private TextView message;
+    private List<Absence> absenceList; // Liste des absences pour gérer les mises à jour
 
-    @SuppressLint("MissingInflatedId")
-    @Nullable
+    @SuppressLint("SetTextI18n")
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        // Liaison avec le layout XML
-        View view = inflater.inflate(R.layout.fragment_home_teacher, container, false);
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // Inflate the fragment's layout
+        View rootView = inflater.inflate(R.layout.fragment_home_teacher, container, false);
 
-        // Initialisation des composants UI
-        initializeUIComponents(view);
-
-        // Initialisation du ViewModel
+        // Initialize the RecyclerView
+        recyclerView = rootView.findViewById(R.id.absenceRecyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        message=rootView.findViewById(R.id.bonjourTextView);
+        // Initialize the ViewModel to retrieve absences
         absenceViewModel = new ViewModelProvider(this).get(AbsenceViewModel.class);
+        userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
+        // Observer for user name
+        userViewModel.getUserName().observe(getViewLifecycleOwner(), userName -> {
+            if (userName != null) {
+                message.setText("Bonjour " + userName);  // Afficher le nom de l'utilisateur
+            }
+        });
+        // Load absences for the specific teacher
+        loadAbsencesForTeacher();
 
-        // Observateurs pour les données
-        observeViewModel();
+        // Observe absences and update the adapter
+        observeAbsences(rootView); // Pass the root view to the observe method
 
-        // Appel pour récupérer les absences pour la date actuelle lorsque la vue est prête
-        return view;
+        return rootView;
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    private void loadAbsencesForTeacher() {
+        absenceViewModel.getAbsencesForCurrentDay(); // Assurez-vous que cette méthode utilise profCin correctement
+        userViewModel.loadLoggedUserDetails();
 
-        // Initialiser la date actuelle et charger les absences pour cette date
-        initializeDateAndLoadAbsences();
-
-        // Gérer les événements de clic sur le calendrier et les boutons radio
-        setEventListeners();
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        Log.d("HomeFragment", "Fragment onStart");
-    }
+    private void observeAbsences(View rootView) { // Change the method to accept the rootView
+        // Access emptyView using the rootView
+        TextView emptyView = rootView.findViewById(R.id.emptyView);
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.d("HomeFragment", "Fragment onResume");
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        Log.d("HomeFragment", "Fragment onPause");
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        Log.d("HomeFragment", "Fragment onStop");
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        Log.d("HomeFragment", "Fragment onDestroyView");
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.d("HomeFragment", "Fragment onDestroy");
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        Log.d("HomeFragment", "Fragment onDetach");
-    }
-
-    /**
-     * Initialiser les composants de l'interface utilisateur.
-     */
-    private void initializeUIComponents(View view) {
-        calendarView = view.findViewById(R.id.calendarView);
-        tvAbsencesCount = view.findViewById(R.id.tv_absences_count);
-        Cabsence = view.findViewById(R.id.cardabsence);
-        Cclaim = view.findViewById(R.id.cardclaim);
-    }
-
-    private void observeViewModel() {
         absenceViewModel.getAbsences().observe(getViewLifecycleOwner(), absences -> {
-            if (absences != null) {
-                tvAbsencesCount.setText("Nombre d'absences pour le jour sélectionné : " + absences.size());
+            Log.d("HomeTeacherFragment", "Absences observées : " + (absences != null ? absences.size() : "null"));
+
+            if (absences != null && !absences.isEmpty()) {
+                absenceList = absences;
+                Log.d("HomeTeacherFragment", "Initialisation de l'adaptateur avec " + absences.size() + " absences.");
+
+                if (adapter == null) {
+                    adapter = new AbsensesAdapter(absenceList, this);
+                    recyclerView.setAdapter(adapter);
+                } else {
+                    adapter.updateAbsences(absenceList); // Mettre à jour les données
+                }
+                // Cacher le message de liste vide
+                emptyView.setVisibility(View.GONE);
+                recyclerView.setVisibility(View.VISIBLE);
             } else {
-                tvAbsencesCount.setText("Aucune absence pour le jour sélectionné");
-            }
-        });
-
-        absenceViewModel.getErrorMessage().observe(getViewLifecycleOwner(), message -> {
-            if (message != null) {
-                // Afficher un message d'erreur ou de succès si nécessaire
+                Log.d("HomeTeacherFragment", "Aucune absence à afficher.");
+                recyclerView.setAdapter(null);
+                recyclerView.setVisibility(View.GONE);
+                emptyView.setVisibility(View.VISIBLE);
             }
         });
     }
 
-    /**
-     * Initialiser la date actuelle et charger les absences pour cette date.
-     */
-    private void initializeDateAndLoadAbsences() {
-        long currentDate = calendarView.getDate();
-        @SuppressLint({"DefaultLocale", "SimpleDateFormat"})
-        String selectedDate = new SimpleDateFormat("dd/MM/yyyy").format(new Date(currentDate));
-        absenceViewModel.fetchAbsencesByDate(selectedDate);
-    }
+    @Override
+    public void onRecommend(Absence absence) {
+        if (absence == null) {
+            Log.e("HomeTeacherFragment", "Absence is null. Cannot proceed to ClaimFragment.");
+            return;
+        }
 
-    /**
-     * Définir les écouteurs pour les événements du calendrier et des boutons radio.
-     */
-    private void setEventListeners() {
-        // Gérer les changements de date dans le calendrier
-        calendarView.setOnDateChangeListener((view1, year, month, dayOfMonth) -> {
-            @SuppressLint("DefaultLocale")
-            String selectedDateFormatted = String.format("%02d/%02d/%04d", dayOfMonth, month + 1, year);
-            Log.d("HomeFragment", "Selected date: " + selectedDateFormatted);
-            absenceViewModel.fetchAbsencesByDate(selectedDateFormatted);
-        });
-
-        Cclaim.setOnClickListener(v -> openClaimManagement());
-        Cabsence.setOnClickListener(v -> openAbsencesManagement());
-    }
-
-
-    private void openClaimManagement() {
-        Fragment listeClaimFragment = new ListeClaimFragment();
-        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.frame_layout, listeClaimFragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
-    }
-
-    private void openAbsencesManagement() {
-        Fragment absenceTeacherFragment = new AbsenceTeacherFragment();
-        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.frame_layout, absenceTeacherFragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
+        ClaimFragment claimFragment = new ClaimFragment();
+        requireActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.frame_layout, claimFragment) // Replace with the ID of your FrameLayout
+                .addToBackStack(null) // Add to back stack for navigation
+                .commit();
     }
 }

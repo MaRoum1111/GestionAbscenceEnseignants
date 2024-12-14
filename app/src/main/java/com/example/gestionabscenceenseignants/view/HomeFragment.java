@@ -26,8 +26,6 @@ public class HomeFragment extends Fragment {
     private AbsenceViewModel absenceViewModel;
     private CalendarView calendarView;
     private TextView tvAbsencesCount;
-    private RadioButton rbFilterMonth, rbFilterYear;
-    private RadioGroup radioGroupFilters;
     private ImageView Creport, Cclaim, Cabsence;
 
     @SuppressLint("MissingInflatedId")
@@ -109,9 +107,6 @@ public class HomeFragment extends Fragment {
     private void initializeUIComponents(View view) {
         calendarView = view.findViewById(R.id.calendarView);
         tvAbsencesCount = view.findViewById(R.id.tv_absences_count);
-        rbFilterMonth = view.findViewById(R.id.rb_filter_month);
-        rbFilterYear = view.findViewById(R.id.rb_filter_year);
-        radioGroupFilters = view.findViewById(R.id.radioGroup);
         Creport = view.findViewById(R.id.cardreport);
         Cabsence = view.findViewById(R.id.cardabsence);
         Cclaim = view.findViewById(R.id.cardclaim);
@@ -158,29 +153,12 @@ public class HomeFragment extends Fragment {
             absenceViewModel.fetchAbsencesByDate(selectedDateFormatted);
         });
 
-        // Gérer les clics sur les boutons radio pour filtrer par mois ou année
-        rbFilterMonth.setOnClickListener(v -> filterByMonth());
-        rbFilterYear.setOnClickListener(v -> filterByYear());
-
         // Gérer les clics sur les cartes pour accéder aux différentes pages
         Cclaim.setOnClickListener(v -> openClaimManagement());
         Creport.setOnClickListener(v -> openStatsPage());
         Cabsence.setOnClickListener(v -> openAbsencesManagement());
     }
 
-    /**
-     * Filtrer les données par mois.
-     */
-    private void filterByMonth() {
-        absenceViewModel.loadAbsenceCountsByProf(); // Exemple de méthode
-    }
-
-    /**
-     * Filtrer les données par année.
-     */
-    private void filterByYear() {
-        absenceViewModel.loadAbsenceCountsByProf(); // Exemple de méthode
-    }
 
     /**
      * Ouvrir la page des statistiques.

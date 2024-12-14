@@ -5,7 +5,6 @@
     android:padding="16dp"
     android:background="@color/white">
 
-    <!-- Partie 1 : Filtrage par jour -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -13,21 +12,6 @@
         android:background="@color/white"
         android:layout_marginBottom="16dp">
 
-        <CalendarView
-            android:id="@+id/calendarView"
-            android:layout_width="match_parent"
-            android:layout_height="298dp"
-            android:background="@color/white"
-            android:layout_marginBottom="8dp" />
-
-        <TextView
-            android:id="@+id/tv_absences_count"
-            android:layout_width="345dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="Nombre d'absences pour le jour sélectionné : 0"
-            android:textColor="#000"
-            android:textSize="16sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -124,50 +108,21 @@
 
     </LinearLayout>
 
-    <!-- Partie 3 : Graphique et boutons radio -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Graphique des absences"
-        android:textColor="#000"
-        android:textSize="16sp"
-        android:layout_marginBottom="8dp" />
-    <LinearLayout
+    <CalendarView
+        android:id="@+id/calendarView"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="@color/white"
-        android:orientation="horizontal">
+        android:layout_height="329dp"
+        android:layout_marginBottom="8dp"
+        android:background="@color/white" />
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="203dp"
-            android:layout_weight="3"
-            android:background="#D3D3D3"
-            android:gravity="center">
+    <TextView
+        android:id="@+id/tv_absences_count"
+        android:layout_width="345dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Nombre d'absences pour le jour sélectionné : 0"
+        android:textColor="#000"
+        android:textStyle="bold"
+        android:textSize="15sp" />
 
-        </LinearLayout>
-
-        <!-- Section pour les boutons radio -->
-        <RadioGroup
-            android:id="@+id/radioGroup"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="center">
-            <RadioButton
-                android:id="@+id/rb_filter_month"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Par Mois"
-                android:layout_marginBottom="16dp" />
-
-            <RadioButton
-                android:id="@+id/rb_filter_year"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Par Année" />
-        </RadioGroup>
-    </LinearLayout>
 </LinearLayout>

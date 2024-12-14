@@ -75,6 +75,23 @@ public class AbsenceViewModel extends ViewModel {
     }
 
     /**
+     * Récupérer les absences pour le jour actuel.
+     */
+    public void getAbsencesForCurrentDay() {
+        repository.getAbsencesForCurrentDay(new AbsenceRepository.AuthCallback() {
+            @Override
+            public void onSuccess(List<Absence> absencesList) {
+                absences.setValue(absencesList); // Met à jour la liste des absences
+            }
+
+            @Override
+            public void onFailure(String error) {
+                errorMessage.setValue("Erreur lors de la récupération des absences pour le jour actuel : " + error); // Message d'erreur
+            }
+        });
+    }
+
+    /**
      * Ajouter une absence.
      * @param absence L'absence à ajouter.
      */
