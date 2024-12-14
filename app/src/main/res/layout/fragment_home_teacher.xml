@@ -1,54 +1,97 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:padding="16dp"
-    android:background="@color/white">
+    android:background="@color/backgroundColor">
 
+    <!-- Bonjour message avec nom de l'enseignant et icône -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="62dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/bonjourTextView"
+            android:layout_width="282dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:paddingEnd="8dp"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="22sp"
+            android:textStyle="italic" />
+
+        <!-- Icône à droite du texte -->
+        <ImageView
+            android:layout_width="99dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:contentDescription="Icone"
+            android:src="@drawable/icc_hello" />
+    </LinearLayout>
+
+    <!-- Texte "Mes absences Aujourd'hui" -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:background="@color/white"
-        android:layout_marginBottom="16dp">
-
-        <CalendarView
-            android:id="@+id/calendarView"
-            android:layout_width="match_parent"
-            android:layout_height="298dp"
-            android:background="@color/white"
-            android:layout_marginBottom="8dp" />
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/tv_absences_count"
-            android:layout_width="345dp"
+            android:id="@+id/aaujourdhuiTextView"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="Nombre d'absences pour le jour sélectionné : 0"
-            android:textColor="#000"
-            android:textSize="16sp" />
+            android:layout_marginTop="16dp"
+            android:padding="8dp"
+            android:text="Mes absences Aujourd'hui :"
+            android:textColor="@color/blue"
+            android:textSize="25sp"
+            android:textStyle="bold" />
     </LinearLayout>
+
+    <!-- RecyclerView pour afficher les absences -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/absenceRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="330dp"
+        android:scrollbars="vertical"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:scrollbarThumbVertical="@drawable/scrollbar_thumb"
+        android:scrollbarTrackVertical="@drawable/scrollbar_track"
+        tools:listitem="@layout/item_absence_teacher"/>
+
+    <TextView
+        android:id="@+id/emptyView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Aucune absence a afficher "
+        android:visibility="gone" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="106dp"
+        android:layout_height="129dp"
         android:layout_marginBottom="16dp"
         android:background="@color/white"
         android:gravity="center_horizontal"
         android:orientation="horizontal"
         android:weightSum="3">
 
-        <!-- CardView 1 -->
-
         <!-- CardView 2 -->
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="100dp"
+            android:layout_width="23dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@color/white"
             android:gravity="center_horizontal"
             android:orientation="vertical">
-
 
             <ImageView
                 android:id="@+id/cardclaim"
@@ -59,10 +102,10 @@
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:layout_marginTop="8dp"
                 android:gravity="center"
-                android:text=" Voir Réclamations"
+                android:text="Voir mes Réclamations"
                 android:textColor="#000"
                 android:textSize="14sp"
                 android:textStyle="bold" />
@@ -71,7 +114,7 @@
         <!-- CardView 3 -->
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="100dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@color/white"
             android:gravity="center_horizontal"
@@ -86,14 +129,15 @@
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="53dp"
                 android:layout_marginTop="8dp"
                 android:gravity="center"
-                android:text="Voir Absences"
+                android:text="Voir mes Absences"
                 android:textColor="#000"
                 android:textSize="14sp"
                 android:textStyle="bold" />
         </LinearLayout>
 
     </LinearLayout>
+
 </LinearLayout>

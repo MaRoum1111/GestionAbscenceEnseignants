@@ -27,7 +27,7 @@ public class TeacherAbsenceAdapter extends RecyclerView.Adapter<TeacherAbsenceAd
     @Override
     public AbsenceDetailViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         // Inflate le layout de l'item (item_detail_absence.xml)
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_absence_teacher, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_absences_teacher, parent, false);
         return new AbsenceDetailViewHolder(view);
     }
 

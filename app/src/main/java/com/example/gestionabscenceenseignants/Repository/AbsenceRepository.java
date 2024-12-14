@@ -9,6 +9,8 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -282,6 +284,51 @@ public class AbsenceRepository {
                     }
                 });
     }
+    public void getAbsencesForCurrentDay(AuthCallback callback) {
+        // Récupérer l'UID de l'utilisateur connecté
+        String uid = mAuth.getCurrentUser().getUid();
+        if (uid == null) {
+            callback.onFailure("Utilisateur non connecté");
+            return;
+        }
+        // Étape 1 : Récupérer le CIN à partir de l'UID
+        db.collection("users") // Assurez-vous que cette collection stocke les utilisateurs
+                .document(uid) // Rechercher le document avec l'UID
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null) {
+                        String profCin = task.getResult().getString("cin");
+                        Log.d("absenceRepository", "getAbsencesForCurrentDay: "+profCin);// Récupérer le CIN
+                        if (profCin == null || profCin.isEmpty()) {
+                            callback.onFailure("CIN introuvable pour cet utilisateur.");
+                            return;
+                        }
+                        LocalDate today = LocalDate.now(); // Date actuelle
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy"); // Format souhaité
+                        String todayDate = today.format(formatter); // Format : DD/MM/YYYY
+                        Log.d("absenceRepository", "getAbsencesForCurrentDay: " + todayDate);
+                        db.collection("absences")
+                                .whereEqualTo("cin", profCin) // Filtrer par CIN
+                                .whereEqualTo("date", todayDate) // Filtrer par la date du jour
+                                .get()
+                                .addOnCompleteListener(absencesTask -> {
+                                    if (absencesTask.isSuccessful() && absencesTask.getResult() != null && !absencesTask.getResult().isEmpty()) {
+                                        List<Absence> absences = new ArrayList<>();
+                                        for (QueryDocumentSnapshot document : absencesTask.getResult()) {
+                                            Absence absence = document.toObject(Absence.class);
+                                            absences.add(absence);
+                                        }
+                                        callback.onSuccess(absences); // Retourner les absences trouvées
+                                    } else {
+                                        callback.onFailure("Aucune absence trouvée pour aujourd'hui.");
+                                    }
+                                });
+                    } else {
+                        callback.onFailure("Échec de la récupération du CIN.");
+                    }
+                });
+    }
+
     // Interface pour gérer les retours des méthodes
     public interface AuthCallback {
         void onSuccess(List<Absence> absences);
