@@ -37,7 +37,7 @@
                 android:id="@+id/startTime"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Heure de début"
+                android:text="@string/heure_de_d_but"
                 android:textSize="16sp"
                 android:textColor="@color/black"
                 android:layout_weight="1"
@@ -47,7 +47,7 @@
                 android:id="@+id/endTime"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Heure de fin"
+                android:text="@string/heure_de_fin"
                 android:textSize="16sp"
                 android:textColor="@color/black"
                 android:layout_weight="1" />
@@ -65,7 +65,7 @@
                 android:id="@+id/classe"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Classe :"
+                android:text="@string/classe"
                 android:textSize="16sp"
                 android:textColor="@color/black"
                 android:layout_weight="1"
@@ -75,7 +75,7 @@
                 android:id="@+id/status"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Statut"
+                android:text="@string/statut"
                 android:textSize="16sp"
                 android:textColor="@android:color/holo_green_dark"
                 android:layout_weight="1" />
@@ -88,7 +88,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:layout_marginTop="16dp"
-            android:text="Passer une réclamation"
+            android:text="@string/passer_une_r_clamation"
             android:textColor="@color/white" />
 
     </LinearLayout>

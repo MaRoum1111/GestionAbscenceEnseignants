@@ -47,6 +47,16 @@ public class ClaimAdapter extends RecyclerView.Adapter<ClaimAdapter.ClaimViewHol
             holder.startTime.setText("Heure de début: " + claim.getStartTime());
             holder.endTime.setText("Heure de fin: " + claim.getEndTime());
             holder.status.setText("Status:"+claim.getStatus());
+
+            // Définir la couleur du statut selon sa valeur
+            if ("Approuvé".equalsIgnoreCase(claim.getStatus())) {
+                holder.status.setTextColor(holder.itemView.getContext().getColor(android.R.color.holo_green_dark));
+            } else if ("Rejeté".equalsIgnoreCase(claim.getStatus())) {
+                holder.status.setTextColor(holder.itemView.getContext().getColor(android.R.color.holo_red_dark));
+            }
+            else {
+                holder.status.setTextColor(holder.itemView.getContext().getColor(R.color.yellow));
+            }
             holder.deleteIcon.setOnClickListener(v -> listener.onDelete(claim));
             holder.editIcon.setOnClickListener(v -> listener.onEdit(claim));
 

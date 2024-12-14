@@ -16,7 +16,7 @@
             android:id="@+id/reclamationtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Modifier de Réclamation"
+            android:text="@string/modifier_de_r_clamation"
             android:textSize="24sp"
             android:textColor="@color/black"
             android:layout_marginBottom="16dp"
@@ -25,7 +25,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Détails de la Séance :"
+            android:text="@string/d_tails_de_la_s_ance"
             android:textSize="18sp"
             android:layout_marginBottom="4dp"
             android:textColor="@color/black" />
@@ -44,7 +44,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Date de l'absence"
+                    android:text="@string/date_de_l_absence"
                     android:textSize="16sp"
                     android:layout_marginBottom="4dp"
                     android:textColor="@color/black" />
@@ -52,7 +52,7 @@
                     android:id="@+id/date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="jj/mm/aaaa"
+                    android:hint="@string/jj_mm_aaaa"
                     android:inputType="date"
                     android:padding="12dp"
                     android:minHeight="48dp"
@@ -69,7 +69,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Heure de début"
+                    android:text="@string/heure_de_d_but"
                     android:textSize="16sp"
                     android:layout_marginBottom="4dp"
                     android:textColor="@color/black" />
@@ -77,7 +77,7 @@
                     android:id="@+id/startTime"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="hh:mm"
+                    android:hint="@string/hh_mm"
                     android:inputType="time"
                     android:padding="12dp"
                     android:minHeight="48dp"
@@ -102,7 +102,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Heure de fin"
+                    android:text="@string/heure_de_fin"
                     android:textSize="16sp"
                     android:layout_marginBottom="4dp"
                     android:textColor="@color/black" />
@@ -110,7 +110,7 @@
                     android:id="@+id/endTime"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="hh:mm"
+                    android:hint="@string/hh_mm"
                     android:inputType="time"
                     android:padding="12dp"
                     android:minHeight="48dp"
@@ -127,7 +127,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text=" Classe"
+                    android:text="@string/classe"
                     android:textSize="16sp"
                     android:layout_marginBottom="4dp"
                     android:textColor="@color/black" />
@@ -135,7 +135,7 @@
                     android:id="@+id/classe"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Entrez la classe "
+                    android:hint="@string/entrez_la_classe"
                     android:inputType="textMultiLine"
                     android:padding="12dp"
                     android:maxLines="3"
@@ -150,7 +150,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="informations de la Réclamation :"
+            android:text="@string/informations_de_la_r_clamation"
             android:textSize="18sp"
             android:layout_marginBottom="4dp"
             android:textColor="@color/black" />
@@ -169,7 +169,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Date de réclamation"
+                    android:text="@string/date_de_r_clamation"
                     android:textSize="16sp"
                     android:layout_marginBottom="4dp"
                     android:textColor="@color/black" />
@@ -177,7 +177,7 @@
                     android:id="@+id/claimDate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="jj/mm/aaaa"
+                    android:hint="@string/jj_mm_aaaa"
                     android:inputType="date"
                     android:padding="12dp"
                     android:minHeight="48dp"
@@ -189,7 +189,7 @@
             android:id="@+id/claim"
             android:layout_width="match_parent"
             android:layout_height="150dp"
-            android:hint="Décrivez votre réclamation"
+            android:hint="@string/d_crivez_votre_r_clamation"
             android:inputType="textMultiLine"
             android:gravity="top|start"
             android:background="@drawable/rounded_edittext"
@@ -211,7 +211,7 @@
                 android:backgroundTint="@color/blue"
                 android:minHeight="48dp"
                 android:padding="16dp"
-                android:text="Valider"
+                android:text="@string/valider"
                 android:textSize="18sp" />
 
             <Button
@@ -222,7 +222,7 @@
                 android:elevation="10dp"
                 android:minHeight="48dp"
                 android:padding="16dp"
-                android:text="Annuler"
+                android:text="@string/annuler"
                 android:textColor="@color/blue"
                 android:textSize="18sp" />
         </LinearLayout>

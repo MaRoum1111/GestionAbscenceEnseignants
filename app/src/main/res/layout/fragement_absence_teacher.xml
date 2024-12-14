@@ -19,7 +19,7 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:src="@drawable/ic_teacher"
-            android:contentDescription="Image de l'enseignant"
+            android:contentDescription="@string/image_de_l_enseignant"
             android:layout_marginEnd="16dp"
             android:layout_gravity="center_vertical"/>
 
@@ -34,7 +34,7 @@
                 android:id="@+id/teacher_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Nom de l'enseignant"
+                android:text="@string/nom_de_l_enseignant"
                 android:textSize="18sp"
                 android:textColor="@color/black"
                 android:textStyle="bold" />
@@ -43,7 +43,7 @@
                 android:id="@+id/teacher_cin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="88888888"
+                android:text="@string/_88888888"
                 android:textSize="16sp"
                 android:textColor="@color/design_default_color_error"
                 android:paddingTop="8dp" />
@@ -63,13 +63,14 @@
             android:id="@+id/total_absences"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Total des absences: "
+            android:text="@string/total_des_absences"
             android:textSize="16sp"
             android:textColor="@color/blue"
             android:textStyle="bold"
             android:layout_gravity="end"
             android:paddingEnd="16dp"
-            android:paddingTop="8dp"/>
+            android:paddingTop="8dp"
+            tools:ignore="RtlSymmetry" />
     </LinearLayout>
 
     <!-- RecyclerView pour afficher les absences -->
@@ -79,5 +80,5 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:paddingTop="16dp"
-        tools:listitem="@layout/item_absence_teacher"/>
+        tools:listitem="@layout/item_detail_absence"/>
 </LinearLayout>

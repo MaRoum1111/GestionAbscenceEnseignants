@@ -20,7 +20,7 @@
             android:id="@+id/tv_emplois_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Gestion des Emplois du Temps"
+            android:text="@string/gestion_des_emplois_du_temps"
             android:textSize="20sp"
             android:textStyle="bold"
             android:gravity="center"
@@ -39,7 +39,7 @@
                 android:layout_width="0dp"
                 android:layout_height="48dp"
                 android:layout_weight="1"
-                android:hint="Rechercher"
+                android:hint="@string/rechercher"
                 android:background="@drawable/edit_text_background"
                 android:paddingStart="16dp"
                 android:textColor="@color/black"
@@ -51,7 +51,7 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:src="@android:drawable/ic_search_category_default"
-                android:contentDescription="Rechercher"
+                android:contentDescription="@string/rechercher"
                 android:background="?attr/selectableItemBackground"
                 app:tint="@color/blue" />
         </LinearLayout>
@@ -74,7 +74,7 @@
         android:layout_height="130dp"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
-        android:contentDescription="Importer un fichier"
+        android:contentDescription="@string/importer_un_fichier"
         app:backgroundTint="@color/primaryColor"
         app:srcCompat="@drawable/ic_baseline_attach_file_24"
         app:tint="@android:color/white" />
