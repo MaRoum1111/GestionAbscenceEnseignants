@@ -11,6 +11,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class UserRepository {
@@ -24,9 +25,10 @@ public class UserRepository {
         Log.d("Firestore", "Firestore instance initialized");
     }
 
-    // Méthode pour récupérer les utilisateurs
+    // Méthode pour récupérer les utilisateurs ayant les rôles "Enseignant" et "Agent"
     public void getUsers(UserCallback callback) {
         db.collection("users")
+                .whereIn("role", Arrays.asList("Enseignant", "Agent"))  // Filtrer les utilisateurs par rôle
                 .orderBy("name", Query.Direction.ASCENDING)
                 .get()
                 .addOnCompleteListener(task -> {
@@ -47,6 +49,8 @@ public class UserRepository {
                     }
                 });
     }
+
+
 
     // Méthode pour ajouter un utilisateur
     public void addUser(User user, final UserCallback callback) {
