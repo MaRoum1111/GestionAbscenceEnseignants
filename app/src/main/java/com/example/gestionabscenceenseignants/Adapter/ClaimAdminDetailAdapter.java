@@ -47,6 +47,11 @@ public class ClaimAdminDetailAdapter extends RecyclerView.Adapter<ClaimAdminDeta
             holder.endTime.setText("Heure de fin: " + claim.getEndTime());
             holder.status.setText("Statut: " + claim.getStatus());
             holder.claim.setText("Réclamation:"+claim.getClaim());
+
+            // Définir la couleur du statut selon sa valeur
+            if ("En cours".equalsIgnoreCase(claim.getStatus())) {
+                holder.status.setTextColor(holder.itemView.getContext().getColor(R.color.yellow));
+            }
             holder.accept.setOnClickListener(v -> clickListener.onAccept(claim));
             holder.reject.setOnClickListener(v -> clickListener.onReject(claim));
 

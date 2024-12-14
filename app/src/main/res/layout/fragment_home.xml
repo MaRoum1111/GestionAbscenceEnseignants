@@ -45,7 +45,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:gravity="center"
-                android:text="Voir Rapports"
+                android:text="@string/voir_rapports"
                 android:textColor="#000"
                 android:textSize="14sp"
                 android:textStyle="bold" />
@@ -62,18 +62,18 @@
 
 
             <ImageView
-                android:id="@+id/cardclaim"
+                android:id="@+id/cardSchedule"
                 android:layout_width="86dp"
                 android:layout_height="71dp"
                 android:layout_gravity="center"
-                android:src="@drawable/icc_claim" />
+                android:src="@drawable/ic_emploi" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:gravity="center"
-                android:text=" Voir Réclamations"
+                android:text="@string/voir_emplois"
                 android:textColor="#000"
                 android:textSize="14sp"
                 android:textStyle="bold" />
@@ -100,7 +100,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:gravity="center"
-                android:text="Voir Absences"
+                android:text="@string/voir_absences"
                 android:textColor="#000"
                 android:textSize="14sp"
                 android:textStyle="bold" />
@@ -120,7 +120,7 @@
         android:layout_width="345dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="Nombre d'absences pour le jour sélectionné : 0"
+        android:text="@string/nombre_d_absences_pour_le_jour_s_lectionn_0"
         android:textColor="#000"
         android:textStyle="bold"
         android:textSize="15sp" />

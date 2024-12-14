@@ -207,30 +207,6 @@ public class AddAbsenceFragment extends Fragment {
         });
     }
 
-    private void addAbsence() {
-        if (!validateInputs()) {
-            return;
-        }
-
-        Absence absence = new Absence(
-                editTextProfName.getText().toString().trim(),
-                editTextDate.getText().toString().trim(),
-                editTextStartTime.getText().toString().trim(),
-                editTextEndTime.getText().toString().trim(),
-                editTextReason.getText().toString().trim(),
-                spinnerStatus.getSelectedItem().toString(),
-                editTextSubjectName.getText().toString().trim(),
-                selectedCIN
-        );
-
-        absenceViewModel.addAbsence(absence);
-        // Observer pour les erreurs ou succès
-        absenceViewModel.getErrorMessage().observe(getViewLifecycleOwner(), message -> {
-            Toast.makeText(getActivity(), "Absence ajoutée avec succès", Toast.LENGTH_SHORT).show();
-            requireActivity().getSupportFragmentManager().popBackStack();
-
-        });
-    }
 
     private boolean validateInputs() {
         String profName = editTextProfName.getText().toString().trim();

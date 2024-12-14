@@ -16,7 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Liste des Réclamations"
+            android:text="@string/liste_des_r_clamations"
             android:textSize="20sp"
             android:textStyle="bold"
             android:paddingBottom="16dp"/>

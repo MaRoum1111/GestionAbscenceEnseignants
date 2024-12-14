@@ -54,7 +54,7 @@ public class AddUserFragment extends Fragment {
 
     private void setupButtonListeners() {
         btnSubmit.setOnClickListener(v -> addUser());
-        btnCancel.setOnClickListener(v -> clearForm());
+        btnCancel.setOnClickListener(v -> requireActivity().getOnBackPressedDispatcher().onBackPressed());
     }
 
     private void addUser() {

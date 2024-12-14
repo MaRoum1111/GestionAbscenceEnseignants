@@ -22,7 +22,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Modifier une absence"
+                android:text="@string/modifier_une_absence"
                 android:textSize="24sp"
                 android:textColor="@color/black"
                 android:layout_gravity="center"
@@ -31,14 +31,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Nom du professeur"
+                android:text="@string/nom_du_professeur"
                 android:textSize="16sp"
                 android:layout_marginBottom="4dp"/>
             <AutoCompleteTextView
                 android:id="@+id/profName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Nom du professeur"
+                android:hint="@string/nom_du_professeur"
                 android:inputType="text"
                 android:completionThreshold="1"/>
 
@@ -58,7 +58,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Date de l'absence"
+                        android:text="@string/date_de_l_absence"
                         android:textSize="16sp"
                         android:layout_marginBottom="4dp"
                         android:textColor="@color/black" />
@@ -66,7 +66,7 @@
                         android:id="@+id/date"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="jj/mm/aaaa"
+                        android:hint="@string/jj_mm_aaaa"
                         android:inputType="date"
                         android:padding="12dp"
                         android:minHeight="48dp"
@@ -83,7 +83,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Heure de début"
+                        android:text="@string/heure_de_d_but"
                         android:textSize="16sp"
                         android:layout_marginBottom="4dp"
                         android:textColor="@color/black" />
@@ -91,7 +91,7 @@
                         android:id="@+id/startTime"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="hh:mm"
+                        android:hint="@string/hh_mm"
                         android:inputType="time"
                         android:padding="12dp"
                         android:minHeight="48dp"
@@ -116,7 +116,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Heure de fin"
+                        android:text="@string/heure_de_fin"
                         android:textSize="16sp"
                         android:layout_marginBottom="4dp"
                         android:textColor="@color/black" />
@@ -124,7 +124,7 @@
                         android:id="@+id/endTime"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="hh:mm"
+                        android:hint="@string/hh_mm"
                         android:inputType="time"
                         android:padding="12dp"
                         android:minHeight="48dp"
@@ -141,7 +141,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Classe"
+                        android:text="@string/classe"
                         android:textSize="16sp"
                         android:layout_marginBottom="4dp"
                         android:textColor="@color/black" />
@@ -149,7 +149,7 @@
                         android:id="@+id/reason"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Entrez la classe"
+                        android:hint="@string/entrez_la_classe"
                         android:inputType="textMultiLine"
                         android:padding="12dp"
                         android:maxLines="3"
@@ -163,7 +163,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Statut de l'absence"
+                android:text="@string/statut_de_l_absence"
                 android:textSize="16sp"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="4dp"
@@ -180,7 +180,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Salle"
+                android:text="@string/salle"
                 android:textSize="16sp"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="4dp"
@@ -189,7 +189,7 @@
                 android:id="@+id/subjectName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Entrez la salle"
+                android:hint="@string/entrez_la_salle"
                 android:inputType="text"
                 android:padding="12dp"
                 android:minHeight="48dp" />

@@ -1,6 +1,8 @@
 package com.example.gestionabscenceenseignants.view;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,14 +14,14 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.gestionabscenceenseignants.Adapter.AbsenceAdapter;
-import com.example.gestionabscenceenseignants.Adapter.UsersAdapter;
 import com.example.gestionabscenceenseignants.R;
 import com.example.gestionabscenceenseignants.ViewModel.AbsenceViewModel;
 import com.example.gestionabscenceenseignants.model.Absence;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import android.widget.AutoCompleteTextView;
 import java.util.List;
 
-public class AbsenceFragment extends Fragment implements AbsenceAdapter.OnAbsenceClickListener{
+public class AbsenceFragment extends Fragment implements AbsenceAdapter.OnAbsenceClickListener {
 
     private RecyclerView recyclerView;  // RecyclerView pour afficher les absences
     private AbsenceAdapter adapter;  // L'adaptateur pour gérer la liste d'absences
@@ -42,6 +44,26 @@ public class AbsenceFragment extends Fragment implements AbsenceAdapter.OnAbsenc
 
         // Initialiser le bouton flottant pour ajouter une absence
         initializeFloatingActionButton(view);
+
+        AutoCompleteTextView autoCompleteSearch = view.findViewById(R.id.search_bar);
+        autoCompleteSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+                String query = charSequence.toString();
+                // Vérifier si la longueur de la chaîne est d'au moins 3 caractères
+                if (query.length() >= 3) {
+                    absenceViewModel.searchAbsences(query); // Effectuer la recherche
+                } else {
+                    absenceViewModel.loadAbsenceCountsByProf(); // Recharger toutes les absences si moins de 3 caractères
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {}
+        });
 
         return view;
     }

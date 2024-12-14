@@ -4,25 +4,25 @@
     <item
         android:id="@+id/nav_home"
         android:icon="@drawable/icc_home"
-        android:title="Accueil " />
+        android:title="@string/accueil" />
     <item
         android:id="@+id/nav_absences"
         android:icon="@drawable/icc_absence"
-        android:title="Absence"/>
+        android:title="@string/absence"/>
     <item
         android:id="@+id/nav_users"
         android:icon="@drawable/icc_users"
-        android:title="Utilisateurs"/>
+        android:title="@string/utilisateurs"/>
     <item
-        android:id="@+id/nav_emplois"
-        android:icon="@drawable/icc_baseline_today_24"
-        android:title="Emplois"
+        android:id="@+id/nav_claim"
+        android:icon="@drawable/claim"
+        android:title="@string/reclamations_title"
         />
 
     <item
         android:id="@+id/nav_statistics"
         android:icon="@drawable/icc_chart"
-        android:title="rapport"
+        android:title="@string/rapport"
         />
 
 </menu>

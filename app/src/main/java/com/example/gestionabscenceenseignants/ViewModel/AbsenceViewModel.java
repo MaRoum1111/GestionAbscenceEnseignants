@@ -90,6 +90,20 @@ public class AbsenceViewModel extends ViewModel {
             }
         });
     }
+    public void searchAbsences(String searchQuery) {
+        repository.searchAbsencesByTeacher(searchQuery, new AbsenceRepository.AuthCallback() {
+            @Override
+            public void onSuccess(List<Absence> absencesList) {
+                absences.setValue(absencesList); // Met à jour la liste des absences avec le résultat de la recherche
+            }
+
+            @Override
+            public void onFailure(String error) {
+                errorMessage.setValue("Erreur lors de la recherche : " + error); // Affiche l'erreur
+            }
+        });
+
+    }
 
     /**
      * Ajouter une absence.

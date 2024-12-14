@@ -53,7 +53,7 @@
                         android:layout_height="96dp"
                         android:layout_marginStart="0dp"
                         android:padding="19dp"
-                        android:text="Total            Enseignants"
+                        android:text="@string/total_enseignants"
                         android:textColor="@color/blueblue"
                         android:textSize="11dp"
                         android:textStyle="bold" />
@@ -88,7 +88,7 @@
                         android:layout_height="89dp"
                         android:layout_marginStart="16dp"
                         android:padding="16dp"
-                        android:text="Total Salles :"
+                        android:text="@string/total_salles"
                         android:textColor="@color/blueblue"
                         android:textSize="10dp"
                         android:textStyle="bold" />
@@ -126,7 +126,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:paddingTop="8dp"
-                    android:text="Absence"
+                    android:text="@string/absence"
                     android:textColor="@color/blueblue"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -152,7 +152,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:paddingTop="8dp"
-                    android:text="Emplois"
+                    android:text="@string/emplois"
                     android:textColor="@color/blueblue"
                     android:textStyle="bold" />
             </LinearLayout>
