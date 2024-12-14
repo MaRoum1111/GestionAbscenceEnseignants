@@ -12,13 +12,14 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.gestionabscenceenseignants.Adapter.AbsenceAdapter;
+import com.example.gestionabscenceenseignants.Adapter.UsersAdapter;
 import com.example.gestionabscenceenseignants.R;
 import com.example.gestionabscenceenseignants.ViewModel.AbsenceViewModel;
 import com.example.gestionabscenceenseignants.model.Absence;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.List;
 
-public class AbsenceFragment extends Fragment {
+public class AbsenceFragment extends Fragment implements AbsenceAdapter.OnAbsenceClickListener{
 
     private RecyclerView recyclerView;  // RecyclerView pour afficher les absences
     private AbsenceAdapter adapter;  // L'adaptateur pour gérer la liste d'absences
@@ -85,6 +86,8 @@ public class AbsenceFragment extends Fragment {
             @Override
             public void onChanged(List<Absence> absences) {
                 if (absences != null) {
+                    adapter = new AbsenceAdapter(absences, AbsenceFragment.this); // Passer l'interface ici
+                    recyclerView.setAdapter(adapter);
                     updateRecyclerView(absences);  // Mettre à jour l'adaptateur avec les nouvelles données
                 }
             }
@@ -94,13 +97,6 @@ public class AbsenceFragment extends Fragment {
     // Fonction pour mettre à jour le RecyclerView avec les données des absences
     private void updateRecyclerView(List<Absence> absences) {
         if (adapter == null) {
-            // Si l'adaptateur n'est pas encore initialisé, créer un nouvel adaptateur
-            adapter = new AbsenceAdapter(absences, new AbsenceAdapter.OnAbsenceClickListener() {
-                @Override
-                public void onAbsenceClick(String cin, String profName, int absenceCount) {
-                    openDetailAbsenceFragment(cin, profName, absenceCount);  // Ouvrir le fragment de détail d'absence lors du clic sur une absence
-                }
-            });
             recyclerView.setAdapter(adapter);  // Associer l'adaptateur au RecyclerView
         } else {
             adapter.updateData(absences);  // Si l'adaptateur existe déjà, mettre à jour les données
@@ -156,5 +152,10 @@ public class AbsenceFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
+    }
+
+    @Override
+    public void onAbsenceClick(String cin, String profName, int absenceCount) {
+        openDetailAbsenceFragment(cin, profName, absenceCount);
     }
 }

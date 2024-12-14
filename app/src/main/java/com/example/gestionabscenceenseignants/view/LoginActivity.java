@@ -11,6 +11,7 @@ import androidx.lifecycle.Observer;
 import com.example.gestionabscenceenseignants.R;
 import com.example.gestionabscenceenseignants.ViewModel.LoginViewModel;
 import com.example.gestionabscenceenseignants.model.User;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -60,9 +61,9 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        // Cette méthode est appelée lorsque l'activité devient visible pour l'utilisateur
-        // Idéal pour effectuer des tâches nécessaires dès que l'activité est visible, comme préparer des ressources
     }
+
+
 
     @Override
     protected void onResume() {

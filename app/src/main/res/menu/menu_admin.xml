@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:showIn="navigation_view">
+    tools:showIn = "navigation_view">
 
-    <group android:checkableBehavior="single">
+
+
+    <group android:checkableBehavior="none">
         <item
             android:id="@+id/nav_home"
             android:icon="@drawable/icc_home"
@@ -20,9 +23,10 @@
             android:id="@+id/nav_about"
             android:icon="@drawable/icc_info"
             android:title="About Us" />
-    </group>
 
-    <item android:title="">
+    </group>
+    <item
+        android:title="">
         <menu>
             <item
                 android:id="@+id/nav_logout"
