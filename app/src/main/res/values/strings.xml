@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">GestionAbscenceEnseignants</string>
+    <string name="app_name" translatable="false">ProfAbsence</string>
     <!-- Descriptions pour les icônes -->
     <string name="logo_desc" translatable="false">Logo de l\'application</string>
     <string name="menu_desc" translatable="false">Menu principal</string>
