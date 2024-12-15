@@ -3,5 +3,5 @@
     <corners android:radius="15dp" /> <!-- Coins arrondis -->
     <size
         android:width="15dp"
-        android:height="55dp" />
+        android:height="35dp" />
 </shape>

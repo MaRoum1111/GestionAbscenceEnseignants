@@ -25,7 +25,7 @@
             android:background="@color/blue"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:navigationIcon="@drawable/icc_menu"
-            app:title="Agent" />
+            app:title="Agent Dashboard" />
 
         <!-- FrameLayout pour afficher le contenu dynamique -->
         <FrameLayout
