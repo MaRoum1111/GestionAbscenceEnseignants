@@ -20,16 +20,16 @@ import com.example.gestionabscenceenseignants.model.User;
 
 public class EditUserFragment extends Fragment {
 
-    // Déclaration des variables de la vue
+    // Déclaration des variables pour les champs de saisie et le Spinner
     private EditText editTextCIN, editTextName, editTextEmail, editTextPassword;
     private Spinner spinnerRole;
-    private UserViewModel userViewModel;
+    private UserViewModel userViewModel;  // ViewModel pour gérer les données de l'utilisateur
 
-    private String nom, Cin, email, pass, role;
+    private String nom, Cin, email, pass, role;  // Variables pour stocker les données de l'utilisateur
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflater le layout du fragment
+        // Inflate le layout du fragment
         return inflater.inflate(R.layout.fragment_edit_user, container, false);
     }
 
@@ -50,7 +50,7 @@ public class EditUserFragment extends Fragment {
         configureButtonClicks();
     }
 
-    // Initialisation des vues
+    // Initialisation des vues : récupérer les éléments de la vue par leurs ID
     private void initViews(View view) {
         editTextCIN = view.findViewById(R.id.editTextCIN);
         editTextName = view.findViewById(R.id.editTextName);
@@ -59,7 +59,7 @@ public class EditUserFragment extends Fragment {
         spinnerRole = view.findViewById(R.id.spinnerRole);
     }
 
-    // Charger les données transmises par l'activité précédente
+    // Charger les données transmises par le fragment précédent via les arguments
     private void loadDataFromArguments() {
         if (getArguments() != null) {
             Cin = getArguments().getString("cin");
@@ -79,7 +79,7 @@ public class EditUserFragment extends Fragment {
                 String[] statuses = getResources().getStringArray(R.array.role_array);
                 for (int i = 0; i < statuses.length; i++) {
                     if (statuses[i].equals(status)) {
-                        spinnerRole.setSelection(i);
+                        spinnerRole.setSelection(i);  // Sélectionner le rôle correspondant
                         break;
                     }
                 }
@@ -87,7 +87,7 @@ public class EditUserFragment extends Fragment {
         }
     }
 
-    // Configurer les clics des boutons
+    // Configurer les clics des boutons (validation et annulation)
     private void configureButtonClicks() {
         Button btnSubmit = requireView().findViewById(R.id.btnSubmit);
         Button btnCancel = requireView().findViewById(R.id.btnCancel);
@@ -95,27 +95,28 @@ public class EditUserFragment extends Fragment {
         // Gérer le clic sur le bouton de validation
         btnSubmit.setOnClickListener(v -> {
             if (validateFields()) {
-                updateUser();
+                updateUser();  // Si la validation réussit, mettre à jour l'utilisateur
             }
         });
 
         // Gérer le clic sur le bouton d'annulation
         btnCancel.setOnClickListener(v -> {
-            requireActivity().getSupportFragmentManager().popBackStack();
+            requireActivity().getSupportFragmentManager().popBackStack();  // Retourner au fragment précédent
         });
     }
 
     // Mettre à jour l'utilisateur dans le ViewModel
     private void updateUser() {
+        // Créer un objet User avec les nouvelles données
         User updatedUser = new User(
                 editTextCIN.getText().toString(),
                 editTextName.getText().toString(),
                 editTextEmail.getText().toString(),
                 editTextPassword.getText().toString(),
-                spinnerRole.getSelectedItem().toString()
+                spinnerRole.getSelectedItem().toString()  // Récupérer le rôle sélectionné dans le Spinner
         );
 
-        // Appel à la méthode dans le ViewModel pour éditer l'utilisateur
+        // Appel à la méthode du ViewModel pour mettre à jour l'utilisateur
         userViewModel.editUser(updatedUser);
 
         // Afficher un message de succès
@@ -124,12 +125,13 @@ public class EditUserFragment extends Fragment {
         // Rafraîchir la liste des utilisateurs dans le fragment des utilisateurs
         userViewModel.loadUsers();
 
-        // Retourner au fragment précédent
+        // Retourner au fragment précédent après la mise à jour
         requireActivity().getSupportFragmentManager().popBackStack();
     }
 
-    // Méthode pour valider les champs
+    // Méthode pour valider les champs avant la mise à jour
     private boolean validateFields() {
+        // Vérifier si chaque champ est valide et afficher un message d'erreur si nécessaire
         if (editTextName.getText().toString().isEmpty()) {
             editTextName.setError("Veuillez entrer le nom");
             return false;
@@ -142,37 +144,7 @@ public class EditUserFragment extends Fragment {
             editTextPassword.setError("Veuillez entrer un mot de passe");
             return false;
         }
-        return true;
+        return true;  // Retourner true si tous les champs sont valides
     }
 
-    // Méthodes sur le cycle de vie du fragment
-    @Override
-    public void onResume() {
-        super.onResume();
-        // Cette méthode est appelée lorsque le fragment est visible à l'utilisateur
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        // Cette méthode est appelée lorsque le fragment n'est plus en avant-plan
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        // Cette méthode est appelée quand la vue du fragment est détruite
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        // Cette méthode est appelée quand le fragment est détruit
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        // Cette méthode est appelée quand le fragment est détaché de son activité
-    }
 }

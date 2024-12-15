@@ -169,7 +169,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Date de réclamation"
+                    android:text="@string/date_de_r_clamation"
                     android:textSize="16sp"
                     android:layout_marginBottom="4dp"
                     android:textColor="@color/black" />
@@ -177,7 +177,7 @@
                     android:id="@+id/claimDate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="jj/mm/aaaa"
+                    android:hint="@string/jj_mm_aaaa"
                     android:inputType="date"
                     android:padding="12dp"
                     android:minHeight="48dp"
@@ -190,14 +190,18 @@
             android:id="@+id/claim"
             android:layout_width="match_parent"
             android:layout_height="150dp"
-            android:hint="Décrivez votre réclamation"
+            android:hint="@string/d_crivez_votre_r_clamation"
             android:inputType="textMultiLine"
             android:gravity="top|start"
             android:background="@drawable/rounded_edittext"
             android:padding="12dp"
             android:layout_marginBottom="16dp" />
-
-        <!-- Bouton Soumettre -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="20dp">
         <Button
             android:id="@+id/submitClaimButton"
             android:layout_width="150dp"
@@ -205,9 +209,20 @@
             android:backgroundTint="@color/blue"
             android:minHeight="48dp"
             android:padding="16dp"
-            android:text="Soumettre"
+            android:text="@string/soumettre"
             android:textSize="18sp" />
 
-
+        <Button
+            android:id="@+id/cancelButton"
+            android:layout_width="154dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/white"
+            android:elevation="10dp"
+            android:minHeight="48dp"
+            android:padding="16dp"
+            android:text="@string/annuler"
+            android:textColor="@color/blue"
+            android:textSize="18sp" />
+    </LinearLayout>
     </LinearLayout>
 </ScrollView>

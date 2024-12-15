@@ -21,48 +21,57 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import android.widget.AutoCompleteTextView;
 import java.util.List;
 
+/**
+ * Fragment pour afficher et gérer les absences.
+ * Implémente une interface pour détecter les clics sur les éléments de la liste des absences.
+ */
 public class AbsenceFragment extends Fragment implements AbsenceAdapter.OnAbsenceClickListener {
 
-    private RecyclerView recyclerView;  // RecyclerView pour afficher les absences
-    private AbsenceAdapter adapter;  // L'adaptateur pour gérer la liste d'absences
-    private AbsenceViewModel absenceViewModel;  // ViewModel pour gérer les données d'absences
+    private RecyclerView recyclerView;  // RecyclerView pour afficher la liste des absences
+    private AbsenceAdapter adapter;  // Adaptateur pour gérer et afficher les données des absences
+    private AbsenceViewModel absenceViewModel;  // ViewModel pour manipuler les données des absences
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Initialiser le ViewModel pour obtenir et gérer les données des absences
+        // Initialisation du ViewModel pour gérer les données d'absences
         initializeViewModel();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, @Nullable Bundle savedInstanceState) {
-        // Inflater la vue pour le fragment
+        // Gonfle la vue du fragment à partir du fichier XML
         View view = inflater.inflate(R.layout.fragment_absence, container, false);
 
-        // Initialiser le RecyclerView pour afficher les absences
+        // Initialisation du RecyclerView
         initializeRecyclerView(view);
 
-        // Initialiser le bouton flottant pour ajouter une absence
+        // Initialisation du bouton flottant pour ajouter une absence
         initializeFloatingActionButton(view);
 
+        // Initialisation de la barre de recherche pour filtrer les absences
         AutoCompleteTextView autoCompleteSearch = view.findViewById(R.id.search_bar);
         autoCompleteSearch.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
+                // Action avant toute modification (non utilisée ici)
+            }
 
             @Override
             public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
                 String query = charSequence.toString();
-                // Vérifier si la longueur de la chaîne est d'au moins 3 caractères
+                // Recherche si la chaîne a au moins 3 caractères, sinon recharger les absences
                 if (query.length() >= 3) {
-                    absenceViewModel.searchAbsences(query); // Effectuer la recherche
+                    absenceViewModel.searchAbsences(query);
                 } else {
-                    absenceViewModel.loadAbsenceCountsByProf(); // Recharger toutes les absences si moins de 3 caractères
+                    absenceViewModel.loadAbsenceCountsByProf();
                 }
             }
 
             @Override
-            public void afterTextChanged(Editable editable) {}
+            public void afterTextChanged(Editable editable) {
+                // Action après modification (non utilisée ici)
+            }
         });
 
         return view;
@@ -71,61 +80,61 @@ public class AbsenceFragment extends Fragment implements AbsenceAdapter.OnAbsenc
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        // Observer les données des absences et mettre à jour l'interface utilisateur en conséquence
+        // Observation des données d'absences et mise à jour de l'interface utilisateur
         observeAbsencesData();
     }
 
-    // Fonction d'initialisation du ViewModel pour gérer les données
+    // Initialisation du ViewModel pour interagir avec les données
     private void initializeViewModel() {
         absenceViewModel = new ViewModelProvider(this).get(AbsenceViewModel.class);
     }
 
-    // Fonction d'initialisation du RecyclerView
+    // Configuration du RecyclerView pour afficher les absences
     private void initializeRecyclerView(View view) {
         recyclerView = view.findViewById(R.id.recyclerViewAbsences);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));  // Utilisation d'un LinearLayoutManager pour la liste
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext())); // Utilisation d'un layout en liste
     }
 
-    // Fonction d'initialisation du bouton flottant pour ajouter une absence
+    // Configuration du bouton flottant pour ajouter une absence
     private void initializeFloatingActionButton(View view) {
         FloatingActionButton boutonAdd = view.findViewById(R.id.btnFloatingAction);
-        boutonAdd.setOnClickListener(v -> openAddAbsenceFragment());  // Ouvrir le fragment d'ajout d'absence lorsque le bouton est cliqué
+        boutonAdd.setOnClickListener(v -> openAddAbsenceFragment()); // Ouvre le fragment d'ajout d'absence
     }
 
-    // Fonction pour ouvrir le fragment AddAbsenceFragment
+    // Ouvre le fragment pour ajouter une nouvelle absence
     private void openAddAbsenceFragment() {
         Fragment addAbsenceFragment = new AddAbsenceFragment();
         getParentFragmentManager().beginTransaction()
-                .replace(R.id.frame_layout, addAbsenceFragment)  // Remplacer le fragment actuel par celui d'ajout d'absence
-                .addToBackStack(null)  // Ajouter la transaction à la pile arrière pour pouvoir revenir en arrière
+                .replace(R.id.frame_layout, addAbsenceFragment) // Remplace le fragment actuel
+                .addToBackStack(null) // Ajoute la transaction à la pile arrière
                 .commit();
     }
 
-    // Fonction pour observer les données d'absences et mettre à jour le RecyclerView
+    // Observe les données d'absences et met à jour le RecyclerView
     private void observeAbsencesData() {
-        absenceViewModel.loadAbsenceCountsByProf();  // Charger les données d'absences par professeur
+        absenceViewModel.loadAbsenceCountsByProf(); // Charge les absences initiales
         absenceViewModel.getAbsences().observe(getViewLifecycleOwner(), new Observer<List<Absence>>() {
             @Override
             public void onChanged(List<Absence> absences) {
                 if (absences != null) {
-                    adapter = new AbsenceAdapter(absences, AbsenceFragment.this); // Passer l'interface ici
+                    adapter = new AbsenceAdapter(absences, AbsenceFragment.this); // Initialise l'adaptateur
                     recyclerView.setAdapter(adapter);
-                    updateRecyclerView(absences);  // Mettre à jour l'adaptateur avec les nouvelles données
+                    updateRecyclerView(absences); // Met à jour les données dans l'adaptateur
                 }
             }
         });
     }
 
-    // Fonction pour mettre à jour le RecyclerView avec les données des absences
+    // Met à jour les données du RecyclerView avec les absences
     private void updateRecyclerView(List<Absence> absences) {
         if (adapter == null) {
-            recyclerView.setAdapter(adapter);  // Associer l'adaptateur au RecyclerView
+            recyclerView.setAdapter(adapter); // Associe l'adaptateur si non défini
         } else {
-            adapter.updateData(absences);  // Si l'adaptateur existe déjà, mettre à jour les données
+            adapter.updateData(absences); // Met à jour les données existantes
         }
     }
 
-    // Fonction pour ouvrir le fragment de détail d'absence avec les informations nécessaires
+    // Ouvre le fragment de détail pour afficher plus d'informations sur une absence
     private void openDetailAbsenceFragment(String cin, String profName, int absenceCount) {
         Bundle bundle = new Bundle();
         bundle.putString("cin", cin);
@@ -133,49 +142,15 @@ public class AbsenceFragment extends Fragment implements AbsenceAdapter.OnAbsenc
         bundle.putInt("absenceCount", absenceCount);
 
         DetailAbsenceFragment detailAbsenceFragment = new DetailAbsenceFragment();
-        detailAbsenceFragment.setArguments(bundle);  // Passer les données au fragment de détail
+        detailAbsenceFragment.setArguments(bundle); // Passe les données au fragment
 
         getParentFragmentManager().beginTransaction()
-                .replace(R.id.frame_layout, detailAbsenceFragment)  // Remplacer le fragment actuel par celui de détail
-                .addToBackStack(null)  // Ajouter à la pile pour pouvoir revenir en arrière
+                .replace(R.id.frame_layout, detailAbsenceFragment) // Remplace le fragment actuel
+                .addToBackStack(null) // Ajoute la transaction à la pile arrière
                 .commit();
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-    }
-
+    // Implémentation du clic sur une absence pour afficher ses détails
     @Override
     public void onAbsenceClick(String cin, String profName, int absenceCount) {
         openDetailAbsenceFragment(cin, profName, absenceCount);

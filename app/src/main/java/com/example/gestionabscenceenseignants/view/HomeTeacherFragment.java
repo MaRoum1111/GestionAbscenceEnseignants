@@ -28,26 +28,31 @@ public class HomeTeacherFragment extends Fragment implements AbsensesAdapter.OnA
     private TextView message;
     private TextView emptyView; // Déclaration du TextView pour le message "Aucune absence à afficher"
     private List<Absence> absenceList; // Liste des absences pour gérer les mises à jour
-    private CardView cardView1,cardView2;
+    private CardView cardView1, cardView2;
+
     @SuppressLint({"SetTextI18n", "WrongViewCast"})
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the fragment's layout
         View rootView = inflater.inflate(R.layout.fragment_home_teacher, container, false);
 
-        // Initialize the RecyclerView
+        // Initialiser le RecyclerView pour afficher les absences
         recyclerView = rootView.findViewById(R.id.absenceRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        // Initialiser les vues pour afficher le message de bienvenue et le message quand il n'y a pas d'absences
         message = rootView.findViewById(R.id.bonjourTextView);
         emptyView = rootView.findViewById(R.id.emptyView); // Récupération du TextView "Aucune absence à afficher"
 
-        // Initialize the ViewModel to retrieve absences
+        // Initialiser le ViewModel pour récupérer les absences et les données de l'utilisateur
         absenceViewModel = new ViewModelProvider(this).get(AbsenceViewModel.class);
         userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
-        // Récupérer les CardViews par leur ID
+
+        // Récupérer les CardViews par leur ID pour gérer les actions des utilisateurs
         cardView1 = rootView.findViewById(R.id.cardView1);
         cardView2 = rootView.findViewById(R.id.cardView2);
-        // Ajouter des listeners pour gérer les clics
+
+        // Ajouter des listeners pour gérer les clics sur les CardViews
         cardView1.setOnClickListener(v -> {
             // Logique à exécuter quand l'utilisateur clique sur CardView 1 (Mes réclamations)
             navigateToClaimFragment();
@@ -57,21 +62,24 @@ public class HomeTeacherFragment extends Fragment implements AbsensesAdapter.OnA
             // Logique à exécuter quand l'utilisateur clique sur CardView 2 (Mes absences)
             navigateToAbsenceFragment();
         });
-        // Observer for user name
+
+        // Observer pour le nom de l'utilisateur, afin d'afficher un message de bienvenue
         userViewModel.getUserName().observe(getViewLifecycleOwner(), userName -> {
             if (userName != null) {
                 message.setText(userName);  // Afficher le nom de l'utilisateur
             }
         });
 
-        // Load absences for the specific teacher (only today's absences)
+        // Charger les absences pour l'enseignant (seulement les absences du jour)
         absenceViewModel.getAbsencesForCurrentDay(); // Récupérer les absences du jour actuel
 
-        // Observe absences and update the adapter
-        observeAbsences(rootView); // Pass the root view to the observe method
+        // Observer les absences et mettre à jour l'adaptateur
+        observeAbsences(rootView); // Passer la vue root pour observer les absences
 
         return rootView;
     }
+
+    // Méthode pour observer les absences et mettre à jour l'affichage
     private void observeAbsences(View rootView) {
         absenceViewModel.getAbsences().observe(getViewLifecycleOwner(), absences -> {
             Log.d("HomeTeacherFragment", "Absences observées : " + (absences != null ? absences.size() : "null"));
@@ -80,12 +88,15 @@ public class HomeTeacherFragment extends Fragment implements AbsensesAdapter.OnA
                 absenceList = absences;
                 Log.d("HomeTeacherFragment", "Initialisation de l'adaptateur avec " + absences.size() + " absences.");
 
+                // Si l'adaptateur n'existe pas encore, le créer et l'attacher au RecyclerView
                 if (adapter == null) {
                     adapter = new AbsensesAdapter(absenceList, this);
                     recyclerView.setAdapter(adapter);
                 } else {
-                    adapter.updateAbsences(absenceList); // Mettre à jour les données
+                    // Mettre à jour les données dans l'adaptateur
+                    adapter.updateAbsences(absenceList);
                 }
+
                 // Cacher le message de liste vide
                 emptyView.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.VISIBLE);
@@ -106,7 +117,9 @@ public class HomeTeacherFragment extends Fragment implements AbsensesAdapter.OnA
                 recyclerView.setVisibility(View.GONE); // Cacher le RecyclerView
             }
         });
-    }  // Méthode pour naviguer vers le fragment des réclamations
+    }
+
+    // Méthode pour naviguer vers le fragment des réclamations
     private void navigateToClaimFragment() {
         ClaimFragment claimFragment = new ClaimFragment();
         requireActivity().getSupportFragmentManager()
@@ -115,6 +128,7 @@ public class HomeTeacherFragment extends Fragment implements AbsensesAdapter.OnA
                 .addToBackStack(null) // Ajouter à la pile arrière pour la navigation
                 .commit();
     }
+
     // Méthode pour naviguer vers le fragment des absences
     private void navigateToAbsenceFragment() {
         AbsenceTeacherFragment absenceFragment = new AbsenceTeacherFragment();
@@ -125,7 +139,7 @@ public class HomeTeacherFragment extends Fragment implements AbsensesAdapter.OnA
                 .commit();
     }
 
-
+    // Méthode lorsque l'utilisateur clique sur une absence pour la recommander
     @Override
     public void onRecommend(Absence absence) {
         if (absence == null) {
@@ -136,8 +150,8 @@ public class HomeTeacherFragment extends Fragment implements AbsensesAdapter.OnA
         ClaimFragment claimFragment = new ClaimFragment();
         requireActivity().getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.frame_layout, claimFragment) // Replace with the ID of your FrameLayout
-                .addToBackStack(null) // Add to back stack for navigation
+                .replace(R.id.frame_layout, claimFragment) // Remplacer par l'ID de votre FrameLayout
+                .addToBackStack(null) // Ajouter à la pile arrière pour la navigation
                 .commit();
     }
 }

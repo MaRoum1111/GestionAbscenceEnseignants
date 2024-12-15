@@ -42,7 +42,10 @@ public class AbsenceViewModel extends ViewModel {
         });
     }
 
-
+    /**
+     * Charger les absences pour un professeur spécifié.
+     * @param profCin Le CIN du professeur.
+     */
     public void loadAbsencesByProf(String profCin) {
         repository.getAbsencesByProf(profCin, new AbsenceRepository.AuthCallback() {
             @Override
@@ -52,7 +55,7 @@ public class AbsenceViewModel extends ViewModel {
 
             @Override
             public void onFailure(String error) {
-                errorMessage.setValue("Erreur lors du chargement : " + error);
+                errorMessage.setValue("Erreur lors du chargement : " + error); // Message d'erreur
             }
         });
     }
@@ -86,10 +89,15 @@ public class AbsenceViewModel extends ViewModel {
 
             @Override
             public void onFailure(String error) {
-                errorMessage.setValue( error); // Message d'erreur
+                errorMessage.setValue(error); // Affiche l'erreur
             }
         });
     }
+
+    /**
+     * Rechercher des absences par enseignant.
+     * @param searchQuery La requête de recherche.
+     */
     public void searchAbsences(String searchQuery) {
         repository.searchAbsencesByTeacher(searchQuery, new AbsenceRepository.AuthCallback() {
             @Override
@@ -102,7 +110,6 @@ public class AbsenceViewModel extends ViewModel {
                 errorMessage.setValue("Erreur lors de la recherche : " + error); // Affiche l'erreur
             }
         });
-
     }
 
     /**

@@ -21,25 +21,26 @@ import com.example.gestionabscenceenseignants.model.Claim;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.List;
 
+// Classe pour afficher et gérer les réclamations des enseignants côté administrateur
 public class AdminClaimFragment extends Fragment {
 
-    private RecyclerView recyclerView;  // RecyclerView pour afficher les absences
-    private ClaimAdminAdapter adapter;  // L'adaptateur pour gérer la liste d'absences
-    private ClaimViewModel claimViewModel;  // ViewModel pour gérer les données d'absences
+    private RecyclerView recyclerView;  // Composant pour afficher une liste sous forme de vue défilable
+    private ClaimAdminAdapter adapter;  // Adaptateur pour lier les données des réclamations au RecyclerView
+    private ClaimViewModel claimViewModel;  // ViewModel pour interagir avec les données des réclamations
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Initialiser le ViewModel pour obtenir et gérer les données des absences
+        // Initialisation du ViewModel qui contient la logique métier liée aux réclamations
         initializeViewModel();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, @Nullable Bundle savedInstanceState) {
-        // Inflater la vue pour le fragment
+        // Charger la vue associée à ce fragment
         View view = inflater.inflate(R.layout.fragment_admin_claim, container, false);
 
-        // Initialiser le RecyclerView pour afficher les absences
+        // Configurer le RecyclerView pour afficher les réclamations
         initializeRecyclerView(view);
 
         return view;
@@ -48,99 +49,68 @@ public class AdminClaimFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        // Observer les données des absences et mettre à jour l'interface utilisateur en conséquence
+        // Observer les données provenant du ViewModel et mettre à jour l'affichage
         observeAbsencesData();
     }
 
-    // Fonction d'initialisation du ViewModel pour gérer les données
+    // Méthode pour initialiser le ViewModel
     private void initializeViewModel() {
         claimViewModel = new ViewModelProvider(this).get(ClaimViewModel.class);
     }
 
-    // Fonction d'initialisation du RecyclerView
+    // Configuration initiale du RecyclerView
     private void initializeRecyclerView(View view) {
-        recyclerView = view.findViewById(R.id.recyclerViewAdminClaim);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));  // Utilisation d'un LinearLayoutManager pour la liste
+        recyclerView = view.findViewById(R.id.recyclerViewAdminClaim);  // Lier le RecyclerView au fichier XML
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));  // Disposer les éléments verticalement
     }
 
-
-    // Fonction pour observer les données d'absences et mettre à jour le RecyclerView
+    // Observer les données des réclamations dans le ViewModel et les afficher dans le RecyclerView
     private void observeAbsencesData() {
-        claimViewModel.getClaims();
+        claimViewModel.getClaims();  // Charger les données des réclamations depuis le ViewModel
         claimViewModel.getClaim().observe(getViewLifecycleOwner(), new Observer<List<Claim>>() {
             @Override
             public void onChanged(List<Claim> claims) {
                 if (claims != null) {
-                    updateRecyclerView(claims);  // Mettre à jour l'adaptateur avec les nouvelles données
+                    // Mettre à jour la liste affichée lorsqu'il y a des changements dans les données
+                    updateRecyclerView(claims);
                 }
             }
         });
     }
 
-    // Fonction pour mettre à jour le RecyclerView avec les données des absences
+    // Méthode pour rafraîchir les données du RecyclerView
     private void updateRecyclerView(List<Claim> claims) {
         if (adapter == null) {
-            // Si l'adaptateur n'est pas encore initialisé, créer un nouvel adaptateur
-            adapter = new ClaimAdminAdapter(claims, new ClaimAdminAdapter.OnClaimClickListener(){
+            // Créer un nouvel adaptateur si ce n'est pas encore fait
+            adapter = new ClaimAdminAdapter(claims, new ClaimAdminAdapter.OnClaimClickListener() {
                 @Override
-                public void onClaimClick(String cin, String profName){
-                    openDetailAbsenceFragment(cin, profName);  // Ouvrir le fragment de détail d'absence lors du clic sur une absence
+                public void onClaimClick(String cin, String profName) {
+                    // Gestion du clic sur un élément : afficher les détails d'une réclamation
+                    openDetailAbsenceFragment(cin, profName);
                 }
             });
             recyclerView.setAdapter(adapter);  // Associer l'adaptateur au RecyclerView
         } else {
-            adapter.updateData(claims);  // Si l'adaptateur existe déjà, mettre à jour les données
+            // Mettre à jour les données de l'adaptateur si celui-ci existe déjà
+            adapter.updateData(claims);
         }
     }
 
-    // Fonction pour ouvrir le fragment de détail d'absence avec les informations nécessaires
+    // Ouvrir un nouveau fragment pour afficher les détails d'une réclamation
     private void openDetailAbsenceFragment(String cin, String profName) {
         Bundle bundle = new Bundle();
-        bundle.putString("cin", cin);
-        bundle.putString("profName", profName);
+        bundle.putString("cin", cin);  // Transmettre le CIN de l'enseignant
+        bundle.putString("profName", profName);  // Transmettre le nom de l'enseignant
 
-
+        // Créer une instance du fragment des détails et y passer les données
         AdminDetailClaimFragment adminDetailClaimFragment = new AdminDetailClaimFragment();
-        adminDetailClaimFragment.setArguments(bundle);  // Passer les données au fragment de détail
+        adminDetailClaimFragment.setArguments(bundle);
 
+        // Remplacer le fragment actuel par le nouveau et permettre un retour en arrière
         getParentFragmentManager().beginTransaction()
-                .replace(R.id.frame_layout, adminDetailClaimFragment)  // Remplacer le fragment actuel par celui de détail
-                .addToBackStack(null)  // Ajouter à la pile pour pouvoir revenir en arrière
+                .replace(R.id.frame_layout, adminDetailClaimFragment)
+                .addToBackStack(null)
                 .commit();
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-    }
 }

@@ -31,135 +31,90 @@ public class UsersFragment extends Fragment implements UsersAdapter.OnUserClickL
     @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Charger la vue
+        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_users, container, false);
 
-        // Initialiser le RecyclerView
+        // Initialize RecyclerView
         recyclerView = view.findViewById(R.id.recyclerViewUsers);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        // Initialiser le ViewModel
+        // Initialize ViewModel
         userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
 
-        // Observer la liste des utilisateurs
+        // Observe the list of users from the ViewModel
         userViewModel.getUsers().observe(getViewLifecycleOwner(), new Observer<List<User>>() {
             @Override
             public void onChanged(List<User> users) {
                 if (users != null) {
-                    adapter = new UsersAdapter(users, UsersFragment.this); // Passer l'interface ici
+                    // If users are fetched, set up the adapter and RecyclerView
+                    adapter = new UsersAdapter(users, UsersFragment.this);
                     recyclerView.setAdapter(adapter);
                 }
             }
         });
 
-        // Gérer le clic du bouton flottant
+        // Handle the FloatingActionButton click
         FloatingActionButton boutonadd = view.findViewById(R.id.btnFloatingAction);
         boutonadd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Ouvrir le fragment AddUserFragment
-                Fragment addUserFragment = new AddUserFragment(); // Assure-toi que le nom du fragment est correct
+                // Open the AddUserFragment
+                Fragment addUserFragment = new AddUserFragment(); // Make sure fragment name is correct
 
-                // Remplacer le fragment actuel par le nouveau
+                // Replace current fragment with AddUserFragment
                 getParentFragmentManager().beginTransaction()
                         .replace(R.id.frame_layout, addUserFragment)
-                        .addToBackStack(null) // Ajoute à la pile pour pouvoir revenir
+                        .addToBackStack(null) // Add fragment to back stack to allow navigation back
                         .commit();
             }
         });
 
-        // Charger la liste des utilisateurs
-        userViewModel.loadUsers();  // Ajouté pour charger les utilisateurs dès que le fragment est créé
+        // Load users when the fragment is created
+        userViewModel.loadUsers();
 
         return view;
     }
 
     @Override
     public void onEditClick(User user) {
-        // Gestion de l'édition de l'absence
-        Log.d("DetailuserFragment", "Modification de l'user : " + user.toString());
+        // Handle the editing of a user
+        Log.d("DetailuserFragment", "Editing user: " + user.toString());
 
-        // Créer un nouveau fragment EditAbsenceFragment
+        // Create a new EditUserFragment
         EditUserFragment editFragment = new EditUserFragment();
 
-        // Passer les données de l'absence sélectionnée en tant qu'arguments
+        // Pass user details as arguments to the EditUserFragment
         Bundle args = new Bundle();
         args.putString("cin", user.getCin());
-        args.putString("name",user.getName());
-        args.putString("email",user.getEmail());
+        args.putString("name", user.getName());
+        args.putString("email", user.getEmail());
         args.putString("pass", user.getPassword());
         args.putString("role", user.getRole());
         editFragment.setArguments(args);
 
-        // Remplacer le fragment actuel par EditAbsenceFragment
+        // Replace current fragment with EditUserFragment
         requireActivity().getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.frame_layout, editFragment) // ID du conteneur de fragments
-                .addToBackStack(null) // Ajouter à la pile pour permettre un retour en arrière
+                .replace(R.id.frame_layout, editFragment)
+                .addToBackStack(null)
                 .commit();
     }
 
-    // Méthode pour gérer le clic sur le bouton "Supprimer"
+    // Handle the click on the "Delete" button
     @Override
     public void onDeleteClick(String userId) {
         UserViewModel userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
-        userViewModel.deleteUser(userId);
-        // Observer le message de statut de suppression
+        userViewModel.deleteUser(userId); // Call the deleteUser method in the ViewModel
+
+        // Observe the status message after deletion
         userViewModel.getStatusMessage().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String message) {
+                // Show a Toast message for the deletion status
                 Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
-                userViewModel.loadUsers(); // Recharger la liste après suppression
+                userViewModel.loadUsers(); // Reload the users list after deletion
             }
         });
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        Log.d("UsersFragment", "onStart appelé");
-        // Code spécifique à l'initialisation de l'activité ou à la reprise de l'activité
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.d("UsersFragment", "onResume appelé");
-        // Code pour mettre à jour l'UI ou reprendre des tâches
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        Log.d("UsersFragment", "onPause appelé");
-        // Code pour sauvegarder l'état ou libérer des ressources
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        Log.d("UsersFragment", "onStop appelé");
-        // Code pour arrêter les processus ou libérer des ressources
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        Log.d("UsersFragment", "onDestroyView appelé");
-        // Code pour nettoyer la vue (par exemple, détacher les observateurs)
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.d("UsersFragment", "onDestroy appelé");
-        // Code pour nettoyer les ressources avant la destruction du fragment
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        Log.d("UsersFragment", "onDetach appelé");
-        // Code pour nettoyer les ressources associées au fragment
-    }
 }

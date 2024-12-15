@@ -15,6 +15,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginActivity extends AppCompatActivity {
 
+    // Déclaration des éléments de l'interface utilisateur
     private EditText emailField, passwordField;
     private Button loginButton;
     private LoginViewModel loginViewModel;
@@ -22,94 +23,63 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_login); // Définit la vue associée à cette activité
 
-        // Initialisation des vues
+        // Initialisation des champs de texte et du bouton
         emailField = findViewById(R.id.emailField);
         passwordField = findViewById(R.id.passwordField);
         loginButton = findViewById(R.id.loginButton);
 
-        // Initialisation du ViewModel
+        // Initialisation du ViewModel, qui gère la logique de la connexion
         loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
 
-        // Observer le résultat du login
+        // Observer les résultats du login dans le ViewModel
         loginViewModel.getLoginResult().observe(this, new Observer<User>() {
             @Override
             public void onChanged(User user) {
+                // Si un utilisateur valide est renvoyé
                 if (user != null) {
+                    // Affiche un message de bienvenue avec le rôle de l'utilisateur
                     Toast.makeText(LoginActivity.this, "Bienvenue " + user.getRole(), Toast.LENGTH_SHORT).show();
+                    // Redirige vers le tableau de bord en fonction du rôle de l'utilisateur
                     navigateToDashboard(user.getRole());
                 } else {
+                    // Affiche un message d'erreur si la connexion a échoué
                     Toast.makeText(LoginActivity.this, "Erreur de connexion", Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
-        // Action lors du clic sur le bouton de connexion
+        // Définition du comportement au clic sur le bouton de connexion
         loginButton.setOnClickListener(v -> {
+            // Récupère les valeurs des champs email et mot de passe
             String email = emailField.getText().toString().trim();
             String password = passwordField.getText().toString().trim();
 
+            // Vérifie si les champs sont vides
             if (email.isEmpty() || password.isEmpty()) {
+                // Affiche un message d'erreur si un des champs est vide
                 Toast.makeText(this, "Veuillez remplir tous les champs.", Toast.LENGTH_SHORT).show();
             } else {
-                loginViewModel.login(email, password); // Lancer la connexion via le ViewModel
+                // Si les champs sont remplis, lance la connexion via le ViewModel
+                loginViewModel.login(email, password);
             }
         });
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-    }
 
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        // Cette méthode est appelée lorsque l'activité commence à interagir avec l'utilisateur
-        // Utile pour rafraîchir des données ou interagir avec l'utilisateur
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        // Cette méthode est appelée lorsque l'activité est mise en pause (l'utilisateur la quitte temporairement)
-        // Elle peut être utilisée pour sauvegarder des données ou annuler des tâches en cours
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        // Cette méthode est appelée lorsque l'activité est plus visible pour l'utilisateur
-        // Elle peut être utilisée pour libérer des ressources importantes ou mettre en pause certaines fonctionnalités
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        // Cette méthode est appelée lorsque l'activité est détruite
-        // Elle permet de libérer toutes les ressources et références utilisées par l'activité
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        // Cette méthode est appelée lorsque l'activité revient de l'état "Arrêtée" (l'utilisateur revient dans l'activité)
-        // Elle peut être utilisée pour effectuer une réinitialisation avant que l'activité soit à nouveau visible
-    }
-
-    // Rediriger vers le tableau de bord en fonction du rôle
+    // Fonction pour rediriger l'utilisateur vers son tableau de bord selon son rôle
     private void navigateToDashboard(String role) {
         Intent intent;
+        // Vérifie le rôle de l'utilisateur et redirige vers l'activité correspondante
         if ("Admin".equals(role)) {
-            intent = new Intent(this, AdminActivity.class);
+            intent = new Intent(this, AdminActivity.class); // Redirige vers l'activité Admin
         } else if ("Agent".equals(role)) {
-            intent = new Intent(this, AgentActivity.class);
+            intent = new Intent(this, AgentActivity.class); // Redirige vers l'activité Agent
         } else {
-            intent = new Intent(this, TeacherActivity.class);
+            intent = new Intent(this, TeacherActivity.class); // Redirige vers l'activité Teacher
         }
+        // Lance l'activité correspondante et termine l'activité actuelle
         startActivity(intent);
         finish();
     }
