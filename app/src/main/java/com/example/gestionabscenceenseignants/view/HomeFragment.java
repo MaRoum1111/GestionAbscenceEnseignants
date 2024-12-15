@@ -8,8 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CalendarView;
 import android.widget.ImageView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,6 +21,7 @@ import java.util.Date;
 
 public class HomeFragment extends Fragment {
 
+    // Déclaration des variables nécessaires pour les vues et le ViewModel
     private AbsenceViewModel absenceViewModel;
     private CalendarView calendarView;
     private TextView tvAbsencesCount;
@@ -32,19 +31,19 @@ public class HomeFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        // Liaison avec le layout XML
+        // Liaison avec le layout XML du fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        // Initialisation des composants UI
+        // Initialisation des composants de l'interface utilisateur
         initializeUIComponents(view);
 
-        // Initialisation du ViewModel
+        // Initialisation du ViewModel qui va gérer la logique des absences
         absenceViewModel = new ViewModelProvider(this).get(AbsenceViewModel.class);
 
-        // Observateurs pour les données
+        // Observation des données du ViewModel pour mise à jour dynamique
         observeViewModel();
 
-        // Appel pour récupérer les absences pour la date actuelle lorsque la vue est prête
+        // Retourner la vue du fragment une fois préparée
         return view;
     }
 
@@ -55,54 +54,13 @@ public class HomeFragment extends Fragment {
         // Initialiser la date actuelle et charger les absences pour cette date
         initializeDateAndLoadAbsences();
 
-        // Gérer les événements de clic sur le calendrier et les boutons radio
+        // Gérer les événements de clic pour le calendrier et les boutons radio
         setEventListeners();
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        Log.d("HomeFragment", "Fragment onStart");
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.d("HomeFragment", "Fragment onResume");
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        Log.d("HomeFragment", "Fragment onPause");
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        Log.d("HomeFragment", "Fragment onStop");
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        Log.d("HomeFragment", "Fragment onDestroyView");
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.d("HomeFragment", "Fragment onDestroy");
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        Log.d("HomeFragment", "Fragment onDetach");
-    }
 
     /**
-     * Initialiser les composants de l'interface utilisateur.
+     * Initialiser les composants de l'interface utilisateur (calendrier, texte et icônes).
      */
     private void initializeUIComponents(View view) {
         calendarView = view.findViewById(R.id.calendarView);
@@ -113,9 +71,10 @@ public class HomeFragment extends Fragment {
     }
 
     /**
-     * Observer les données du ViewModel.
+     * Observer les données du ViewModel concernant les absences et gérer leur affichage.
      */
     private void observeViewModel() {
+        // Observer le nombre d'absences et mettre à jour l'UI avec la valeur récupérée
         absenceViewModel.getAbsences().observe(getViewLifecycleOwner(), absences -> {
             if (absences != null) {
                 tvAbsencesCount.setText("Nombre d'absences pour le jour sélectionné : " + absences.size());
@@ -124,6 +83,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        // Observer les erreurs éventuelles dans le ViewModel
         absenceViewModel.getErrorMessage().observe(getViewLifecycleOwner(), message -> {
             if (message != null) {
                 // Afficher un message d'erreur ou de succès si nécessaire
@@ -132,7 +92,7 @@ public class HomeFragment extends Fragment {
     }
 
     /**
-     * Initialiser la date actuelle et charger les absences pour cette date.
+     * Initialiser la date actuelle du calendrier et charger les absences pour cette date.
      */
     private void initializeDateAndLoadAbsences() {
         long currentDate = calendarView.getDate();
@@ -142,7 +102,7 @@ public class HomeFragment extends Fragment {
     }
 
     /**
-     * Définir les écouteurs pour les événements du calendrier et des boutons radio.
+     * Définir les écouteurs pour les événements du calendrier et des boutons.
      */
     private void setEventListeners() {
         // Gérer les changements de date dans le calendrier
@@ -153,27 +113,28 @@ public class HomeFragment extends Fragment {
             absenceViewModel.fetchAbsencesByDate(selectedDateFormatted);
         });
 
-
+        // Gérer les clics sur les cartes pour ouvrir les autres fragments
         Creport.setOnClickListener(v -> openStatsPage());
         Cabsence.setOnClickListener(v -> openAbsencesManagement());
     }
-
 
     /**
      * Ouvrir la page des statistiques.
      */
     private void openStatsPage() {
+        // Remplacer le fragment actuel par le fragment des statistiques
         Fragment reportFragment = new ReportFragment();
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.frame_layout, reportFragment);
-        transaction.addToBackStack(null);
+        transaction.addToBackStack(null); // Ajouter à la pile arrière pour pouvoir revenir en arrière
         transaction.commit();
     }
 
     /**
-     * Ouvrir la gestion des réclamations.
+     * Ouvrir la gestion des réclamations (fonctionnalité non utilisée dans cet exemple).
      */
     private void openClaimManagement() {
+        // Remplacer le fragment actuel par le fragment de gestion des réclamations
         Fragment adminClaimFragment = new AdminClaimFragment();
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.frame_layout, adminClaimFragment);
@@ -185,6 +146,7 @@ public class HomeFragment extends Fragment {
      * Ouvrir la gestion des absences.
      */
     private void openAbsencesManagement() {
+        // Remplacer le fragment actuel par le fragment de gestion des absences
         Fragment absenceFragment = new AbsenceFragment();
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.frame_layout, absenceFragment);

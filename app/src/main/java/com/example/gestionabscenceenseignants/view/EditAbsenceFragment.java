@@ -22,6 +22,7 @@ import com.example.gestionabscenceenseignants.model.Absence;
 
 public class EditAbsenceFragment extends Fragment {
 
+    // Déclaration des vues utilisées dans le fragment
     private EditText dateField, startTimeField, endTimeField, reasonField, subjectField;
     private AutoCompleteTextView profNameField;
     private Spinner statusSpinner;
@@ -31,6 +32,7 @@ public class EditAbsenceFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d("EditAbsenceFragment", "onCreateView called");
+        // Inflater la vue du fragment
         return inflater.inflate(R.layout.fragment_edit_absence, container, false);
     }
 
@@ -39,18 +41,19 @@ public class EditAbsenceFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         Log.d("EditAbsenceFragment", "onViewCreated called");
 
-        // Initialiser les vues
+        // Initialiser les vues à partir du layout
         initializeViews(view);
 
-        // Charger les données transmises par le fragment précédent
+        // Charger les données envoyées depuis le fragment précédent
         loadArguments();
 
-        // Gérer les clics sur les boutons
+        // Gérer les actions sur les boutons (validation et annulation)
         handleButtonClicks();
     }
 
     // Initialisation des vues
     private void initializeViews(View view) {
+        // Récupération des composants de l'UI
         profNameField = view.findViewById(R.id.profName);
         dateField = view.findViewById(R.id.date);
         startTimeField = view.findViewById(R.id.startTime);
@@ -59,50 +62,56 @@ public class EditAbsenceFragment extends Fragment {
         subjectField = view.findViewById(R.id.subjectName);
         statusSpinner = view.findViewById(R.id.status);
 
+        // Initialisation des boutons de validation et d'annulation
         Button validateButton = view.findViewById(R.id.editButton);
         Button cancelButton = view.findViewById(R.id.cancelButton);
 
-        // Initialiser le ViewModel
+        // Initialiser le ViewModel pour interagir avec la logique métier
         absenceViewModel = new ViewModelProvider(this).get(AbsenceViewModel.class);
     }
 
-    // Charger les données des arguments passés
+    // Charger les données envoyées dans les arguments du fragment
     private void loadArguments() {
         if (getArguments() != null) {
+            // Récupérer les arguments passés au fragment (ID de l'absence et autres informations)
             absenceId = getArguments().getString("idAbsence");
             Cin = getArguments().getString("cin");
+            // Remplir les champs du formulaire avec les données de l'absence existante
             profNameField.setText(getArguments().getString("profName"));
             dateField.setText(getArguments().getString("date"));
             startTimeField.setText(getArguments().getString("startTime"));
             endTimeField.setText(getArguments().getString("endTime"));
             reasonField.setText(getArguments().getString("classe"));
             subjectField.setText(getArguments().getString("salle"));
-            // Sélectionner le statut correspondant dans le Spinner
+            // Définir le statut dans le Spinner en fonction de la donnée passée
             setStatusSpinner(getArguments().getString("status"));
         }
     }
 
-    // Sélectionner le statut dans le Spinner
+    // Sélectionner le statut de l'absence dans le Spinner
     private void setStatusSpinner(String status) {
         if (status != null) {
             String[] statuses = getResources().getStringArray(R.array.statut_absence);
             for (int i = 0; i < statuses.length; i++) {
                 if (statuses[i].equals(status)) {
-                    statusSpinner.setSelection(i);
+                    statusSpinner.setSelection(i); // Sélectionner le statut approprié
                     break;
                 }
             }
         }
     }
 
-    // Gérer les clics sur les boutons
+    // Gérer les clics sur les boutons (Valider et Annuler)
     private void handleButtonClicks() {
+        // Récupérer les boutons de validation et d'annulation
         Button validateButton = getView().findViewById(R.id.editButton);
         Button cancelButton = getView().findViewById(R.id.cancelButton);
 
-        // Gérer le clic sur le bouton de validation
+        // Action à effectuer lors du clic sur le bouton de validation
         validateButton.setOnClickListener(v -> {
+            // Vérifier que tous les champs sont valides
             if (validateFields()) {
+                // Créer un objet Absence avec les nouvelles données saisies
                 Absence updatedAbsence = new Absence(
                         absenceId,
                         profNameField.getText().toString(),
@@ -113,21 +122,25 @@ public class EditAbsenceFragment extends Fragment {
                         statusSpinner.getSelectedItem().toString(),
                         subjectField.getText().toString(), Cin
                 );
-                // Appeler la méthode de mise à jour dans le ViewModel
+                // Appeler la méthode de mise à jour dans le ViewModel pour enregistrer les modifications
                 absenceViewModel.updateAbsence(absenceId, updatedAbsence);
+                // Afficher un message de succès
                 Toast.makeText(getContext(), "Absence mise à jour avec succès", Toast.LENGTH_SHORT).show();
+                // Retour à l'écran précédent
                 requireActivity().getSupportFragmentManager().popBackStack();
             }
         });
 
-        // Gérer le clic sur le bouton d'annulation
+        // Action à effectuer lors du clic sur le bouton d'annulation
         cancelButton.setOnClickListener(v -> {
+            // Retourner à l'écran précédent sans effectuer de modifications
             requireActivity().getSupportFragmentManager().popBackStack();
         });
     }
 
-    // Méthode pour valider les champs
+    // Méthode de validation des champs du formulaire
     private boolean validateFields() {
+        // Vérifier que chaque champ est rempli correctement
         if (profNameField.getText().toString().isEmpty()) {
             profNameField.setError("Veuillez entrer le nom du professeur");
             return false;
@@ -155,39 +168,4 @@ public class EditAbsenceFragment extends Fragment {
         return true;
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        Log.d("EditAbsenceFragment", "onStart called");
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.d("EditAbsenceFragment", "onResume called");
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        Log.d("EditAbsenceFragment", "onPause called");
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        Log.d("EditAbsenceFragment", "onStop called");
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        Log.d("EditAbsenceFragment", "onDestroyView called");
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.d("EditAbsenceFragment", "onDestroy called");
-    }
 }

@@ -111,5 +111,12 @@
     <string name="deconnexion">Deconnexion</string>
     <string name="voir_emplois">Voir Emplois</string>
     <string name="demande_de_r_clamation">Demande de Réclamation</string>
+    <string name="mes_absences">Mes absences</string>
+    <string name="bonjour">Bonjour 👋</string>
+    <string name="mes_absences_aujourd_hui">Mes absences Aujourd\'hui</string>
+    <string name="aucune_absence_afficher">Aucune absence à afficher</string>
+    <string name="voir_mes_r_clamations">Voir mes réclamations</string>
+    <string name="mes_r_clamations">Mes Réclamations</string>
+    <string name="voir_mes_absences">Voir mes absences</string>
 </resources>
 

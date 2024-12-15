@@ -21,6 +21,8 @@ import com.example.gestionabscenceenseignants.ViewModel.AbsenceViewModel;
 import java.util.List;
 
 public class DetailAbsenceFragment extends Fragment implements DetailAbsenceAdapter.OnAbsenceActionListener {
+
+    // Déclaration des variables pour la gestion des vues et des données
     private RecyclerView recyclerView;
     private DetailAbsenceAdapter adapter;
     private AbsenceViewModel absenceViewModel;
@@ -34,11 +36,11 @@ public class DetailAbsenceFragment extends Fragment implements DetailAbsenceAdap
         // Inflater la vue du fragment
         View rootView = inflater.inflate(R.layout.fragment_detail_absence, container, false);
 
-        // Initialisation du RecyclerView
+        // Initialisation du RecyclerView pour afficher la liste des absences
         recyclerView = rootView.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        // Initialisation des TextViews
+        // Initialisation des TextViews pour afficher les informations du professeur
         TextView name = rootView.findViewById(R.id.teacher_name);
         TextView cin = rootView.findViewById(R.id.teacher_cin);
         TextView nb = rootView.findViewById(R.id.total_absences);
@@ -46,53 +48,53 @@ public class DetailAbsenceFragment extends Fragment implements DetailAbsenceAdap
         // Récupérer les arguments passés au fragment (le CIN du professeur)
         getArgumentsData();
 
-        // Affichage des informations du professeur
+        // Affichage des informations du professeur dans les TextViews
         displayTeacherInfo(name, cin, nb);
 
         // Initialisation du ViewModel pour récupérer les absences
         absenceViewModel = new ViewModelProvider(this).get(AbsenceViewModel.class);
 
-        // Charger les absences de ce professeur spécifique
+        // Charger les absences pour ce professeur spécifique
         loadAbsencesForTeacher();
 
-        // Observer les absences et mettre à jour l'adaptateur
+        // Observer les absences et mettre à jour l'adaptateur lorsque la liste change
         observeAbsences();
 
         return rootView;
     }
 
     private void getArgumentsData() {
-        // Récupérer les arguments passés au fragment
+        // Récupérer les arguments passés au fragment via les arguments
         if (getArguments() != null) {
             profCin = getArguments().getString("cin");
             profname = getArguments().getString("profName");
-            nbAbsence = String.valueOf(getArguments().getInt("absenceCount", 0)); // Utilisation de int avec une valeur par défaut de 0
+            nbAbsence = String.valueOf(getArguments().getInt("absenceCount", 0)); // Valeur par défaut de 0
         }
     }
 
     private void displayTeacherInfo(TextView name, TextView cin, TextView nb) {
-        // Afficher les informations du professeur dans les TextViews
+        // Affichage des informations du professeur dans les TextViews
         name.setText(profname);
         cin.setText(profCin);
         nb.setText("Total des absences: " + nbAbsence);
     }
 
     private void loadAbsencesForTeacher() {
-        // Charger les absences pour le professeur spécifique
+        // Charger les absences pour un professeur spécifique en appelant la méthode du ViewModel
         Log.d("DetailAbsenceFragment", "Chargement des absences pour le professeur : " + profCin);
         absenceViewModel.loadAbsencesByProf(profCin);
     }
 
     private void observeAbsences() {
-        // Observer les absences et mettre à jour l'adaptateur
+        // Observer les absences et mettre à jour l'adaptateur lorsque la liste d'absences change
         absenceViewModel.getAbsences().observe(getViewLifecycleOwner(), absences -> {
             Log.d("DetailAbsenceFragment", "Absences reçues : " + (absences != null ? absences.size() : "null"));
             if (absences != null && !absences.isEmpty()) {
                 // Mise à jour de la liste des absences
                 absenceList = absences;
-                // Initialisation de l'adaptateur pour afficher les absences
+                // Initialisation de l'adaptateur pour afficher les absences dans le RecyclerView
                 Log.d("DetailAbsenceFragment", "Initialisation de l'adaptateur avec " + absences.size() + " absences.");
-                adapter = new DetailAbsenceAdapter(absenceList, this); // Passer le fragment comme listener
+                adapter = new DetailAbsenceAdapter(absenceList, this); // Passer le fragment comme listener pour les actions
                 recyclerView.setAdapter(adapter);
             } else {
                 // Afficher un message ou une vue de type "Aucune absence" si la liste est vide
@@ -102,43 +104,14 @@ public class DetailAbsenceFragment extends Fragment implements DetailAbsenceAdap
         });
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        Log.d("DetailAbsenceFragment", "onStart called");
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.d("DetailAbsenceFragment", "onResume called");
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        Log.d("DetailAbsenceFragment", "onPause called");
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        Log.d("DetailAbsenceFragment", "onStop called");
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.d("DetailAbsenceFragment", "onDestroy called");
-    }
 
     @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onDelete(Absence absence) {
-        // Gestion de la suppression de l'absence
+        // Gestion de la suppression d'une absence
         if (absenceList != null) {
             absenceList.remove(absence); // Supprimer localement de la liste
-            adapter.notifyDataSetChanged(); // Mettre à jour l'adaptateur
+            adapter.notifyDataSetChanged(); // Mettre à jour l'adaptateur pour refléter la suppression
             absenceViewModel.deleteAbsence(absence.getIdAbsence(), absence.getCin());
             Log.d("DetailAbsenceFragment", "Absence supprimée : " + absence.toString());
 
@@ -149,15 +122,15 @@ public class DetailAbsenceFragment extends Fragment implements DetailAbsenceAdap
 
     @Override
     public void onEdit(Absence absence) {
-        // Gestion de l'édition de l'absence
+        // Gestion de l'édition d'une absence
         Log.d("DetailAbsenceFragment", "Modification de l'absence : " + absence.toString());
-        // Créer un nouveau fragment EditAbsenceFragment
+        // Créer un nouveau fragment EditAbsenceFragment pour éditer l'absence
         EditAbsenceFragment editFragment = new EditAbsenceFragment();
         // Passer les données de l'absence sélectionnée en tant qu'arguments
         Bundle args = new Bundle();
         args.putString("idAbsence", absence.getIdAbsence());
-        args.putString("profName",absence.getProfName());
-        args.putString("cin",absence.getCin());
+        args.putString("profName", absence.getProfName());
+        args.putString("cin", absence.getCin());
         args.putString("salle", absence.getSalle());
         args.putString("date", absence.getDate());
         args.putString("startTime", absence.getStartTime());
@@ -166,7 +139,7 @@ public class DetailAbsenceFragment extends Fragment implements DetailAbsenceAdap
         args.putString("status", absence.getStatus());
         editFragment.setArguments(args);
 
-        // Remplacer le fragment actuel par EditAbsenceFragment
+        // Remplacer le fragment actuel par EditAbsenceFragment pour l'édition
         requireActivity().getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.frame_layout, editFragment) // ID du conteneur de fragments

@@ -17,7 +17,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import com.example.gestionabscenceenseignants.R;
 import com.example.gestionabscenceenseignants.model.Absence;
-import com.example.gestionabscenceenseignants.model.Claim;
 import com.example.gestionabscenceenseignants.model.User;
 import com.example.gestionabscenceenseignants.ViewModel.AbsenceViewModel;
 import com.example.gestionabscenceenseignants.Repository.UserRepository;
@@ -27,18 +26,21 @@ import java.util.List;
 
 public class AddAbsenceFragment extends Fragment {
 
-    private AutoCompleteTextView editTextProfName;
-    private EditText editTextDate, editTextStartTime, editTextEndTime, editTextReason, editTextSubjectName;
-    private Spinner spinnerStatus;
-    private Button btnAddAbsence, btnCancel;
-    private AbsenceViewModel absenceViewModel;
-    private UserRepository userRepository;
-    private List<User> teachersList = new ArrayList<>();
-    private String selectedCIN = "";
+    // Déclaration des champs de saisie et autres composants de l'interface utilisateur
+    private AutoCompleteTextView editTextProfName; // Champ pour saisir le nom de l'enseignant
+    private EditText editTextDate, editTextStartTime, editTextEndTime, editTextReason, editTextSubjectName; // Champs pour date, heure et autres détails
+    private Spinner spinnerStatus; // Dropdown pour le statut de l'absence
+    private Button btnAddAbsence, btnCancel; // Boutons pour valider ou annuler
+    private AbsenceViewModel absenceViewModel; // ViewModel pour gérer les données d'absence
+    private UserRepository userRepository; // Référentiel pour récupérer les données des enseignants
+    private List<User> teachersList = new ArrayList<>(); // Liste des enseignants
+    private String selectedCIN = ""; // CIN de l'enseignant sélectionné
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Initialisation des ViewModels et du référentiel
         absenceViewModel = new ViewModelProvider(this).get(AbsenceViewModel.class);
         userRepository = new UserRepository();
     }
@@ -47,27 +49,28 @@ public class AddAbsenceFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_absence, container, false);
 
-        // Initialize UI components
+        // Initialisation des composants de l'interface utilisateur
         initUIComponents(view);
 
-        // Set current date and time in the fields
+        // Remplissage des champs de date et heure avec les valeurs actuelles
         setCurrentDateAndTime();
 
-        // Add DatePicker and TimePicker
+        // Ajout des actions pour les sélecteurs de date et d'heure
         addDateAndTimePickers();
 
-        // Fetch teachers' names and CINs
+        // Chargement des enseignants depuis le référentiel
         fetchTeachers();
 
-        // Handle add absence logic
+        // Configuration de l'action pour le bouton de validation
         setupValidationButton(view);
 
-        // Cancel action
+        // Action pour le bouton d'annulation
         btnCancel.setOnClickListener(v -> requireActivity().getOnBackPressedDispatcher().onBackPressed());
 
         return view;
     }
 
+    // Méthode pour initialiser les composants de l'interface utilisateur
     private void initUIComponents(View view) {
         editTextProfName = view.findViewById(R.id.profName);
         editTextDate = view.findViewById(R.id.date);
@@ -79,20 +82,22 @@ public class AddAbsenceFragment extends Fragment {
         btnAddAbsence = view.findViewById(R.id.addButton);
         btnCancel = view.findViewById(R.id.cancelButton);
 
-        // Set up spinner for absence status
+        // Configuration de l'adaptateur pour le spinner de statut d'absence
         ArrayAdapter<CharSequence> statusAdapter = ArrayAdapter.createFromResource(
                 requireContext(),
-                R.array.statut_absence, // Assuming you have this array in your resources
+                R.array.statut_absence, // Tableau défini dans les ressources
                 android.R.layout.simple_spinner_item
         );
         statusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerStatus.setAdapter(statusAdapter);
     }
 
+    // Méthode pour configurer le bouton de validation
     private void setupValidationButton(View view) {
         Button validateButton = view.findViewById(R.id.addButton);
         validateButton.setOnClickListener(v -> {
             if (validateInputs()) {
+                // Création de l'objet Absence
                 Absence absence = new Absence(
                         editTextProfName.getText().toString().trim(),
                         editTextDate.getText().toString().trim(),
@@ -104,15 +109,19 @@ public class AddAbsenceFragment extends Fragment {
                         selectedCIN
                 );
 
+                // Ajout de l'absence via le ViewModel
                 absenceViewModel.addAbsence(absence);
-                // Observer pour les erreurs ou succès
+
+                // Observation des messages de succès ou d'erreur
                 absenceViewModel.getErrorMessage().observe(getViewLifecycleOwner(), message -> {
                     Toast.makeText(getActivity(), "Absence ajoutée avec succès", Toast.LENGTH_SHORT).show();
                     requireActivity().getSupportFragmentManager().popBackStack();
-
                 });
-            }});}
+            }
+        });
+    }
 
+    // Méthode pour définir la date et l'heure actuelles
     @SuppressLint("DefaultLocale")
     private void setCurrentDateAndTime() {
         Calendar calendar = Calendar.getInstance();
@@ -128,6 +137,7 @@ public class AddAbsenceFragment extends Fragment {
         editTextEndTime.setText(currentTime);
     }
 
+    // Méthodes pour afficher les sélecteurs de date et d'heure
     private void addDateAndTimePickers() {
         editTextDate.setOnClickListener(v -> showDatePicker());
         editTextStartTime.setOnClickListener(v -> showTimePicker(editTextStartTime));
@@ -167,11 +177,12 @@ public class AddAbsenceFragment extends Fragment {
         timePickerDialog.show();
     }
 
+    // Méthode pour récupérer la liste des enseignants
     private void fetchTeachers() {
         userRepository.getTeacherNamesAndCIN(new UserRepository.UserCallback() {
             @Override
             public void onSuccessMessage(String message) {
-                // Handle success message
+                // Gestion des messages de succès
             }
 
             @Override
@@ -182,6 +193,7 @@ public class AddAbsenceFragment extends Fragment {
                     teacherNames.add(user.getName());
                 }
 
+                // Configuration de l'AutoCompleteTextView pour les noms des enseignants
                 ArrayAdapter<String> adapter = new ArrayAdapter<>(requireActivity(), android.R.layout.simple_dropdown_item_1line, teacherNames);
                 editTextProfName.setAdapter(adapter);
                 editTextProfName.setOnItemClickListener((parent, view, position, id) -> {
@@ -202,32 +214,44 @@ public class AddAbsenceFragment extends Fragment {
 
             @Override
             public void onSuccessUser(User user) {
-                // Handle success user if necessary
+                // Gérer un utilisateur spécifique si nécessaire
             }
         });
     }
 
-
+    // Méthode pour valider les champs de saisie
     private boolean validateInputs() {
         String profName = editTextProfName.getText().toString().trim();
         String date = editTextDate.getText().toString().trim();
         String startTime = editTextStartTime.getText().toString().trim();
         String endTime = editTextEndTime.getText().toString().trim();
         String reason = editTextReason.getText().toString().trim();
-        String subjectName = editTextSubjectName.getText().toString().trim();
+        String subject = editTextSubjectName.getText().toString().trim();
 
-        if (profName.isEmpty() || date.isEmpty() || startTime.isEmpty() || endTime.isEmpty() || reason.isEmpty() || subjectName.isEmpty()) {
-            Toast.makeText(getActivity(), "Veuillez remplir tous les champs", Toast.LENGTH_SHORT).show();
+        if (profName.isEmpty()) {
+            editTextProfName.setError("Veuillez entrer le nom du professeur.");
             return false;
         }
-
-        if (selectedCIN.isEmpty()) {
-            Toast.makeText(getActivity(), "Veuillez sélectionner un enseignant valide", Toast.LENGTH_SHORT).show();
+        if (date.isEmpty()) {
+            editTextDate.setError("Veuillez sélectionner une date.");
             return false;
         }
-
+        if (startTime.isEmpty()) {
+            editTextStartTime.setError("Veuillez sélectionner une heure de début.");
+            return false;
+        }
+        if (endTime.isEmpty()) {
+            editTextEndTime.setError("Veuillez sélectionner une heure de fin.");
+            return false;
+        }
+        if (reason.isEmpty()) {
+            editTextReason.setError("Veuillez entrer une raison.");
+            return false;
+        }
+        if (subject.isEmpty()) {
+            editTextSubjectName.setError("Veuillez entrer le nom du sujet.");
+            return false;
+        }
         return true;
     }
-
-
-        }
+}

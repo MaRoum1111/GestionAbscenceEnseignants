@@ -16,138 +16,112 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gestionabscenceenseignants.Adapter.ClaimAdminDetailAdapter;
 import com.example.gestionabscenceenseignants.R;
-import com.example.gestionabscenceenseignants.Adapter.DetailAbsenceAdapter;
 import com.example.gestionabscenceenseignants.ViewModel.ClaimViewModel;
-import com.example.gestionabscenceenseignants.model.Absence;
-import com.example.gestionabscenceenseignants.ViewModel.AbsenceViewModel;
 import com.example.gestionabscenceenseignants.model.Claim;
 
 import java.util.List;
 
 public class AdminDetailClaimFragment extends Fragment implements ClaimAdminDetailAdapter.OnClaimDetailClickListener {
+    // Déclaration des variables pour RecyclerView, Adaptateur, ViewModel, et autres informations nécessaires
     private RecyclerView recyclerView;
     private ClaimAdminDetailAdapter adapter;
     private ClaimViewModel claimViewModel;
     private String profCin, profname;
-    private List<Claim> claimList; // Liste des absences pour gérer les mises à jour
+    private List<Claim> claimList; // Liste des réclamations pour gestion et mise à jour
 
+    // La méthode onCreateView est utilisée pour initialiser la vue du fragment
     @SuppressLint("SetTextI18n")
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflater la vue du fragment
+        // Inflater la vue du fragment à partir du fichier XML
         View rootView = inflater.inflate(R.layout.fragment_admin_detail_claim, container, false);
 
-        // Initialisation du RecyclerView
+        // Initialisation du RecyclerView pour afficher les réclamations
         recyclerView = rootView.findViewById(R.id.recyclerViewClaims);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        // Initialisation des TextViews
-        @SuppressLint({"MissingInflatedId", "LocalSuppress"})
+        // Initialisation des TextViews pour afficher le nom et le CIN du professeur
         TextView name = rootView.findViewById(R.id.teacher_name);
-        @SuppressLint({"MissingInflatedId", "LocalSuppress"})
         TextView cin = rootView.findViewById(R.id.teacher_cin);
-        // Récupérer les arguments passés au fragment (le CIN du professeur)
+
+        // Récupérer les arguments passés au fragment (CIN et nom du professeur)
         getArgumentsData();
 
-        // Affichage des informations du professeur
+        // Afficher les informations du professeur dans les TextViews
         displayTeacherInfo(name, cin);
 
+        // Initialisation du ViewModel pour gérer les données de réclamations
         claimViewModel = new ViewModelProvider(this).get(ClaimViewModel.class);
 
+        // Charger les réclamations du professeur spécifique
         getClaimByProf();
 
+        // Observer les données des réclamations et mettre à jour l'interface en conséquence
         observeClaims();
 
         return rootView;
     }
 
+    // Récupérer les arguments (CIN et nom du professeur) passés au fragment
     private void getArgumentsData() {
-        // Récupérer les arguments passés au fragment
         if (getArguments() != null) {
             profCin = getArguments().getString("cin");
             profname = getArguments().getString("profName");
-
         }
     }
 
+    // Afficher les informations du professeur dans les TextViews
     private void displayTeacherInfo(TextView name, TextView cin) {
         name.setText(profname);
         cin.setText(profCin);
     }
 
+    // Observer les réclamations du professeur et mettre à jour le RecyclerView
     private void observeClaims() {
-        // Observer les absences et mettre à jour l'adaptateur
         claimViewModel.getClaim().observe(getViewLifecycleOwner(), claims -> {
             if (claims != null && !claims.isEmpty()) {
                 claimList = claims;
-                adapter = new ClaimAdminDetailAdapter(claimList, this); // Passer le fragment comme listener
+                // Si des réclamations existent, initialiser et associer l'adaptateur
+                adapter = new ClaimAdminDetailAdapter(claimList, this); // Le fragment implémente le listener
                 recyclerView.setAdapter(adapter);
             } else {
-                recyclerView.setAdapter(null); // Optionnellement, vous pouvez mettre un adaptateur vide ou un message
+                // Si aucune réclamation, on peut mettre un adaptateur vide ou afficher un message
+                recyclerView.setAdapter(null);
             }
         });
     }
 
+    // Charger les réclamations d'un professeur spécifique basé sur son CIN
     private void getClaimByProf() {
-        // Charger les absences pour le professeur spécifique
         Log.d("DetailAbsenceFragment", "Chargement des absences pour le professeur : " + profCin);
         claimViewModel.getClaimByProf(profCin);
     }
-    @Override
-    public void onStart() {
-        super.onStart();
-        Log.d("DetailAbsenceFragment", "onStart called");
-    }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.d("DetailAbsenceFragment", "onResume called");
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        Log.d("DetailAbsenceFragment", "onPause called");
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        Log.d("DetailAbsenceFragment", "onStop called");
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.d("DetailAbsenceFragment", "onDestroy called");
-    }
-
+    // Méthodes pour accepter ou rejeter une réclamation en mettant à jour localement la liste
     @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onAccept(Claim claim) {
-        // Gestion de la suppression de l'absence
         if (claimList != null) {
-            claimList.remove(claim); // Supprimer localement de la liste
-            adapter.notifyDataSetChanged(); // Mettre à jour l'adaptateur
-            claimViewModel.onAccept(claim.getIdClaim());
+            claimList.remove(claim); // Retirer la réclamation de la liste
+            adapter.notifyDataSetChanged(); // Mettre à jour l'adaptateur pour refléter le changement
+            claimViewModel.onAccept(claim.getIdClaim()); // Effectuer l'acceptation via ViewModel
 
             // Afficher un message de confirmation
             Toast.makeText(getContext(), "Réclamation approuvée avec succès", Toast.LENGTH_SHORT).show();
         }
     }
+
     @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onReject(Claim claim) {
-        // Gestion de la suppression de l'absence
         if (claimList != null) {
-            claimList.remove(claim); // Supprimer localement de la liste
+            claimList.remove(claim); // Retirer la réclamation de la liste
             adapter.notifyDataSetChanged(); // Mettre à jour l'adaptateur
-            claimViewModel.onReject(claim.getIdClaim());
+            claimViewModel.onReject(claim.getIdClaim()); // Rejeter la réclamation via ViewModel
 
-            Toast.makeText(getContext(), "Réclamation réjeter avec succès", Toast.LENGTH_SHORT).show();
+            // Afficher un message de confirmation
+            Toast.makeText(getContext(), "Réclamation rejetée avec succès", Toast.LENGTH_SHORT).show();
         }
     }
-
 }
